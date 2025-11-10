@@ -3,33 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>frodes.ru - Мой первый сайт</title>
+    <title>FRODES - Музыкальный бунтарь</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
             line-height: 1.6;
-            background-color: #f0f0f0;
+            overflow-x: hidden;
         }
-        h1 {
-            color: #333;
+        
+        .terminal {
+            min-height: 100vh;
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        
+        .command {
+            color: #00ff00;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: typeIn 1s forwards;
+        }
+        
+        @keyframes typeIn {
+            to { opacity: 1; }
+        }
+        
+        .command:nth-child(1) { animation-delay: 0.5s; }
+        .command:nth-child(2) { animation-delay: 1.5s; }
+        .command:nth-child(3) { animation-delay: 2.5s; }
+        .command:nth-child(4) { animation-delay: 3.5s; }
+        .command:nth-child(5) { animation-delay: 4.5s; }
+        
+        .prompt {
+            color: #ffff00;
+        }
+        
+        .blink {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        .manifesto {
+            margin-top: 50px;
+            border-left: 3px solid #ff0000;
+            padding-left: 20px;
+        }
+        
+        .cta-buttons {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: transparent;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #00ff00;
+            color: #000;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #00ff00;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end);
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Привет, мир!</h1>
-        <p>Это мой первый сайт на собственном домене <strong>frodes.ru</strong>!</p>
-        <p>Я только начал, но скоро здесь появится что-то крутое.</p>
-        <p>А пока можно следить за обновлениями.</p>
+    <div class="terminal">
+        <div class="command">
+            <span class="prompt">></span> system scan: ARTIST_PROFILE
+        </div>
+        
+        <div class="command">
+            <span class="prompt">></span> archetype: <span class="typewriter">REBEL_HERO_EXPLORER</span>
+        </div>
+        
+        <div class="command">
+            <span class="prompt">></span> mission: BREAK_THE_SYSTEM
+        </div>
+        
+        <div class="command">
+            <span class="prompt">></span> status: <span style="color: #ff0000">[##########]</span> 100% READY
+        </div>
+        
+        <div class="command">
+            <span class="prompt">></span> welcome_to: <span class="typewriter">FRODES_REALM</span><span class="blink">_</span>
+        </div>
+        
+        <div class="manifesto">
+            <h2>МАНИФЕСТ БУНТАРЯ</h2>
+            <p>Музыка — это оружие. Звук — это протест.</p>
+            <p>Каждый аккорд — вызов системе. Каждый текст — манифест.</p>
+            <p>Мы не идем по проторенной дороге — мы прокладываем свою.</p>
+            <p>Присоединяйся к сопротивлению.</p>
+        </div>
+        
+        <div class="cta-buttons">
+            <a href="#music" class="btn">СЛУШАТЬ МУЗЫКУ</a>
+            <a href="#blog" class="btn">ЧИТАТЬ МАНИФЕСТ</a>
+            <a href="#about" class="btn">О БУНТЕ</a>
+        </div>
     </div>
 </body>
 </html>
