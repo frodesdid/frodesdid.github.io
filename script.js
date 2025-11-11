@@ -1,4 +1,4 @@
-// Параллакс эффект для элементов
+// Параллакс эффект для визуальных элементов
 document.addEventListener('mousemove', (e) => {
     const parallaxElements = document.querySelectorAll('[data-depth]');
     const mouseX = e.clientX / window.innerWidth - 0.5;
@@ -13,13 +13,25 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
-// Интерактив для проектов в арсенале
+// Эффекты для кнопок
 document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.spike-button');
+    
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.backgroundPosition = '0% 0%';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.backgroundPosition = '100% 100%';
+        });
+    });
+    
+    // Эффекты для проектов в арсенале
     const gridItems = document.querySelectorAll('.grid-item');
     
     gridItems.forEach(item => {
         item.addEventListener('mouseenter', () => {
-            // Случайный эффект для каждого элемента
             const effects = [
                 { transform: 'rotate(1deg) scale(1.05)', borderColor: '#ff003c' },
                 { transform: 'skew(-2deg) scale(1.03)', borderColor: '#0066ff' },
