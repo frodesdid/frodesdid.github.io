@@ -49,11 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Партикл система для интерактивной инсталляции
-let particles = [];
-let particleMode = 'chaos';
-let animationId = null;
-
+// Particle system for interactive project
 function initParticles() {
     const canvas = document.getElementById('particleCanvas');
     if (!canvas) return;
@@ -62,224 +58,98 @@ function initParticles() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Создаем начальные частицы
-    createParticles(30);
-    
-    // Запускаем анимацию
-    animateParticles();
-    
-    // Добавляем интерактивность
-    canvas.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        
-        // Взаимодействие частиц с курсором
-        particles.forEach(particle => {
-            const dx = particle.x - mouseX;
-            const dy = particle.y - mouseY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 100) {
-                particle.vx += (dx / distance) * 2;
-                particle.vy += (dy / distance) * 2;
-            }
-        });
-    });
-    
-    canvas.addEventListener('click', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        
-        // Создаем взрыв при клике
-        createExplosion(mouseX, mouseY, 10);
-    });
-    
-    // Анимация частотных полос
-    animateFrequencyBars();
-}
+    const particles = [];
+    const particleCount = 50;
 
-function createParticles(count) {
-    const canvas = document.getElementById('particleCanvas');
-    
-    for (let i = 0; i < count; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2,
-            size: Math.random() * 3 + 1,
-            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-            life: 1,
-            decay: Math.random() * 0.002 + 0.001
-        });
-    }
-}
-
-function createExplosion(x, y, count) {
-    for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 5 + 2;
-        
-        particles.push({
-            x: x,
-            y: y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            size: Math.random() * 4 + 2,
-            color: `hsl(${Math.random() * 60 + 300}, 100%, 60%)`,
-            life: 1,
-            decay: Math.random() * 0.01 + 0.005
-        });
-    }
-}
-
-function animateParticles() {
-    const canvas = document.getElementById('particleCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Обновляем и рисуем частицы
-    particles.forEach((particle, index) => {
-        // Физика в зависимости от режима
-        switch(particleMode) {
-            case 'chaos':
-                particle.vx += (Math.random() - 0.5) * 0.2;
-                particle.vy += (Math.random() - 0.5) * 0.2;
-                break;
-            case 'order':
-                // Стремление к центру
-                const dx = canvas.width/2 - particle.x;
-                const dy = canvas.height/2 - particle.y;
-                particle.vx += dx * 0.0001;
-                particle.vy += dy * 0.0001;
-                break;
-            case 'pulse':
-                particle.size = Math.abs(Math.sin(Date.now() * 0.005 + index)) * 3 + 1;
-                break;
+    class Particle {
+        constructor() {
+            this.reset();
         }
         
-        // Обновляем позицию
-        particle.x += particle.vx;
-        particle.y += particle.vy;
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = Math.random() * 2 - 1;
+            this.speedY = Math.random() * 2 - 1;
+            this.color = `hsl(${Math.random() * 60 + 200}, 100%, 50%)`;
+            this.alpha = Math.random() * 0.5 + 0.1;
+        }
         
-        // Затухание скорости
-        particle.vx *= 0.99;
-        particle.vy *= 0.99;
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            
+            this.alpha -= 0.002;
+            if (this.alpha <= 0) {
+                this.reset();
+            }
+        }
         
-        // Границы
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
-        
-        // Уменьшаем жизнь
-        particle.life -= particle.decay;
-        
-        // Рисуем если жива
-        if (particle.life > 0) {
-            ctx.fillStyle = particle.color;
-            ctx.globalAlpha = particle.life;
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.alpha;
             ctx.beginPath();
-            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
         }
-    });
-    
-    // Удаляем мертвые частицы
-    particles = particles.filter(p => p.life > 0);
-    
-    // Добавляем случайные новые частицы
-    if (Math.random() < 0.1) {
-        createParticles(1);
     }
-    
-    animationId = requestAnimationFrame(animateParticles);
-}
 
-function animateFrequencyBars() {
-    const bars = document.querySelectorAll('.frequency-bars .bar');
-    
-    function updateBars() {
-        bars.forEach((bar, index) => {
-            const randomHeight = Math.random() * 100;
-            const delay = index * 100;
-            
-            setTimeout(() => {
-                bar.style.height = `${randomHeight}%`;
-                bar.style.background = `linear-gradient(to top, 
-                    hsl(${Math.random() * 60 + 300}, 100%, 50%), 
-                    hsl(${Math.random() * 60 + 200}, 100%, 50%)
-                )`;
-            }, delay);
+    function createParticles() {
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
         });
         
-        setTimeout(updateBars, 200);
+        requestAnimationFrame(animateParticles);
     }
-    
-    updateBars();
+
+    createParticles();
+    animateParticles();
 }
 
-// Функции для кнопок
+// Activate particle system
 function activateParticles() {
-    createExplosion(
-        document.getElementById('particleCanvas').width / 2,
-        document.getElementById('particleCanvas').height / 2,
-        50
-    );
+    const canvas = document.getElementById('particleCanvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Create explosion effect
+    for (let i = 0; i < 100; i++) {
+        setTimeout(() => {
+            const x = canvas.width / 2;
+            const y = canvas.height / 2;
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 10 + 5;
+            
+            ctx.fillStyle = `hsl(${Math.random() * 60 + 200}, 100%, 50%)`;
+            ctx.globalAlpha = 0.8;
+            ctx.beginPath();
+            ctx.arc(
+                x + Math.cos(angle) * speed,
+                y + Math.sin(angle) * speed,
+                Math.random() * 3 + 1,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+        }, i * 20);
+    }
 }
 
-function changeParticleMode() {
-    const modes = ['chaos', 'order', 'pulse'];
-    const modeText = document.getElementById('modeText');
-    
-    const currentIndex = modes.indexOf(particleMode);
-    particleMode = modes[(currentIndex + 1) % modes.length];
-    
-    modeText.textContent = `MODE: ${particleMode.toUpperCase()}`;
-    
-    // Визуальный эффект при смене режима
-    createExplosion(
-        document.getElementById('particleCanvas').width / 2,
-        document.getElementById('particleCanvas').height / 2,
-        20
-    );
-}
-
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', function() {
-    initParticles();
-    // остальной твой код...
-});
-
-// Функции для кнопок
-function activateParticles() {
-    createExplosion(
-        document.getElementById('particleCanvas').width / 2,
-        document.getElementById('particleCanvas').height / 2,
-        50
-    );
-}
-
-function changeParticleMode() {
-    const modes = ['chaos', 'order', 'pulse'];
-    const modeText = document.getElementById('modeText');
-    
-    const currentIndex = modes.indexOf(particleMode);
-    particleMode = modes[(currentIndex + 1) % modes.length];
-    
-    modeText.textContent = `MODE: ${particleMode.toUpperCase()}`;
-    
-    // Визуальный эффект при смене режима
-    createExplosion(
-        document.getElementById('particleCanvas').width / 2,
-        document.getElementById('particleCanvas').height / 2,
-        20
-    );
-}
-
-// Инициализация при загрузке
+// Initialize particles when page loads
 document.addEventListener('DOMContentLoaded', function() {
     initParticles();
     
@@ -287,16 +157,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const arsenalItems = document.querySelectorAll('.arsenal-item');
     
     arsenalItems.forEach(item => {
-    item.addEventListener('click', function(e) {
-        // Если кликнули на audio или внутри audio плеера - не прерываем
-        if (e.target.closest('audio, .audio-player, .music-player')) {
-            return;
-        }
-        
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.style.transform = '';
-        }, 200);
+        item.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
     });
 });
 
