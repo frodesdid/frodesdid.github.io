@@ -20,10 +20,11 @@ body {
 }
 
 /* ===== ГЛАВНЫЙ ЗАГОЛОВОК ===== */
-.hero {
+.title-container {
+    position: relative;
+    display: inline-block;
     text-align: center;
-    padding: 100px 20px;
-    border-bottom: 1px solid #333; /* Тонкая линия-разделитель, как шрам */
+    margin: 0 auto;
 }
 
 .main-title {
@@ -38,53 +39,25 @@ body {
         2px 2px 0 #0066ff;
     margin-bottom: 1rem;
     line-height: 0.9;
-    position: relative;
-    
-    /* Новые свойства для центрированного переключения */
-    transform-origin: center center;
-    display: inline-block;
-    width: min-content;
-    min-width: 100%;
-    text-align: center;
     cursor: pointer;
-}
-
-.main-title::before {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'FatGrot', 'Impact', sans-serif;
-    color: transparent;
-    text-shadow: 
-        -3px -3px 0 #ff003c,
-        3px 3px 0 #0066ff,
-        0 0 20px rgba(255, 0, 60, 0.3);
-    opacity: 0;
-    transform: scale(1.1) rotate(0.5deg);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform-origin: center center;
-    text-align: center;
     
-    /* Эффекты потертости */
+    /* Эффект потертости */
     background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');
     -webkit-background-clip: text;
     background-clip: text;
+    color: transparent;
     background-size: 300% 300%;
     animation: textureShift 8s ease-in-out infinite;
 }
 
-.main-title:hover::before {
-    opacity: 1;
-    transform: scale(1.02) rotate(0deg);
+.main-title.fatgrot {
+    font-family: 'FatGrot', 'Impact', sans-serif;
+    text-shadow: 
+        -3px -3px 0 #ff003c,
+        3px 3px 0 #0066ff,
+        0 0 20px rgba(255, 0, 60, 0.3);
     letter-spacing: 0.08em;
-}
-
-.main-title:hover {
-    color: transparent;
-    text-shadow: none;
 }
 
 @keyframes textureShift {
