@@ -250,6 +250,38 @@ function changeParticleMode() {
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     initParticles();
+    // остальной твой код...
+});
+
+// Функции для кнопок
+function activateParticles() {
+    createExplosion(
+        document.getElementById('particleCanvas').width / 2,
+        document.getElementById('particleCanvas').height / 2,
+        50
+    );
+}
+
+function changeParticleMode() {
+    const modes = ['chaos', 'order', 'pulse'];
+    const modeText = document.getElementById('modeText');
+    
+    const currentIndex = modes.indexOf(particleMode);
+    particleMode = modes[(currentIndex + 1) % modes.length];
+    
+    modeText.textContent = `MODE: ${particleMode.toUpperCase()}`;
+    
+    // Визуальный эффект при смене режима
+    createExplosion(
+        document.getElementById('particleCanvas').width / 2,
+        document.getElementById('particleCanvas').height / 2,
+        20
+    );
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    initParticles();
     
     // Add click effects to arsenal items
     const arsenalItems = document.querySelectorAll('.arsenal-item');
