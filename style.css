@@ -374,3 +374,244 @@ body::after {
     color: #00ff88;
     box-shadow: 0 10px 25px rgba(0, 255, 136, 0.2);
 }
+
+/* Стили для Арсенала с медиа */
+.arsenal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.arsenal-item {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    min-height: 300px;
+}
+
+.arsenal-item:hover {
+    transform: translateY(-10px) rotate(0.5deg);
+    border-color: #ff003c;
+    box-shadow: 0 15px 40px rgba(255, 0, 60, 0.2);
+}
+
+.arsenal-media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Общие стили для медиа-элементов */
+.media-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.arsenal-item:hover .media-element {
+    transform: scale(1.05);
+}
+
+.media-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(10, 10, 10, 0.9) 0%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.arsenal-item:hover .media-overlay {
+    opacity: 1;
+}
+
+.media-type {
+    font-family: 'Banana Brick', 'Anton', Impact, sans-serif;
+    font-size: 0.8rem;
+    color: #ff003c;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 10px;
+}
+
+.media-overlay h3 {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.media-overlay p {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* Стили для музыкального плеера */
+.music-player {
+    display: flex;
+    height: 100%;
+    background: #1a1a1a;
+}
+
+.album-cover {
+    flex: 0 0 150px;
+    overflow: hidden;
+}
+
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.track-info {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.track-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.track-info p {
+    color: #888;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.audio-player {
+    width: 100%;
+    height: 40px;
+    filter: invert(0.8) hue-rotate(180deg);
+}
+
+/* Стили для коллажа */
+.collage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 100%;
+    gap: 2px;
+}
+
+.collage-item {
+    overflow: hidden;
+}
+
+.collage-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.collage-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Стили для интерактивного элемента */
+.interactive-element {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+}
+
+#particleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.interactive-content {
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.interactive-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.interactive-content p {
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* Стили для текстового манифеста */
+.text-manifesto {
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-manifesto h3 {
+    font-size: 1.5rem;
+    color: #ff003c;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.text-content p {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.text-content blockquote {
+    border-left: 3px solid #0066ff;
+    padding-left: 20px;
+    margin: 20px 0;
+    color: #888;
+    font-style: italic;
+}
+
+/* Маленькая кнопка */
+.spike-button.small {
+    padding: 12px 25px;
+    min-width: auto;
+    font-size: 0.8rem;
+}
+
+/* Адаптивность для медиа */
+@media (max-width: 768px) {
+    .arsenal-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .music-player {
+        flex-direction: column;
+    }
+    
+    .album-cover {
+        flex: 0 0 200px;
+    }
+}
