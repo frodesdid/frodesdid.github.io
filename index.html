@@ -1,278 +1,57 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRODES - Музыкальный бунтарь</title>
-    <!-- Favicon -->
-<link rel="icon" type="image/png" href="favicon.png">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Courier New', monospace;
-            background: #0a0a0a;
-            color: #00ff00;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        .terminal {
-            min-height: 100vh;
-            padding: 40px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .command {
-            color: #00ff00;
-            margin-bottom: 30px;
-            opacity: 0;
-            animation: typeIn 1s forwards;
-        }
-        
-        @keyframes typeIn {
-            to { opacity: 1; }
-        }
-        
-        .command:nth-child(1) { animation-delay: 0.5s; }
-        .command:nth-child(2) { animation-delay: 1.5s; }
-        .command:nth-child(3) { animation-delay: 2.5s; }
-        .command:nth-child(4) { animation-delay: 3.5s; }
-        .command:nth-child(5) { animation-delay: 4.5s; }
-        
-        .prompt {
-            color: #ffff00;
-        }
-        
-        .blink {
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        
-        .manifesto {
-            margin-top: 50px;
-            border-left: 3px solid #ff0000;
-            padding-left: 20px;
-        }
-        
-        .cta-buttons {
-            margin-top: 40px;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            background: transparent;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            padding: 12px 24px;
-            text-decoration: none;
-            font-family: 'Courier New', monospace;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            background: #00ff00;
-            color: #000;
-        }
-        
-        .typewriter {
-            overflow: hidden;
-            border-right: 2px solid #00ff00;
-            white-space: nowrap;
-            animation: typing 3.5s steps(40, end);
-        }
-        
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-    </style>
+    <title>THEFRODESDID</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Подключение шрифта Banana Brick (или аналогичного) -->
+    <link href="https://fonts.cdnfonts.com/css/banana-brick" rel="stylesheet">
+    <!-- Альтернативный брутальный шрифт, если первый не сработает -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="terminal">
-        <div class="command">
-            <span class="prompt">></span> system scan: ARTIST_PROFILE
-        </div>
-        
-        <div class="command">
-            <span class="prompt">></span> archetype: <span class="typewriter">REBEL_HERO_EXPLORER</span>
-        </div>
-        
-        <div class="command">
-            <span class="prompt">></span> mission: BREAK_THE_SYSTEM
-        </div>
-        
-        <div class="command">
-            <span class="prompt">></span> status: <span style="color: #ff0000">[##########]</span> 100% READY
-        </div>
-        
-        <div class="command">
-            <span class="prompt">></span> welcome_to: <span class="typewriter">FRODES_REALM</span><span class="blink">_</span>
-        </div>
-        
-        <div class="manifesto">
-            <h2>МАНИФЕСТ БУНТАРЯ</h2>
-            <p>Музыка — это оружие. Звук — это протест.</p>
-            <p>Каждый аккорд — вызов системе. Каждый текст — манифест.</p>
-            <p>Мы не идем по проторенной дороге — мы прокладываем свою.</p>
-            <p>Присоединяйся к сопротивлению.</p>
-        </div>
+    <div class="container">
+        <!-- Главный заголовок-манифест -->
+        <header class="hero">
+            <h1 class="main-title">THEFRODESDID</h1>
+            <p class="tagline">I'm not the hero they want. I'm the consequence they deserve.</p>
+        </header>
+            <!-- Favicon -->
+<link rel="icon" type="image/png" href="favicon.png">
 
-        <!-- Раздел МУЗЫКА -->
-        <div id="music" style="margin-top: 80px; border-top: 1px solid #333; padding-top: 40px;">
-            <div class="command">
-                <span class="prompt">></span> audio_system: <span style="color: #ff00ff">MULTI_PLATFORM_ACTIVE</span>
+        <!-- Секция "Манифест" -->
+        <section class="manifesto">
+            <div class="text-block">
+                <h2>THE CODE</h2>
+                <p>They gave me a label: "problematic". They didn't understand. The problem wasn't in me. The problem was in the world they had cobbled together. And I will fix that problem. At any cost.</p>
+                <p>My rebellion is not in broken windows. It is in an unbroken gaze. My prowess is not in loud victories. It is in getting up one more time when the body says "enough".</p>
+                <!-- Сюда можно добавить больше цитат из нашего чата -->
             </div>
-            
-            <h2 style="color: #ff00ff; margin: 30px 0; text-align: center;">МОЯ МУЗЫКА</h2>
-            
-            <!-- Основной баннер -->
-            <div style="background: #111; padding: 30px; margin: 20px 0; border: 2px solid #ff00ff; text-align: center;">
-                <h3 style="color: #ff00ff; margin-bottom: 10px;">"28 PILLS"</h3>
-                <p style="color: #ccc; margin-bottom: 25px;">Новый сингл доступен везде</p>
-                
-                <a href="https://band.link/28pills" 
-                   style="display: inline-block; background: linear-gradient(45deg, #ff00ff, #00ffff); color: #000; border: none; padding: 12px 30px; text-decoration: none; font-family: 'Courier New'; font-size: 16px; font-weight: bold; transition: all 0.3s;">
-                   🎵 ВЫБРАТЬ ПЛОЩАДКУ (BANDLINK)
-                </a>
+            <div class="image-block">
+                <!-- Заглушка для мощного, атмосферного изображения -->
+                <div class="placeholder-img">[IMAGE: Shadowed figure against urban decay]</div>
             </div>
+        </section>
 
-            <!-- Кликабельные площадки -->
-            <h3 style="color: #ffff00; text-align: center; margin: 40px 0 20px 0;">СЛУШАЙ НА ЛЮБИМОЙ ПЛОЩАДКЕ</h3>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 20px;">
-                <!-- Spotify -->
-                <a href="https://open.spotify.com/artist/4yGkcYhaGLAeyP0yp8HXZU?si=8z5hrOnOQ6WTR62fc245qg" 
-                   style="background: #1DB954; color: #000; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; border: 2px solid #1DB954; transition: all 0.3s;">
-                   🟢 SPOTIFY
-                </a>
-                
-                <!-- YouTube Music -->
-                <a href="https://music.youtube.com/channel/UCbB_esrd9ftsWtxLnPucqLQ?si=wRIXwnEc4AupKMuF" 
-                   style="background: #FF0000; color: #fff; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; border: 2px solid #FF0000; transition: all 0.3s;">
-                   🔴 YOUTUBE MUSIC
-                </a>
-                
-                <!-- VK Music -->
-                <a href="https://vk.ru/artist/thefrodesdid" 
-                   style="background: #0077FF; color: #fff; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; border: 2px solid #0077FF; transition: all 0.3s;">
-                   🔵 VK MUSIC
-                </a>
-                
-                <!-- Apple Music -->
-                <a href="https://music.apple.com/ru/artist/thefrodesdid/1308533073" 
-                   style="background: #FA243C; color: #fff; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; border: 2px solid #FA243C; transition: all 0.3s;">
-                   ⚪ APPLE MUSIC
-                </a>
-                
-                <!-- Yandex Music -->
-                <a href="https://music.yandex.ru/artist/5437814?utm_source=web&utm_medium=copy_link" 
-                   style="background: #FFCC00; color: #000; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; border: 2px solid #FFCC00; transition: all 0.3s;">
-                   🟡 YANDEX MUSIC
-                </a>
+        <!-- Секция "Арсенал" (Портфолио/Работы) -->
+        <section class="arsenal">
+            <h2>THE ARSENAL</h2>
+            <div class="grid">
+                <div class="grid-item">[PROJECT 1: Visual & Title]</div>
+                <div class="grid-item">[PROJECT 2: Visual & Title]</div>
+                <div class="grid-item">[PROJECT 3: Visual & Title]</div>
+                <!-- Сетка с работами. Каждый элемент - как снаряд в обойме. -->
             </div>
+        </section>
 
-            <div style="color: #888; font-size: 14px; margin-top: 30px; text-align: center;">
-                <p>▶ Выбирай площадку → слушай трек → поддержи артиста</p>
-                <p>▶ Каждая прослушка помогает в продвижении</p>
-                <p>▶ Добавляй в плейлисты и делись с друзьями</p>
-            </div>
-        </div>
-
-                <!-- Раздел МАНИФЕСТ -->
-        <div id="blog" style="margin-top: 80px; border-top: 1px solid #333; padding-top: 40px;">
-            <div class="command">
-                <span class="prompt">></span> manifesto_system: <span style="color: #ff0000">ACTIVE</span>
-            </div>
-            
-            <h2 style="color: #ff0000; margin: 30px 0; text-align: center;">МАНИФЕСТ БУНТАРЯ</h2>
-            
-            <div style="background: #111; padding: 30px; margin: 20px 0; border: 2px solid #ff0000;">
-                <div style="color: #ff4444; font-size: 18px; margin-bottom: 25px; text-align: center;">
-                    "МУЗЫКА — ЭТО НЕ РАЗВЛЕЧЕНИЕ. ЭТО ОРУЖИЕ."
-                </div>
-                
-                <div style="color: #ccc; line-height: 1.8;">
-                    <p style="margin: 15px 0;">▶ <strong>Мы не играем по правилам системы.</strong> Мы создаем свои.</p>
-                    
-                    <p style="margin: 15px 0;">▶ <strong>Каждый звук — это вызов.</strong> Каждый ритм — протест против серости и шаблонов.</p>
-                    
-                    <p style="margin: 15px 0;">▶ <strong>Мы не ищем одобрения.</strong> Мы ищем тех, кто готов слышать правду.</p>
-                    
-                    <p style="margin: 15px 0;">▶ <strong>Комфорт — это ловушка.</strong> Творчество рождается в дискомфорте, на грани, в зоне риска.</p>
-                    
-                    <p style="margin: 15px 0;">▶ <strong>Массовая культура — это фабрика сна.</strong> Мы — будильник.</p>
-                    
-                    <p style="margin: 15px 0;">▶ <strong>Технологии — наш союзник,</strong> но не наш бог. Мы используем инструменты, но не становимся их рабами.</p>
-                    
-                    <p style="margin: 15px 0;">▶ <strong>Искатель всегда в пути.</strong> Герой всегда в борьбе. Бунтарь всегда в движении.</p>
-                </div>
-                
-                <div style="color: #ff0000; margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; text-align: center;">
-                    <strong>ПРИСОЕДИНЯЙСЯ К СОПРОТИВЛЕНИЮ. НАЙДИ СВОЙ ЗВУК.</strong>
-                </div>
-            </div>
-        </div>
-
-        <!-- Раздел О БУНТЕ -->
-        <div id="about" style="margin-top: 80px; border-top: 1px solid #333; padding-top: 40px;">
-            <div class="command">
-                <span class="prompt">></span> rebel_database: <span style="color: #00ffff">ACCESS_GRANTED</span>
-            </div>
-            
-            <h2 style="color: #00ffff; margin: 30px 0; text-align: center;">О БУНТЕ</h2>
-            
-            <div style="background: #111; padding: 30px; margin: 20px 0; border: 2px solid #00ffff;">
-                <h3 style="color: #00ffff; margin-bottom: 20px;">КТО Я?</h3>
-                
-                <div style="color: #ccc; line-height: 1.8;">
-                    <p style="margin: 15px 0;">Я — голос из подполья. Звук из тишины. Ритм из хаоса.</p>
-                    
-                    <p style="margin: 15px 0;">Моя музыка — это дневник искателя, крик бунтаря, путь героя. 
-                    Это эксперименты со звуком, текстом и сознанием.</p>
-                    
-                    <p style="margin: 15px 0;">Я не учу, не развлекаю, не угождаю. Я — провоцирую. 
-                    Заставляю думать. Вызываю на диалог.</p>
-                    
-                    <p style="margin: 15px 0;">Каждый трек — это часть манифеста. Каждый альбом — этап пути.</p>
-                </div>
-                
-                <h3 style="color: #00ffff; margin: 30px 0 20px 0;">ФИЛОСОФИЯ ПРОЕКТА</h3>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                    <div style="background: #222; padding: 20px; border-left: 3px solid #ff0000;">
-                        <h4 style="color: #ff0000; margin-bottom: 10px;">БУНТАРЬ</h4>
-                        <p style="color: #ccc; font-size: 14px;">Ломаю шаблоны. Бросаю вызов системе. Отказываюсь от ярлыков.</p>
-                    </div>
-                    
-                    <div style="background: #222; padding: 20px; border-left: 3px solid #ffff00;">
-                        <h4 style="color: #ffff00; margin-bottom: 10px;">ГЕРОЙ</h4>
-                        <p style="color: #ccc; font-size: 14px;">Прохожу свой путь. Принимаю вызовы. Не сдаюсь.</p>
-                    </div>
-                    
-                    <div style="background: #222; padding: 20px; border-left: 3px solid #00ffff;">
-                        <h4 style="color: #00ffff; margin-bottom: 10px;">ИСКАТЕЛЬ</h4>
-                        <p style="color: #ccc; font-size: 14px;">Ищу новые звуки. Исследую границы. Открываю неизвестное.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="cta-buttons">
-            <a href="#music" class="btn">СЛУШАТЬ МУЗЫКУ</a>
-            <a href="#blog" class="btn">ЧИТАТЬ МАНИФЕСТ</a>
-            <a href="#about" class="btn">О БУНТЕ</a>
-        </div>
+        <!-- Секция "Привал" (Контакты) -->
+        <section class="contact">
+            <h2>THE CAMPFIRE</h2>
+            <p>If your frequency is on the same wavelength.</p>
+            <a href="mailto:contact@thefrodesdid.com" class="contact-link">SEND A SIGNAL</a>
+            <!-- Просто и мощно. Как вызов. -->
+        </section>
     </div>
 </body>
 </html>
