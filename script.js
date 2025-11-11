@@ -165,3 +165,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+// Умное переключение шрифтов с центрированием
+function initTitleAnimation() {
+    const title = document.getElementById('mainTitle');
+    const container = title.parentElement;
+    
+    // Сохраняем оригинальные размеры
+    const originalWidth = title.offsetWidth;
+    const originalHeight = title.offsetHeight;
+    
+    // Создаем невидимый элемент для измерения FatGrot
+    const measureElement = document.createElement('div');
+    measureElement.style.fontFamily = 'FatGrot, Impact, sans-serif';
+    measureElement.style.fontSize = getComputedStyle(title).fontSize;
+    measureElement.style.letterSpacing = '0.08em';
+    measureElement.style.textTransform = 'uppercase';
+    measureElement.style.position = 'absolute';
+    measureElement.style.visibility = 'hidden';
+    measureElement.style.whiteSpace = 'nowrap';
+    measureElement.textContent = title.textContent;
+    
+    document.body.appendChild(measureElement);
+    const fatgrotWidth = measureElement.offsetWidth;
+    document.body.removeChild(measureElement);
+    
+    // Рассчитываем разницу для центрирования
+    const widthDifference = fatgrotWidth - originalWidth;
+    
+    title.addEventListener('mouseenter', function() {
+        // Применяем FatGrot шрифт
+        this.classList.add('fatgrot');
+        
+        // Корректируем позицию для центрирования
+        this.style.transform = `translateX(-${widthDifference / 2}px)`;
+    });
+    
+    title.addEventListener('mouseleave', function() {
+        // Возвращаем оригинальный шрифт
+        this.classList.remove('fatgrot');
+        
+        // Возвращаем оригинальную позицию
+        this.style.transform = 'translateX(0)';
+    });
+}
+
+// Инициализируем когда страница загружена
+document.addEventListener('DOMContentLoaded', function() {
+    initTitleAnimation();
+    
+    // Реинициализируем когда шрифты полностью загрузятся
+    document.fonts.ready.then(function() {
+        initTitleAnimation();
+    });
+});
