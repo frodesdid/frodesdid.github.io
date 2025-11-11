@@ -216,3 +216,28 @@ body::after {
     pointer-events: none;
     z-index: 9999;
 }
+
+.parallax-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.chain-link, .broken-glass, .scratch {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.1;
+    color: #ff003c;
+    transition: transform 0.1s ease-out;
+}
+
+.chain-1 { top: 20%; left: 10%; }
+.chain-2 { top: 70%; right: 15%; }
+.glass-1 { top: 30%; right: 20%; font-size: 4rem; opacity: 0.05; }
+.glass-2 { bottom: 40%; left: 5%; font-size: 3rem; opacity: 0.07; }
+.scratch-1 { top: 50%; left: 20%; font-size: 3rem; color: #0066ff; }
+.scratch-2 { bottom: 20%; right: 25%; font-size: 2.5rem; color: #ff003c; }
