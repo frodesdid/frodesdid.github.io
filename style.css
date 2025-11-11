@@ -1,0 +1,163 @@
+/* Reset и базовые настройки */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Чистый, нейтральный шрифт для текста */
+    background-color: #0a0a0a; /* Глубокий черный, а не чистый #000 */
+    color: #e0e0e0; /* Светло-серый, не белый, для лучшей читаемости */
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== ГЛАВНЫЙ ЗАГОЛОВОК ===== */
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    border-bottom: 1px solid #333; /* Тонкая линия-разделитель, как шрам */
+}
+
+.main-title {
+    font-family: 'Banana Brick', 'Anton', Impact, sans-serif; /* Мощный, брутальный шрифт */
+    font-size: clamp(4rem, 15vw, 12rem); /* Адаптивный и огромный */
+    font-weight: 400;
+    letter-spacing: 0.05em; /* Увеличиваем расстояние между буквами */
+    text-transform: uppercase;
+    color: #0a0a0a; /* Цвет фона */
+    text-shadow: 
+        -2px -2px 0 #ff003c, /* Смещение тени для эффекта "выдавливания" */
+        2px 2px 0 #0066ff;   /* Двойная тень - киноварь и электрик */
+    margin-bottom: 1rem;
+    line-height: 0.9;
+}
+
+.tagline {
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+}
+
+/* ===== СЕКЦИЯ МАНИФЕСТА ===== */
+.manifesto {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    padding: 100px 0;
+    min-height: 80vh;
+}
+
+@media (max-width: 768px) {
+    .manifesto {
+        grid-template-columns: 1fr;
+    }
+}
+
+.manifesto h2 {
+    font-family: 'Banana Brick', 'Anton', Impact, sans-serif;
+    font-size: 3rem;
+    color: #333; /* Темно-серый, чтобы был виден, но не перетягивал внимание */
+    margin-bottom: 2rem;
+}
+
+.text-block p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+.placeholder-img {
+    background: linear-gradient(45deg, #1a1a1a, #333); /* Градиент вместо картинки */
+    height: 500px;
+    border: 1px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-style: italic;
+}
+
+/* ===== АРСЕНАЛ ===== */
+.arsenal {
+    padding: 100px 0;
+    border-top: 1px solid #333;
+}
+
+.arsenal h2 {
+    font-family: 'Banana Brick', 'Anton', Impact, sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #333;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.grid-item {
+    background-color: #111;
+    border: 1px solid #222;
+    aspect-ratio: 4 / 3; /* Соотношение сторон для карточек */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.grid-item:hover {
+    border-color: #ff003c; /* Акцентный цвет при наведении */
+    transform: translateY(-5px);
+}
+
+/* ===== КОНТАКТЫ ===== */
+.contact {
+    text-align: center;
+    padding: 100px 20px;
+    border-top: 1px solid #333;
+}
+
+.contact h2 {
+    font-family: 'Banana Brick', 'Anton', Impact, sans-serif;
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.contact p {
+    margin-bottom: 2rem;
+    color: #888;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.contact-link {
+    display: inline-block;
+    padding: 15px 40px;
+    border: 1px solid #ff003c;
+    color: #ff003c;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+    background-color: #ff003c;
+    color: #0a0a0a;
+}
