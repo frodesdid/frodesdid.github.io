@@ -38,16 +38,113 @@
             </div>
         </section>
 
-        <!-- Секция "Арсенал" (Портфолио/Работы) -->
-        <section class="arsenal">
-            <h2>АРСЕНАЛ</h2>
-            <div class="grid">
-                <div class="grid-item">[PROJECT 1: Visual & Title]</div>
-                <div class="grid-item">[PROJECT 2: Visual & Title]</div>
-                <div class="grid-item">[PROJECT 3: Visual & Title]</div>
-                <!-- Сетка с работами. Каждый элемент - как снаряд в обойме. -->
+<!-- Секция "Арсенал" (Портфолио/Работы) -->
+<section class="arsenal">
+    <h2>THE ARSENAL</h2>
+    <div class="arsenal-grid">
+        <!-- Проект 1 - Изображение -->
+        <div class="arsenal-item" data-type="image">
+            <div class="arsenal-media">
+                <img src="assets/images/project1.jpg" alt="Project 1 - Visual Art" class="media-element">
+                <div class="media-overlay">
+                    <span class="media-type">IMAGE</span>
+                    <h3>URBAN DECAY</h3>
+                    <p>Фотопроект о красоте в разрушении</p>
+                </div>
             </div>
-        </section>
+        </div>
+
+        <!-- Проект 2 - Музыка -->
+        <div class="arsenal-item" data-type="music">
+            <div class="arsenal-media">
+                <div class="music-player">
+                    <div class="album-cover">
+                        <img src="assets/images/album-cover1.jpg" alt="Album Cover">
+                    </div>
+                    <div class="track-info">
+                        <h3>RESISTANCE THEME</h3>
+                        <p>Industrial / Dark Synth</p>
+                        <audio controls class="audio-player">
+                            <source src="assets/music/track1.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+                <div class="media-overlay">
+                    <span class="media-type">MUSIC</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Проект 3 - Видео -->
+        <div class="arsenal-item" data-type="video">
+            <div class="arsenal-media">
+                <video class="media-element" controls poster="assets/videos/poster1.jpg">
+                    <source src="assets/videos/showreel1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-overlay">
+                    <span class="media-type">VIDEO</span>
+                    <h3>SHOWREEL 2024</h3>
+                    <p>Визуальный манифест</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Проект 4 - Коллаж -->
+        <div class="arsenal-item" data-type="collage">
+            <div class="arsenal-media">
+                <div class="collage-grid">
+                    <div class="collage-item"><img src="assets/images/collage1-1.jpg" alt="Collage 1"></div>
+                    <div class="collage-item"><img src="assets/images/collage1-2.jpg" alt="Collage 2"></div>
+                    <div class="collage-item"><img src="assets/images/collage1-3.jpg" alt="Collage 3"></div>
+                    <div class="collage-item"><img src="assets/images/collage1-4.jpg" alt="Collage 4"></div>
+                </div>
+                <div class="media-overlay">
+                    <span class="media-type">COLLAGE</span>
+                    <h3>FRAGMENTED REALITY</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Проект 5 - Интерактив -->
+        <div class="arsenal-item" data-type="interactive">
+            <div class="arsenal-media">
+                <div class="interactive-element">
+                    <canvas id="particleCanvas"></canvas>
+                    <div class="interactive-content">
+                        <h3>DIGITAL GHOST</h3>
+                        <p>Интерактивная инсталляция</p>
+                        <button class="spike-button small" onclick="activateParticles()">
+                            <span class="button-text">ACTIVATE</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="media-overlay">
+                    <span class="media-type">INTERACTIVE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Проект 6 - Текст -->
+        <div class="arsenal-item" data-type="text">
+            <div class="arsenal-media">
+                <div class="text-manifesto">
+                    <h3>MANIFESTO #01</h3>
+                    <div class="text-content">
+                        <p>"Мы — осколки разбитого зеркала, каждый отражает свою часть истины. Система хочет собрать нас обратно в гладкую поверхность. Мы выбираем остаться осколками — острыми, опасными, настоящими."</p>
+                        <blockquote>
+                            "Сопротивление — это не разрушение. Это создание альтернативной реальности, достаточно мощной, чтобы старая просто рассыпалась от собственной несостоятельности."
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="media-overlay">
+                    <span class="media-type">TEXT</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- Секция "Привал" (Контакты) -->
 <section class="contact">
