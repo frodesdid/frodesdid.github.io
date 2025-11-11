@@ -157,12 +157,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const arsenalItems = document.querySelectorAll('.arsenal-item');
     
     arsenalItems.forEach(item => {
-        item.addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 200);
-        });
+    item.addEventListener('click', function(e) {
+        // Если кликнули на audio или внутри audio плеера - не прерываем
+        if (e.target.closest('audio, .audio-player, .music-player')) {
+            return;
+        }
+        
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 200);
     });
 });
 
