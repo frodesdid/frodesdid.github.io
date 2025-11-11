@@ -120,23 +120,35 @@
         </div>
 
         <!-- Проект 5 - Интерактив -->
-        <div class="arsenal-item" data-type="interactive">
-            <div class="arsenal-media">
-                <div class="interactive-element">
-                    <canvas id="particleCanvas"></canvas>
-                    <div class="interactive-content">
-                        <h3>DIGITAL GHOST</h3>
-                        <p>Интерактивная инсталляция</p>
-                        <button class="spike-button small" onclick="activateParticles()">
-                            <span class="button-text">ACTIVATE</span>
-                        </button>
-                    </div>
+<div class="arsenal-item" data-type="interactive">
+    <div class="arsenal-media">
+        <div class="interactive-element">
+            <canvas id="particleCanvas"></canvas>
+            <div class="interactive-content">
+                <h3>DIGITAL GHOST</h3>
+                <p>Интерактивная звуковая инсталляция</p>
+                <div class="interactive-controls">
+                    <button class="spike-button small" onclick="activateParticles()">
+                        <span class="button-text">ACTIVATE</span>
+                    </button>
+                    <button class="spike-button small" onclick="changeParticleMode()">
+                        <span class="button-text" id="modeText">MODE: CHAOS</span>
+                    </button>
                 </div>
-                <div class="media-overlay">
-                    <span class="media-type">INTERACTIVE</span>
+                <div class="frequency-bars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
                 </div>
             </div>
         </div>
+        <div class="media-overlay">
+            <span class="media-type">INTERACTIVE</span>
+        </div>
+    </div>
+</div>
 
         <!-- Проект 6 - Текст -->
         <div class="arsenal-item" data-type="text">
