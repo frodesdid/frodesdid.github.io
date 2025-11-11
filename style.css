@@ -27,17 +27,42 @@ body {
 }
 
 .main-title {
-    font-family: 'Banana Brick', 'Anton', Impact, sans-serif; /* Мощный, брутальный шрифт */
-    font-size: clamp(4rem, 15vw, 12rem); /* Адаптивный и огромный */
+    font-family: 'Banana Brick', 'Anton', Impact, sans-serif;
+    font-size: clamp(4rem, 15vw, 12rem);
     font-weight: 400;
-    letter-spacing: 0.05em; /* Увеличиваем расстояние между буквами */
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: #0a0a0a; /* Цвет фона */
+    color: #0a0a0a;
     text-shadow: 
-        -2px -2px 0 #ff003c, /* Смещение тени для эффекта "выдавливания" */
-        2px 2px 0 #0066ff;   /* Двойная тень - киноварь и электрик */
+        -2px -2px 0 #ff003c,
+        2px 2px 0 #0066ff;
     margin-bottom: 1rem;
     line-height: 0.9;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    /* Эффект потертости для текста */
+    background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png');
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 300% 300%;
+    animation: textureShift 8s ease-in-out infinite;
+}
+
+.main-title:hover {
+    font-family: 'FatGrot', 'Impact', sans-serif; /* Более массивный шрифт */
+    text-shadow: 
+        -3px -3px 0 #ff003c,
+        3px 3px 0 #0066ff,
+        0 0 20px rgba(255, 0, 60, 0.3);
+    transform: skew(-2deg) scale(1.02);
+    letter-spacing: 0.08em;
+}
+
+@keyframes textureShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .tagline {
