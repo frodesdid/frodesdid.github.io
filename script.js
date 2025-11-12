@@ -167,4 +167,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-initManifest
+    initManifestoAnimations();
+    console.log('✅ Этап 2 загружен: Секция манифеста');
+});
