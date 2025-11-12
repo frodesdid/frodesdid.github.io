@@ -13,6 +13,62 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
+// Дополнительные эффекты для заголовка
+document.addEventListener('DOMContentLoaded', function() {
+    const titleContainer = document.querySelector('.title-container');
+    const title = document.getElementById('mainTitle');
+    
+    // Создаем частицы при наведении
+    titleContainer.addEventListener('mouseenter', function() {
+        createParticles(10);
+    });
+    
+    function createParticles(count) {
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 4px;
+                    height: 4px;
+                    background: ${Math.random() > 0.5 ? '#ff003c' : '#0066ff'};
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1000;
+                    top: ${title.getBoundingClientRect().top + title.offsetHeight/2}px;
+                    left: ${title.getBoundingClientRect().left + Math.random() * title.offsetWidth}px;
+                    animation: particleFloat 1s ease-out forwards;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }, i * 100);
+        }
+    }
+    
+    // Добавляем CSS для частиц
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    initManifestoAnimations();
+    console.log('✅ Этап 1 и 2 загружены');
+});
+
 // Анимации для манифеста
 function initManifestoAnimations() {
     // Анимация появления текста
@@ -57,7 +113,7 @@ function initManifestoAnimations() {
     
     function animateCounter(element, target) {
         let current = 0;
-        const increment = target / 60; // 1 секунда анимации
+        const increment = target / 60;
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -108,65 +164,3 @@ function initManifestoAnimations() {
     `;
     document.head.appendChild(flashStyles);
 }
-
-// Инициализируем когда страница загружена
-document.addEventListener('DOMContentLoaded', function() {
-
-// Дополнительные эффекты для заголовка
-document.addEventListener('DOMContentLoaded', function() {
-    const titleContainer = document.querySelector('.title-container');
-    const title = document.getElementById('mainTitle');
-    
-    // Создаем частицы при наведении
-    titleContainer.addEventListener('mouseenter', function() {
-        createParticles(10);
-    });
-    
-    function createParticles(count) {
-        for (let i = 0; i < count; i++) {
-            setTimeout(() => {
-                const particle = document.createElement('div');
-                particle.style.cssText = `
-                    position: fixed;
-                    width: 4px;
-                    height: 4px;
-                    background: ${Math.random() > 0.5 ? '#ff003c' : '#0066ff'};
-                    border-radius: 50%;
-                    pointer-events: none;
-                    z-index: 1000;
-                    top: ${title.getBoundingClientRect().top + title.offsetHeight/2}px;
-                    left: ${title.getBoundingClientRect().left + Math.random() * title.offsetWidth}px;
-                    animation: particleFloat 1s ease-out forwards;
-                `;
-                
-                document.body.appendChild(particle);
-                
-                setTimeout(() => {
-                    particle.remove();
-                }, 1000);
-            }, i * 100);
-        }
-    }
-    
-    console.log('✅ Этап 1 загружен: Акцидентный заголовок');
-});
-
-// Добавляем CSS для частиц
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes particleFloat {
-        0% {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-100px) scale(0);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-    initManifestoAnimations();
-    console.log('✅ Этап 2 загружен: Секция манифеста');
-});
