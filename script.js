@@ -13,6 +13,105 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
+// Анимации для манифеста
+function initManifestoAnimations() {
+    // Анимация появления текста
+    const manifestoLines = document.querySelectorAll('.manifesto-line');
+    
+    const textObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const delay = parseInt(entry.target.getAttribute('data-delay')) || 0;
+                
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, delay);
+            }
+        });
+    }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -100px 0px'
+    });
+    
+    manifestoLines.forEach(line => {
+        textObserver.observe(line);
+    });
+    
+    // Анимация счетчиков статистики
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.getAttribute('data-target'));
+                animateCounter(entry.target, target);
+            }
+        });
+    }, {
+        threshold: 0.5
+    });
+    
+    statNumbers.forEach(stat => {
+        statsObserver.observe(stat);
+    });
+    
+    function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 60; // 1 секунда анимации
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 16);
+    }
+    
+    // Случайные вспышки в cyber-portrait
+    const cyberPortrait = document.querySelector('.cyber-portrait');
+    if (cyberPortrait) {
+        setInterval(() => {
+            createPortraitFlash();
+        }, 3000);
+    }
+    
+    function createPortraitFlash() {
+        const flash = document.createElement('div');
+        flash.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 100 + 50}px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff003c, transparent);
+            top: ${Math.random() * 100}%;
+            left: ${Math.random() * 100}%;
+            opacity: 0;
+            animation: flashAppear 1s ease-out;
+            z-index: 3;
+        `;
+        
+        cyberPortrait.appendChild(flash);
+        
+        setTimeout(() => {
+            flash.remove();
+        }, 1000);
+    }
+    
+    // Добавляем стили для вспышек
+    const flashStyles = document.createElement('style');
+    flashStyles.textContent = `
+        @keyframes flashAppear {
+            0% { opacity: 0; transform: translateX(-100%); }
+            50% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(100%); }
+        }
+    `;
+    document.head.appendChild(flashStyles);
+}
+
+// Инициализируем когда страница загружена
+document.addEventListener('DOMContentLoaded', function() {
+
 // Дополнительные эффекты для заголовка
 document.addEventListener('DOMContentLoaded', function() {
     const titleContainer = document.querySelector('.title-container');
@@ -67,3 +166,5 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+initManifest
