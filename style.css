@@ -752,14 +752,58 @@ body {
     pointer-events: auto; /* Но бейдж кликабелен */
 }
 
-/* === СТИЛИ ДЛЯ ВИДЕО === */
-.video-item {
-    cursor: default !important;
+/* === СТИЛИ ДЛЯ VK ВИДЕО === */
+.video-item iframe {
+    border-radius: 10px;
+    background: #000;
 }
 
-.video-item:hover {
-    transform: none !important;
-    border-color: #222 !important;
+.video-item .item-media {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Чтобы overlay правильно работал с iframe */
+.video-item .media-overlay {
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Дополнительные стили если понадобятся */
+.video-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-item:hover .video-play-overlay {
+    opacity: 1;
+}
+
+.play-btn {
+    background: #ff003c;
+    border: none;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+    background: #ff3366;
+    transform: scale(1.1);
 }
 
 /* === КОЛЛАЖ === */
