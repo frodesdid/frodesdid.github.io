@@ -191,6 +191,8 @@ body {
 .chain-2 { bottom: 20%; right: 8%; }
 .crack-1 { top: 40%; left: 10%; transform: rotate(15deg); }
 
+}
+
 /* === СЕКЦИЯ МАНИФЕСТА === */
 .manifesto {
     position: relative;
