@@ -313,3 +313,82 @@ document.addEventListener('DOMContentLoaded', function() {
     initInteractiveParticles();
     console.log('✅ Этап 3 загружен: Арсенал с медиа');
 });
+
+// Анимации для секции привала
+function initCampfireAnimations() {
+    // Анимация появления элементов при скролле
+    const frequencyItems = document.querySelectorAll('.frequency-item');
+    
+    const campfireObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    frequencyItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.2}s`;
+        campfireObserver.observe(item);
+    });
+    
+    // Случайные искры от костра
+    setInterval(() => {
+        createSpark();
+    }, 2000);
+    
+    function createSpark() {
+        const campfire = document.querySelector('.fire-animation');
+        if (!campfire) return;
+        
+        const spark = document.createElement('div');
+        spark.style.cssText = `
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #ff9933;
+            border-radius: 50%;
+            bottom: 50%;
+            left: ${50 + (Math.random() - 0.5) * 40}%;
+            opacity: 0;
+            animation: sparkFloat ${2 + Math.random() * 2}s ease-out forwards;
+            z-index: 2;
+        `;
+        
+        campfire.appendChild(spark);
+        
+        setTimeout(() => {
+            spark.remove();
+        }, 3000);
+    }
+    
+    // Добавляем стили для искр
+    const sparkStyles = document.createElement('style');
+    sparkStyles.textContent = `
+        @keyframes sparkFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-${100 + Math.random() * 100}px) translateX(${(Math.random() - 0.5) * 50}px) scale(0);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(sparkStyles);
+}
+
+// Обновляем инициализацию
+document.addEventListener('DOMContentLoaded', function() {
+    // ... предыдущий код ...
+    
+    initCampfireAnimations();
+    console.log('✅ Все этапы загружены: Привал готов');
+});
