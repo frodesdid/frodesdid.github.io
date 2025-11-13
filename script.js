@@ -385,6 +385,78 @@ function initCampfireAnimations() {
     document.head.appendChild(sparkStyles);
 }
 
+// Функции для музыкального плеера
+function togglePlay(button) {
+    const musicItem = button.closest('.music-item');
+    const audio = musicItem.querySelector('.audio-element');
+    const playPulse = musicItem.querySelector('.play-pulse');
+    
+    if (audio.paused) {
+        audio.play();
+        audio.setAttribute('data-playing', 'true');
+        button.innerHTML = '❚❚'; // Меняем на паузу
+        // Находим все кнопки play в этом элементе и обновляем их
+        musicItem.querySelectorAll('.control-btn, .play-overlay-btn .play-icon').forEach(btn => {
+            if (btn.classList.contains('control-btn')) {
+                btn.textContent = '❚❚';
+            } else if (btn.classList.contains('play-icon')) {
+                btn.textContent = '❚❚';
+            }
+        });
+    } else {
+        audio.pause();
+        audio.setAttribute('data-playing', 'false');
+        button.innerHTML = '▶'; // Меняем на play
+        // Находим все кнопки play в этом элементе и обновляем их
+        musicItem.querySelectorAll('.control-btn, .play-overlay-btn .play-icon').forEach(btn => {
+            if (btn.classList.contains('control-btn')) {
+                btn.textContent = '▶';
+            } else if (btn.classList.contains('play-icon')) {
+                btn.textContent = '▶';
+            }
+        });
+    }
+}
+
+function setVolume(slider) {
+    const musicItem = slider.closest('.music-item');
+    const audio = musicItem.querySelector('.audio-element');
+    audio.volume = slider.value;
+}
+
+// Обновляем время воспроизведения
+document.addEventListener('DOMContentLoaded', function() {
+    const audioElements = document.querySelectorAll('.audio-element');
+    
+    audioElements.forEach(audio => {
+        audio.addEventListener('timeupdate', function() {
+            const currentTime = formatTime(this.currentTime);
+            const timeDisplay = this.closest('.track-details').querySelector('.current-time');
+            if (timeDisplay) {
+                timeDisplay.textContent = currentTime;
+            }
+        });
+        
+        audio.addEventListener('ended', function() {
+            this.setAttribute('data-playing', 'false');
+            const musicItem = this.closest('.music-item');
+            musicItem.querySelectorAll('.control-btn, .play-overlay-btn .play-icon').forEach(btn => {
+                if (btn.classList.contains('control-btn')) {
+                    btn.textContent = '▶';
+                } else if (btn.classList.contains('play-icon')) {
+                    btn.textContent = '▶';
+                }
+            });
+        });
+    });
+    
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+});
+
 // Обновляем инициализацию
 document.addEventListener('DOMContentLoaded', function() {
     // ... предыдущий код ...
