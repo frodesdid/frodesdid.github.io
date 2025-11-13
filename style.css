@@ -821,18 +821,16 @@ body {
     position: relative;
 }
 
-/* === КОЛЛАЖ === */
 .collage-img {
     width: 100%;
     height: 100%;
-    background-size: cover;    /* ← ДОБАВЬ ЭТО */
-    background-position: center; /* ← И ЭТО */
-    background-repeat: no-repeat; /* ← И ЭТО */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     transition: all 0.3s ease;
 }
 
 .collage-cell:hover .collage-img {
-    opacity: 1;
     transform: scale(1.1);
 }
 
