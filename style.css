@@ -1178,7 +1178,7 @@ body {
 
 .fire-animation {
     position: absolute;
-    top: -100px;     /* ← МАЛЕНЬКОЕ число = ВЫШЕ! */
+    top: -300px;     /* ← МАЛЕНЬКОЕ число = ВЫШЕ! */
     left: 50%;
     transform: translateX(-50%);
     width: 200px;
