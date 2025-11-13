@@ -464,3 +464,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initCampfireAnimations();
     console.log('✅ Все этапы загружены: Привал готов');
 });
+
+function playVKVideo(btn) {
+    const iframe = btn.closest('.video-item').querySelector('iframe');
+    // Добавляем autoplay к ссылке
+    iframe.src = iframe.src.replace('&loop=1', '&autoplay=1&loop=1');
+    btn.closest('.video-play-overlay').style.display = 'none';
+}
