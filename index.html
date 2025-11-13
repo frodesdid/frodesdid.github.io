@@ -103,25 +103,33 @@
                 </div>
             </div>
 
-            <!-- Проект 2 - Музыка (РАБОТАЮЩИЙ ПЛЕЕР) -->
+            <!-- Проект 2 - Музыка (исправленная версия) -->
             <div class="arsenal-item music-item">
                 <div class="item-media">
                     <div class="music-container">
                         <div class="album-art">
-                            <img src="assets/images/project2.jpg" alt="Album Cover">
+                            <img src="assets/images/album-cover.jpg" alt="Album Cover">
                             <div class="play-pulse"></div>
+                            <button class="play-overlay-btn" onclick="togglePlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
                         <div class="track-details">
                             <h3>КРУПИЦА ОСКОЛКА</h3>
-                            <p>electropop/dark pop</p>
-                            <audio controls class="audio-element">
+                            <p>Dark Synth</p>
+                            <audio class="audio-element">
                                 <source src="assets/music/track1.mp3" type="audio/mpeg">
-                                Ваш браузер не поддерживает аудио
+                                Your browser doesn't support audio
                             </audio>
+                            <div class="audio-controls">
+                                <button class="control-btn" onclick="togglePlay(this)">▶</button>
+                                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1" onchange="setVolume(this)">
+                                <span class="current-time">0:00</span>
+                            </div>
                         </div>
                     </div>
                     <div class="media-overlay">
-                        <span class="media-badge">АУДИО</span>
+                        <span class="media-badge">AUDIO</span>
                     </div>
                 </div>
             </div>
