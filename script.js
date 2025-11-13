@@ -164,3 +164,152 @@ function initManifestoAnimations() {
     `;
     document.head.appendChild(flashStyles);
 }
+
+// Функции для интерактивного элемента
+let particles = [];
+let particleMode = 'chaos';
+let animationId = null;
+
+function initInteractiveParticles() {
+    const canvas = document.getElementById('particleCanvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    createParticles(20);
+    animateParticles();
+    
+    // Интерактивность
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        particles.forEach(particle => {
+            const dx = particle.x - mouseX;
+            const dy = particle.y - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 80) {
+                particle.vx += (dx / distance) * 1.5;
+                particle.vy += (dy / distance) * 1.5;
+            }
+        });
+    });
+    
+    canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        createExplosion(mouseX, mouseY, 8);
+    });
+    
+    // Анимация визуализатора
+    animateVisualizer();
+}
+
+function createParticles(count) {
+    const canvas = document.getElementById('particleCanvas');
+    for (let i = 0; i < count; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            size: Math.random() * 2 + 1,
+            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+            life: 1
+        });
+    }
+}
+
+function animateParticles() {
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    particles.forEach((particle, index) => {
+        // Обновляем позицию
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        
+        // Границы
+        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+        
+        // Затухание
+        particle.vx *= 0.99;
+        particle.vy *= 0.99;
+        
+        // Рисуем
+        ctx.fillStyle = particle.color;
+        ctx.globalAlpha = particle.life;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    animationId = requestAnimationFrame(animateParticles);
+}
+
+function createExplosion(x, y, count) {
+    for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 3 + 1;
+        
+        particles.push({
+            x: x,
+            y: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: Math.random() * 3 + 1,
+            color: `hsl(${Math.random() * 60 + 300}, 100%, 60%)`,
+            life: 1
+        });
+    }
+}
+
+function animateVisualizer() {
+    const bars = document.querySelectorAll('.viz-bar');
+    
+    function updateBars() {
+        bars.forEach((bar, index) => {
+            const randomHeight = Math.random() * 100;
+            bar.style.height = `${randomHeight}%`;
+            bar.style.background = `linear-gradient(to top, 
+                hsl(${Math.random() * 60 + 300}, 100%, 50%), 
+                hsl(${Math.random() * 60 + 200}, 100%, 50%)
+            )`;
+        });
+        setTimeout(updateBars, 150);
+    }
+    updateBars();
+}
+
+// Публичные функции для кнопок
+function activateParticles() {
+    const canvas = document.getElementById('particleCanvas');
+    createExplosion(canvas.width / 2, canvas.height / 2, 15);
+}
+
+function changeMode() {
+    const modes = ['chaos', 'order', 'pulse'];
+    particleMode = modes[(modes.indexOf(particleMode) + 1) % modes.length];
+    createExplosion(
+        document.getElementById('particleCanvas').width / 2,
+        document.getElementById('particleCanvas').height / 2,
+        10
+    );
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // ... предыдущий код ...
+    
+    initInteractiveParticles();
+    console.log('✅ Этап 3 загружен: Арсенал с медиа');
+});
