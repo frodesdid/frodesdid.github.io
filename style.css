@@ -1179,7 +1179,7 @@ body {
 /* Анимация костра */
 .fire-animation {
     position: absolute;
-    top: 50px; /* Поднимаем костер выше */
+    top: 100px; /* Поднимаем костер выше */
     left: 50%;
     transform: translateX(-50%);
     width: 200px;
