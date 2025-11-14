@@ -36,7 +36,7 @@ body {
 }
 
 .main-title {
-    font-family: 'Banana Brick', 'Anton', Impact, sans-serif;
+    font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
     font-size: clamp(4rem, 15vw, 12rem);
     font-weight: 400;
     letter-spacing: 0.05em;
@@ -65,7 +65,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    font-family: 'Broken Knight', 'Impact', sans-serif;
+    font-family: 'Orbitron', 'Black Ops One', 'Anton', Impact, sans-serif;
     color: transparent;
     text-shadow: 
         -4px -4px 0 #0066ff,
@@ -223,7 +223,7 @@ body {
 }
 
 .manifesto-title {
-    font-family: 'Broken Knight', 'Impact', sans-serif;
+    font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
     font-size: 5rem;
     color: transparent;
     background: linear-gradient(45deg, #ff003c, #0066ff);
@@ -483,7 +483,7 @@ body {
 }
 
 .arsenal-title {
-    font-family: 'Broken Knight', 'Impact', sans-serif;
+    font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
     font-size: 4rem;
     color: transparent;
     background: linear-gradient(45deg, #ff003c, #00ff88);
@@ -1012,7 +1012,7 @@ body {
 }
 
 .campfire-title {
-    font-family: 'Broken Knight', 'Impact', sans-serif;
+    font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
     font-size: 4rem;
     color: transparent;
     background: linear-gradient(45deg, #ff5500, #ff003c, #ff5500);
