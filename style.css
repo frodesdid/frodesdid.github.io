@@ -1276,48 +1276,48 @@ body {
     50% { opacity: 0.7; }
 }
 
-/* Парящие частицы над костром - ИСПРАВЛЕННАЯ ВЕРСИЯ */
+/* ВАРИАНТ 2 - БЕЗ scaleY(-1) */
 .fire-animation::before {
     content: '';
     position: absolute;
-    top: -80px; /* Поднимаем выше над костром */
+    top: -80px;
     left: 50%;
-    transform: translateX(-50%) scaleY(-1); /* Отражаем по вертикали */
-    width: 240px; /* Увеличиваем в 2 раза (было 120px) */
-    height: 160px; /* Увеличиваем в 2 раза (было 80px) */
+    transform: translateX(-50%); /* УБИРАЕМ scaleY(-1) */
+    width: 240px;
+    height: 160px;
     background: 
-        radial-gradient(ellipse at 30% 20%, rgba(255, 85, 0, 0.4) 0%, transparent 70%),
-        radial-gradient(ellipse at 70% 30%, rgba(255, 153, 51, 0.3) 0%, transparent 70%),
-        radial-gradient(ellipse at 50% 40%, rgba(255, 255, 0, 0.2) 0%, transparent 80%);
+        radial-gradient(ellipse at 30% 80%, rgba(255, 85, 0, 0.4) 0%, transparent 70%), /* Меняем позиции градиентов */
+        radial-gradient(ellipse at 70% 70%, rgba(255, 153, 51, 0.3) 0%, transparent 70%),
+        radial-gradient(ellipse at 50% 60%, rgba(255, 255, 0, 0.2) 0%, transparent 80%);
     animation: smokeRise 4s ease-in-out infinite;
-    filter: blur(15px); /* Сглаживаем края */
-    border-radius: 50% 50% 20% 20%; /* Скругляем снизу */
-    mask-image: linear-gradient(to bottom, 
+    filter: blur(15px);
+    border-radius: 20% 20% 50% 50%; /* Скругляем сверху */
+    mask-image: linear-gradient(to top, /* Меняем направление маски */
         rgba(0,0,0,1) 0%, 
         rgba(0,0,0,0.8) 50%,
         rgba(0,0,0,0) 100%
-    ); /* Плавное исчезновение кверху */
+    );
 }
 
 @keyframes smokeRise {
     0% { 
-        transform: translateX(-50%) scaleY(-1) translateY(-140px) scale(1.8); 
+        transform: translateX(-50%) translateY(0) scale(0.8); 
         opacity: 0; 
     }
     20% { 
-        transform: translateX(-50%) scaleY(-1) translateY(-100px) scale(1.5); 
-        opacity: 0.2; 
+        transform: translateX(-50%) translateY(-20px) scale(1); 
+        opacity: 0.6; 
     }
     50% { 
-        transform: translateX(-50%) scaleY(-1) translateY(-60px) scale(1.2); 
+        transform: translateX(-50%) translateY(-60px) scale(1.2); 
         opacity: 0.4; 
     }
     80% { 
-        transform: translateX(-50%) scaleY(-1) translateY(-20px) scale(1); 
-        opacity: 0.6; 
+        transform: translateX(-50%) translateY(-100px) scale(1.5); 
+        opacity: 0.2; 
     }
     100% { 
-        transform: translateX(-50%) scaleY(-1) translateY(0) scale(0.8); 
+        transform: translateX(-50%) translateY(-140px) scale(1.8); 
         opacity: 0; 
     }
 }
