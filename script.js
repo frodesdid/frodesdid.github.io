@@ -350,8 +350,8 @@ function initCampfireAnimations() {
         const spark = document.createElement('div');
         spark.style.cssText = `
             position: absolute;
-            width: 3px;
-            height: 3px;
+            width: 6px;
+            height: 6px;
             background: #ff9933;
             border-radius: 50%;
             bottom: 50%;
