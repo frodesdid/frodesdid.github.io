@@ -1276,23 +1276,23 @@ body {
     50% { opacity: 0.7; }
 }
 
-/* ВАРИАНТ 2 - БЕЗ scaleY(-1) */
+/* Парящие частицы над костром - УЗКАЯ ВЕРСИЯ */
 .fire-animation::before {
     content: '';
     position: absolute;
-    top: -80px;
+    top: -60px; /* Понижаем (было -80px) */
     left: 50%;
-    transform: translateX(-50%); /* УБИРАЕМ scaleY(-1) */
-    width: 240px;
+    transform: translateX(-50%);
+    width: 120px; /* В 2 раза уже (было 240px) */
     height: 160px;
     background: 
-        radial-gradient(ellipse at 30% 80%, rgba(255, 85, 0, 0.4) 0%, transparent 70%), /* Меняем позиции градиентов */
+        radial-gradient(ellipse at 30% 80%, rgba(255, 85, 0, 0.4) 0%, transparent 70%),
         radial-gradient(ellipse at 70% 70%, rgba(255, 153, 51, 0.3) 0%, transparent 70%),
         radial-gradient(ellipse at 50% 60%, rgba(255, 255, 0, 0.2) 0%, transparent 80%);
     animation: smokeRise 4s ease-in-out infinite;
-    filter: blur(15px);
-    border-radius: 20% 20% 50% 50%; /* Скругляем сверху */
-    mask-image: linear-gradient(to top, /* Меняем направление маски */
+    filter: blur(12px); /* Немного уменьшаем размытие */
+    border-radius: 20% 20% 50% 50%;
+    mask-image: linear-gradient(to top,
         rgba(0,0,0,1) 0%, 
         rgba(0,0,0,0.8) 50%,
         rgba(0,0,0,0) 100%
@@ -1305,19 +1305,19 @@ body {
         opacity: 0; 
     }
     20% { 
-        transform: translateX(-50%) translateY(-20px) scale(1); 
+        transform: translateX(-50%) translateY(-15px) scale(1); 
         opacity: 0.6; 
     }
     50% { 
-        transform: translateX(-50%) translateY(-60px) scale(1.2); 
+        transform: translateX(-50%) translateY(-40px) scale(1.2); 
         opacity: 0.4; 
     }
     80% { 
-        transform: translateX(-50%) translateY(-100px) scale(1.5); 
+        transform: translateX(-50%) translateY(-70px) scale(1.5); 
         opacity: 0.2; 
     }
     100% { 
-        transform: translateX(-50%) translateY(-140px) scale(1.8); 
+        transform: translateX(-50%) translateY(-100px) scale(1.8); 
         opacity: 0; 
     }
 }
