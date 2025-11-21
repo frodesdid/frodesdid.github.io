@@ -1,4 +1,4 @@
-/* === ОСНОВНЫЕ СТИЛИ В ТВОЕМ СТИЛЕ === */ 
+/* === ОСНОВНЫЕ СТИЛИ === */
 * {
     margin: 0;
     padding: 0;
@@ -12,6 +12,7 @@
     --bg-dark: #0a0a0a;
     --bg-darker: #050505;
     --text-primary: #e0e0e0;
+    --card-bg: #111111;
 }
 
 body {
@@ -24,29 +25,29 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* === ЗАГОЛОВОК РАДИО === */
-.radio-header {
+/* === ЗАГОЛОВОК КАНАЛОВ === */
+.channels-header {
     text-align: center;
-    padding: 80px 20px 40px;
+    padding: 80px 20px 50px;
     position: relative;
 }
 
 .title-container {
     position: relative;
     display: inline-block;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .main-title {
     font-family: 'Black Ops One', 'Orbitron', Impact, sans-serif;
-    font-size: clamp(3rem, 11vw, 8rem);
+    font-size: clamp(3rem, 11vw, 7rem);
     font-weight: 400;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--bg-dark);
     text-shadow: 
@@ -61,41 +62,58 @@ body {
     background-clip: text;
     color: transparent;
     background-size: 300% 300%;
-    animation: radioShift 6s ease-in-out infinite;
+    animation: titleShift 6s ease-in-out infinite;
 }
 
-.frequency-display {
-    position: absolute;
-    top: -20px;
-    right: -60px;
-    background: var(--bg-darker);
-    border: 2px solid var(--accent-blue);
-    padding: 10px 15px;
-    border-radius: 5px;
-    transform: rotate(5deg);
+.subtitle-block {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
-.freq {
+.channels-label {
     font-family: 'Orbitron', monospace;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent-cyan);
-    text-shadow: 0 0 10px var(--accent-cyan);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent-blue);
 }
 
-.unit {
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 102, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--accent-blue);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-cyan);
+    border-radius: 50%;
+    animation: statusPulse 2s infinite;
+}
+
+.status-text {
     font-family: 'Orbitron', monospace;
     font-size: 0.8rem;
-    color: var(--accent-blue);
-    margin-left: 5px;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .tagline {
     font-size: 1.1rem;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
     color: #888;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     transition: all 0.3s ease;
 }
 
@@ -104,7 +122,7 @@ body {
     text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
 }
 
-@keyframes radioShift {
+@keyframes titleShift {
     0%, 100% { 
         background-position: 0% 50%;
         filter: hue-rotate(0deg);
@@ -115,188 +133,143 @@ body {
     }
 }
 
-/* === РАДИО ИНТЕРФЕЙС === */
-.radio-interface {
+@keyframes statusPulse {
+    0%, 100% { 
+        opacity: 1;
+        box-shadow: 0 0 10px var(--accent-cyan);
+    }
+    50% { 
+        opacity: 0.6;
+        box-shadow: 0 0 5px var(--accent-cyan);
+    }
+}
+
+/* === СЕТКА КАНАЛОВ === */
+.channels-interface {
     max-width: 800px;
     margin: 0 auto;
-    padding: 40px 0;
+    padding: 0 0 60px;
 }
 
-/* Тюнер */
-.tuner-section {
-    margin-bottom: 50px;
-}
-
-.tuner-display {
-    background: var(--bg-darker);
-    border: 1px solid var(--accent-blue);
-    padding: 30px;
-    border-radius: 10px;
-    position: relative;
-}
-
-.spectrum-bar {
-    height: 4px;
-    background: linear-gradient(90deg, 
-        var(--accent-red), 
-        var(--accent-cyan), 
-        var(--accent-blue));
-    margin-bottom: 30px;
-    border-radius: 2px;
-    position: relative;
-    overflow: hidden;
-}
-
-.spectrum-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-    animation: spectrumScan 3s infinite linear;
-}
-
-.frequency-markers {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-}
-
-.marker {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.9rem;
-    color: #666;
-    padding: 5px 10px;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.marker.active {
-    color: var(--accent-cyan);
-    border-color: var(--accent-cyan);
-    background: rgba(0, 255, 136, 0.1);
-    text-shadow: 0 0 10px var(--accent-cyan);
-}
-
-/* Станции */
-.stations-grid {
+.channels-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
     margin-bottom: 40px;
 }
 
-.station-card {
-    background: var(--bg-darker);
-    border: 1px solid #333;
-    border-radius: 8px;
+.channel-card {
+    background: var(--card-bg);
+    border: 1px solid #222;
+    border-radius: 12px;
     padding: 25px;
     text-decoration: none;
     color: var(--text-primary);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
     position: relative;
     overflow: hidden;
 }
 
-.station-card::before {
+.channel-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.1), transparent);
-    transition: left 0.5s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.05), transparent);
+    transition: left 0.6s ease;
 }
 
-.station-card:hover {
+.channel-card:hover {
     border-color: var(--accent-blue);
-    box-shadow: 0 0 30px rgba(0, 102, 255, 0.3);
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+        0 10px 30px rgba(0, 102, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.station-card:hover::before {
+.channel-card:hover::before {
     left: 100%;
 }
 
-.station-status {
+.channel-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-}
-
-.signal-indicator {
-    width: 12px;
-    height: 12px;
-    background: var(--accent-cyan);
-    border-radius: 50%;
-    animation: signalPulse 2s infinite;
-}
-
-.live-badge {
-    font-size: 0.7rem;
-    color: var(--accent-red);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: bold;
-}
-
-.station-info {
-    margin-bottom: 15px;
-}
-
-.station-name {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    margin-bottom: 5px;
-    color: var(--text-primary);
-}
-
-.station-desc {
-    font-size: 0.9rem;
-    color: #888;
-}
-
-.tune-in-btn {
-    background: linear-gradient(45deg, var(--accent-red), var(--accent-blue));
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.8rem;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
     transition: all 0.3s ease;
 }
 
-.station-card:hover .tune-in-btn {
-    background: linear-gradient(45deg, var(--accent-blue), var(--accent-red));
-    box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
+.channel-card:hover .channel-icon {
+    background: rgba(0, 102, 255, 0.1);
+    transform: scale(1.1);
 }
 
-/* Статус радио */
-.radio-status {
-    background: var(--bg-darker);
-    border: 1px solid var(--accent-red);
-    border-radius: 8px;
-    padding: 20px;
+.channel-info {
+    flex: 1;
+}
+
+.channel-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.channel-desc {
+    font-size: 0.9rem;
+    color: #888;
+    line-height: 1.4;
+}
+
+.channel-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent-blue);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.action-arrow {
+    transition: transform 0.3s ease;
+}
+
+.channel-card:hover .channel-action {
+    color: var(--accent-red);
+}
+
+.channel-card:hover .action-arrow {
+    transform: translateX(5px);
+}
+
+/* === СТАТУС СИСТЕМЫ === */
+.system-status {
+    background: var(--card-bg);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 25px;
     margin-top: 30px;
 }
 
-.status-display {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+.status-message {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.transmission-text {
+.message-text {
     font-family: 'Orbitron', monospace;
     font-size: 0.9rem;
     color: var(--accent-cyan);
@@ -304,51 +277,43 @@ body {
     letter-spacing: 2px;
 }
 
-.signal-meter {
-    width: 150px;
-    height: 6px;
-    background: #333;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.signal-bar {
-    height: 100%;
-    width: 80%;
-    background: linear-gradient(90deg, var(--accent-red), var(--accent-cyan));
-    animation: signalMeter 2s infinite alternate;
-}
-
-.broadcast-info {
+.connection-quality {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.quality-text {
     font-size: 0.8rem;
     color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Анимации */
-@keyframes spectrumScan {
-    0% { left: -100%; }
-    100% { left: 100%; }
+.quality-bars {
+    display: flex;
+    gap: 3px;
+    align-items: center;
 }
 
-@keyframes signalPulse {
-    0%, 100% { 
-        opacity: 1;
-        box-shadow: 0 0 10px var(--accent-cyan);
-    }
-    50% { 
-        opacity: 0.5;
-        box-shadow: 0 0 5px var(--accent-cyan);
-    }
+.bar {
+    width: 4px;
+    height: 12px;
+    background: #333;
+    border-radius: 1px;
+    transition: all 0.3s ease;
 }
 
-@keyframes signalMeter {
-    0% { width: 70%; }
-    100% { width: 90%; }
+.bar.active {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px var(--accent-cyan);
 }
 
-/* Параллакс элементы */
+.bar:nth-child(4) { height: 16px; }
+.bar:nth-child(5) { height: 20px; }
+
+/* === ПАРАЛЛАКС ЭЛЕМЕНТЫ === */
 .visual-elements {
     position: fixed;
     top: 0;
@@ -359,59 +324,79 @@ body {
     z-index: -1;
 }
 
-.radio-wave {
+.signal-dot {
     position: absolute;
-    border: 1px solid rgba(0, 102, 255, 0.1);
+    width: 4px;
+    height: 4px;
+    background: var(--accent-blue);
     border-radius: 50%;
-    animation: wavePulse 4s infinite;
+    opacity: 0.3;
+    animation: float 6s infinite ease-in-out;
 }
 
-.wave-1 { 
-    width: 200px; height: 200px; 
-    top: 10%; left: 5%; 
-    animation-delay: 0s; 
+.dot-1 { 
+    top: 20%; left: 10%; 
+    animation-delay: 0s;
 }
-.wave-2 { 
-    width: 300px; height: 300px; 
-    bottom: 20%; right: 10%; 
-    animation-delay: 2s; 
+.dot-2 { 
+    bottom: 30%; right: 15%; 
+    animation-delay: 3s;
 }
 
 .frequency-line {
     position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
-    opacity: 0.1;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 0, 60, 0.1), 
+        transparent);
 }
 
-.line-1 { top: 30%; left: 0; right: 0; }
-.line-2 { top: 70%; left: 0; right: 0; }
-
-@keyframes wavePulse {
+@keyframes float {
     0%, 100% { 
-        transform: scale(1);
-        opacity: 0.1;
+        transform: translateY(0px) scale(1);
+        opacity: 0.2;
     }
     50% { 
-        transform: scale(1.2);
-        opacity: 0.05;
+        transform: translateY(-20px) scale(1.2);
+        opacity: 0.4;
     }
 }
 
-/* Адаптивность */
+/* === АДАПТИВНОСТЬ === */
 @media (max-width: 768px) {
-    .frequency-display {
-        position: static;
-        transform: none;
-        margin-top: 10px;
-    }
-    
-    .stations-grid {
+    .channels-grid {
         grid-template-columns: 1fr;
     }
     
-    .status-display {
+    .channel-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .subtitle-block {
         flex-direction: column;
         gap: 10px;
+    }
+    
+    .connection-quality {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* === ЭФФЕКТЫ ЧАСТИЦ === */
+@keyframes particleFloat {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
     }
 }
