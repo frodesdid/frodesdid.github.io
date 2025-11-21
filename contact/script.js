@@ -1,229 +1,146 @@
-// Пиратское радио FRODES
-class PirateRadio {
+// FRODES Channels System
+class ChannelsSystem {
     constructor() {
-        this.currentFrequency = '104.7';
-        this.isTransmitting = true;
         this.init();
     }
 
     init() {
-        console.log('📻 FRODES Pirate Radio Initializing...');
+        console.log('🎵 FRODES Channels System Initializing...');
         
         this.setupEventListeners();
-        this.startTransmission();
-        this.updateTime();
+        this.setupParallax();
+        this.animateSystem();
         
-        setInterval(() => this.updateTime(), 1000);
-        
-        console.log('✅ Pirate Radio Active on frequency ' + this.currentFrequency + ' FM');
+        console.log('✅ Channels System Ready');
     }
 
     setupEventListeners() {
-        // Параллакс как в основном сайте
+        // Параллакс
         document.addEventListener('mousemove', (e) => {
             this.handleParallax(e);
         });
 
-        // Взаимодействие со станциями
-        const stations = document.querySelectorAll('.station-card');
-        stations.forEach(station => {
-            station.addEventListener('mouseenter', (e) => {
-                this.onStationHover(e.target);
+        // Анимации карточек
+        const cards = document.querySelectorAll('.channel-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', (e) => {
+                this.animateCardHover(e.target);
             });
             
-            station.addEventListener('click', (e) => {
-                this.onStationSelect(e.target);
+            card.addEventListener('click', (e) => {
+                this.onChannelSelect(e.target.closest('.channel-card'));
             });
         });
 
-        // Маркеры частот
-        const markers = document.querySelectorAll('.marker');
-        markers.forEach(marker => {
-            marker.addEventListener('click', (e) => {
-                this.changeFrequency(e.target.textContent);
+        // Заголовок с частицами
+        const title = document.querySelector('.main-title');
+        if (title) {
+            title.addEventListener('mouseenter', () => {
+                this.createParticles();
+            });
+        }
+    }
+
+    setupParallax() {
+        document.addEventListener('mousemove', (e) => {
+            const parallaxElements = document.querySelectorAll('[data-depth]');
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            
+            parallaxElements.forEach(element => {
+                const depth = parseFloat(element.getAttribute('data-depth'));
+                const moveX = mouseX * depth * 100;
+                const moveY = mouseY * depth * 100;
+                
+                element.style.transform = `translate(${moveX}px, ${moveY}px)`;
             });
         });
     }
 
-    handleParallax(e) {
-        const parallaxElements = document.querySelectorAll('[data-depth]');
-        const mouseX = e.clientX / window.innerWidth - 0.5;
-        const mouseY = e.clientY / window.innerHeight - 0.5;
+    animateCardHover(card) {
+        const platform = card.getAttribute('data-platform');
+        console.log(`🎯 Hovering over ${platform}`);
         
-        parallaxElements.forEach(element => {
-            const depth = parseFloat(element.getAttribute('data-depth'));
-            const moveX = mouseX * depth * 100;
-            const moveY = mouseY * depth * 100;
-            
-            element.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        });
+        // Анимация качества соединения
+        this.animateQualityBars();
     }
 
-    onStationHover(station) {
-        const freq = station.getAttribute('data-freq');
-        this.highlightFrequency(freq);
+    onChannelSelect(card) {
+        const platform = card.querySelector('.channel-name').textContent;
+        console.log(`🚀 Redirecting to ${platform}`);
         
-        // Эффект наведения
-        station.style.transform = 'translateY(-5px)';
+        // Эффект перед переходом
+        card.style.background = 'rgba(0, 102, 255, 0.1)';
         setTimeout(() => {
-            if (!station.matches(':hover')) {
-                station.style.transform = '';
-            }
+            card.style.background = '';
         }, 300);
     }
 
-    onStationSelect(station) {
-        const platform = station.querySelector('.station-name').textContent;
-        const freq = station.getAttribute('data-freq');
-        
-        console.log(`🎧 Tuning to ${platform} on ${freq} FM`);
-        
-        // Эффект перехода
-        this.pulseTransmission();
-        
-        // Можно добавить задержку для эффекта
-        setTimeout(() => {
-            // Переход по ссылке произойдет автоматически
-        }, 500);
+    animateSystem() {
+        // Анимация статуса
+        setInterval(() => {
+            this.pulseStatus();
+        }, 4000);
     }
 
-    changeFrequency(newFreq) {
-        this.currentFrequency = newFreq;
-        
-        // Обновляем дисплей
-        const freqDisplay = document.querySelector('.freq');
-        if (freqDisplay) {
-            freqDisplay.textContent = newFreq;
-        }
-        
-        // Обновляем активный маркер
-        const markers = document.querySelectorAll('.marker');
-        markers.forEach(marker => {
-            marker.classList.remove('active');
-            if (marker.textContent === newFreq) {
-                marker.classList.add('active');
-            }
-        });
-        
-        this.pulseTransmission();
-        console.log('🔁 Frequency changed to: ' + newFreq + ' FM');
-    }
-
-    highlightFrequency(freq) {
-        const markers = document.querySelectorAll('.marker');
-        markers.forEach(marker => {
-            if (marker.textContent === freq) {
-                marker.style.color = '#00ff88';
-                marker.style.textShadow = '0 0 10px #00ff88';
-            } else {
-                marker.style.color = '';
-                marker.style.textShadow = '';
-            }
-        });
-    }
-
-    pulseTransmission() {
-        const statusDisplay = document.querySelector('.transmission-text');
-        if (statusDisplay) {
-            statusDisplay.style.animation = 'none';
+    pulseStatus() {
+        const statusDot = document.querySelector('.status-dot');
+        if (statusDot) {
+            statusDot.style.animation = 'none';
             setTimeout(() => {
-                statusDisplay.style.animation = 'signalPulse 0.5s ease';
+                statusDot.style.animation = 'statusPulse 2s infinite';
             }, 10);
         }
     }
 
-    startTransmission() {
-        // Случайные эффекты передачи
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                this.randomStatic();
-            }
-        }, 5000);
-    }
-
-    randomStatic() {
-        const spectrumBar = document.querySelector('.spectrum-bar');
-        if (spectrumBar) {
-            spectrumBar.style.animation = 'none';
+    animateQualityBars() {
+        const bars = document.querySelectorAll('.bar');
+        bars.forEach((bar, index) => {
             setTimeout(() => {
-                spectrumBar.style.animation = 'spectrumScan 3s infinite linear';
-            }, 100);
-        }
-    }
-
-    updateTime() {
-        const timeElement = document.getElementById('currentTime');
-        if (timeElement) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('ru-RU', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            timeElement.textContent = timeString;
-        }
-    }
-}
-
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-    const frodesRadio = new PirateRadio();
-    window.frodesRadio = frodesRadio; // Для отладки
-    
-    // Частицы как в основном сайте
-    const titleContainer = document.querySelector('.title-container');
-    if (titleContainer) {
-        titleContainer.addEventListener('mouseenter', function() {
-            createRadioParticles();
+                bar.classList.add('active');
+                setTimeout(() => {
+                    if (!bar.parentElement.matches(':hover')) {
+                        bar.classList.remove('active');
+                    }
+                }, 1000);
+            }, index * 100);
         });
     }
-});
 
-// Эффект частиц для радио
-function createRadioParticles() {
-    const title = document.querySelector('.main-title');
-    if (!title) return;
-    
-    for (let i = 0; i < 8; i++) {
-        setTimeout(() => {
-            const particle = document.createElement('div');
-            const colors = ['#ff003c', '#0066ff', '#00ff88'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            particle.style.cssText = `
-                position: fixed;
-                width: 3px;
-                height: 3px;
-                background: ${randomColor};
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 1000;
-                top: ${title.getBoundingClientRect().top + title.offsetHeight/2}px;
-                left: ${title.getBoundingClientRect().left + Math.random() * title.offsetWidth}px;
-                animation: radioParticleFloat 1s ease-out forwards;
-            `;
-            
-            document.body.appendChild(particle);
-            
+    createParticles() {
+        const title = document.querySelector('.main-title');
+        if (!title) return;
+        
+        for (let i = 0; i < 6; i++) {
             setTimeout(() => {
-                particle.remove();
-            }, 1000);
-        }, i * 80);
+                const particle = document.createElement('div');
+                const colors = ['#ff003c', '#0066ff', '#00ff88'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 4px;
+                    height: 4px;
+                    background: ${randomColor};
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1000;
+                    top: ${title.getBoundingClientRect().top + title.offsetHeight/2}px;
+                    left: ${title.getBoundingClientRect().left + Math.random() * title.offsetWidth}px;
+                    animation: particleFloat 1s ease-out forwards;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }, i * 100);
+        }
     }
 }
 
-// Добавляем CSS для радио-частиц
-const radioStyle = document.createElement('style');
-radioStyle.textContent = `
-    @keyframes radioParticleFloat {
-        0% {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-80px) scale(0);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(radioStyle);
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+    new ChannelsSystem();
+});
