@@ -1,0 +1,390 @@
+/* === ОСНОВНЫЕ СТИЛИ СИСТЕМЫ === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-color: #00ff41;
+    --bg-dark: #0a0a0a;
+    --bg-darker: #050505;
+    --glow-intensity: 0.3;
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--main-color);
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* === ШУМ ТЕРМИНАЛА === */
+.terminal-noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(90deg, transparent 50%, rgba(0, 255, 65, 0.02) 50%),
+        linear-gradient(transparent 50%, rgba(0, 255, 65, 0.02) 50%);
+    background-size: 100px 100px, 150px 150px;
+    pointer-events: none;
+    opacity: 0.1;
+    animation: noise 0.2s infinite;
+    z-index: 1;
+}
+
+/* === КОНТЕЙНЕР СИСТЕМЫ === */
+.container {
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    border: 1px solid var(--main-color);
+    padding: 40px 30px;
+    background: var(--bg-darker);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 65, var(--glow-intensity)),
+        inset 0 0 30px rgba(0, 255, 65, 0.1);
+}
+
+/* === ЗАГОЛОВОК С ГЛИТЧЕМ === */
+.header {
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: normal;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px var(--main-color);
+    position: relative;
+}
+
+.glitch-text {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00ff;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: -2px 0 #00ffff;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.coordinates {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    margin-bottom: 10px;
+}
+
+/* === СЕТКА ЧАСТОТ === */
+.frequencies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.frequency {
+    position: relative;
+    padding: 25px 20px;
+    border: 1px solid var(--main-color);
+    background: rgba(0, 255, 65, 0.03);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--main-color);
+    overflow: hidden;
+}
+
+.frequency::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.frequency:hover {
+    background: rgba(0, 255, 65, 0.08);
+    box-shadow: 
+        0 0 25px rgba(0, 255, 65, 0.4),
+        inset 0 0 15px rgba(0, 255, 65, 0.1);
+    transform: translateY(-3px) scale(1.02);
+}
+
+.frequency:hover::before {
+    left: 100%;
+}
+
+.freq-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 10px;
+    height: 10px;
+    background: var(--main-color);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.freq-name {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.freq-desc {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.signal-strength {
+    margin-top: 10px;
+    height: 3px;
+    background: rgba(0, 255, 65, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.signal-strength::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--main-color), transparent);
+    animation: signal-scan 3s infinite;
+}
+
+/* === СТАТУС ПОДКЛЮЧЕНИЯ === */
+.connection-status {
+    margin: 30px 0;
+    padding: 20px;
+    border: 1px solid var(--main-color);
+    background: rgba(0, 255, 65, 0.05);
+    position: relative;
+}
+
+.status-text {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-bar {
+    height: 3px;
+    background: rgba(0, 255, 65, 0.3);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.status-bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--main-color), transparent);
+    animation: scan 2s infinite;
+}
+
+.encryption-level {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* === ВЫВОД ТЕРМИНАЛА === */
+.terminal-output {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    background: rgba(0, 0, 0, 0.5);
+    text-align: left;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+}
+
+.log-line {
+    margin-bottom: 5px;
+    opacity: 0.8;
+    animation: typewriter 0.5s ease-in-out;
+}
+
+.log-line:nth-child(1) { animation-delay: 0.1s; }
+.log-line:nth-child(2) { animation-delay: 0.8s; }
+.log-line:nth-child(3) { animation-delay: 1.5s; }
+.log-line:nth-child(4) { animation-delay: 2.2s; }
+
+/* === АНИМАЦИИ === */
+@keyframes noise {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(100px, 100px); }
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(42px, 9999px, 44px, 0); }
+    5% { clip: rect(12px, 9999px, 59px, 0); }
+    10% { clip: rect(48px, 9999px, 29px, 0); }
+    15% { clip: rect(42px, 9999px, 73px, 0); }
+    20% { clip: rect(63px, 9999px, 27px, 0); }
+    25% { clip: rect(34px, 9999px, 55px, 0); }
+    30% { clip: rect(86px, 9999px, 73px, 0); }
+    35% { clip: rect(20px, 9999px, 20px, 0); }
+    40% { clip: rect(26px, 9999px, 60px, 0); }
+    45% { clip: rect(25px, 9999px, 66px, 0); }
+    50% { clip: rect(57px, 9999px, 98px, 0); }
+    55% { clip: rect(5px, 9999px, 46px, 0); }
+    60% { clip: rect(82px, 9999px, 31px, 0); }
+    65% { clip: rect(54px, 9999px, 27px, 0); }
+    70% { clip: rect(28px, 9999px, 99px, 0); }
+    75% { clip: rect(45px, 9999px, 69px, 0); }
+    80% { clip: rect(23px, 9999px, 85px, 0); }
+    85% { clip: rect(54px, 9999px, 84px, 0); }
+    90% { clip: rect(45px, 9999px, 47px, 0); }
+    95% { clip: rect(37px, 9999px, 20px, 0); }
+    100% { clip: rect(4px, 9999px, 91px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(65px, 9999px, 100px, 0); }
+    5% { clip: rect(52px, 9999px, 74px, 0); }
+    10% { clip: rect(79px, 9999px, 85px, 0); }
+    15% { clip: rect(75px, 9999px, 5px, 0); }
+    20% { clip: rect(67px, 9999px, 61px, 0); }
+    25% { clip: rect(14px, 9999px, 79px, 0); }
+    30% { clip: rect(1px, 9999px, 66px, 0); }
+    35% { clip: rect(86px, 9999px, 30px, 0); }
+    40% { clip: rect(23px, 9999px, 98px, 0); }
+    45% { clip: rect(85px, 9999px, 72px, 0); }
+    50% { clip: rect(71px, 9999px, 75px, 0); }
+    55% { clip: rect(2px, 9999px, 48px, 0); }
+    60% { clip: rect(30px, 9999px, 16px, 0); }
+    65% { clip: rect(59px, 9999px, 50px, 0); }
+    70% { clip: rect(41px, 9999px, 62px, 0); }
+    75% { clip: rect(2px, 9999px, 82px, 0); }
+    80% { clip: rect(47px, 9999px, 73px, 0); }
+    85% { clip: rect(3px, 9999px, 27px, 0); }
+    90% { clip: rect(26px, 9999px, 55px, 0); }
+    95% { clip: rect(42px, 9999px, 97px, 0); }
+    100% { clip: rect(38px, 9999px, 49px, 0); }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1; 
+        box-shadow: 0 0 10px var(--main-color);
+    }
+    50% { 
+        opacity: 0.4; 
+        box-shadow: 0 0 5px var(--main-color);
+    }
+}
+
+@keyframes scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes signal-scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes typewriter {
+    from { 
+        opacity: 0; 
+        transform: translateX(-10px);
+    }
+    to { 
+        opacity: 0.8; 
+        transform: translateX(0);
+    }
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+    }
+    
+    .title {
+        font-size: 2.2rem;
+    }
+    
+    .frequencies {
+        grid-template-columns: 1fr;
+    }
+    
+    .terminal-output {
+        max-height: 120px;
+        font-size: 0.8rem;
+    }
+}
+
+/* === SCROLLBAR СТИЛЬ === */
+.terminal-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+    background: rgba(0, 255, 65, 0.1);
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+    background: var(--main-color);
+    border-radius: 4px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 65, 0.8);
+}
