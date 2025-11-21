@@ -3,108 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TheFrodesDiD - РАДИО</title>
+    <title>FRODES :: ОФИЦИАЛЬНЫЕ КАНАЛЫ</title>
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Параллакс элементы как в основном сайте -->
+    <!-- Параллакс элементы -->
     <div class="visual-elements">
-        <div class="radio-wave wave-1" data-depth="0.1"></div>
-        <div class="radio-wave wave-2" data-depth="0.2"></div>
-        <div class="frequency-line line-1" data-depth="0.3"></div>
-        <div class="frequency-line line-2" data-depth="0.4"></div>
+        <div class="signal-dot dot-1" data-depth="0.1"></div>
+        <div class="signal-dot dot-2" data-depth="0.2"></div>
+        <div class="frequency-line" data-depth="0.3"></div>
     </div>
 
     <div class="container">
-        <header class="radio-header">
+        <header class="channels-header">
             <div class="title-container">
-                <h1 class="main-title" id="mainTitle">FRODES RADIO</h1>
-                <div class="frequency-display">
-                    <span class="freq">104.7</span>
-                    <span class="unit">FM</span>
+                <h1 class="main-title" id="mainTitle">FRODES</h1>
+                <div class="subtitle-block">
+                    <span class="channels-label">ОФИЦИАЛЬНЫЕ КАНАЛЫ</span>
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">ONLINE</span>
+                    </div>
                 </div>
             </div>
-            <p class="tagline">ЛОВИ ВОЛНУ</p>
+            <p class="tagline">МУЗЫКА ВЕЗДЕ, ГДЕ ТЫ ЕСТЬ</p>
         </header>
 
-        <div class="radio-interface">
-            <!-- Тюнер частот -->
-            <div class="tuner-section">
-                <div class="tuner-display">
-                    <div class="spectrum-bar"></div>
-                    <div class="frequency-markers">
-                        <span class="marker">98.3</span>
-                        <span class="marker active">104.7</span>
-                        <span class="marker">106.1</span>
-                        <span class="marker">102.5</span>
+        <div class="channels-interface">
+            <!-- Платформы как каналы связи -->
+            <div class="channels-grid">
+                <a href="ТВОЯ_ССЫЛКА_ЯНДЕКС" class="channel-card" data-platform="yandex">
+                    <div class="channel-icon">🎵</div>
+                    <div class="channel-info">
+                        <h3 class="channel-name">Яндекс Музыка</h3>
+                        <p class="channel-desc">Высокое качество • Русский сервис</p>
                     </div>
-                </div>
-            </div>
-
-            <!-- Платформы как радиостанции -->
-            <div class="stations-grid">
-                <a href="ТВОЯ_ССЫЛКА_ЯНДЕКС" class="station-card" data-freq="104.7">
-                    <div class="station-status">
-                        <div class="signal-indicator"></div>
-                        <span class="live-badge">ON AIR</span>
+                    <div class="channel-action">
+                        <span>СЛУШАТЬ</span>
+                        <div class="action-arrow">→</div>
                     </div>
-                    <div class="station-info">
-                        <h3 class="station-name">Яндекс.Музыка</h3>
-                        <p class="station-desc">Частота 104.7 FM</p>
-                    </div>
-                    <div class="tune-in-btn">▶ НАСТРОИТЬСЯ</div>
                 </a>
 
-                <a href="ТВОЯ_ССЫЛКА_VK" class="station-card" data-freq="98.3">
-                    <div class="station-status">
-                        <div class="signal-indicator"></div>
-                        <span class="live-badge">ON AIR</span>
+                <a href="ТВОЯ_ССЫЛКА_VK" class="channel-card" data-platform="vk">
+                    <div class="channel-icon">🔊</div>
+                    <div class="channel-info">
+                        <h3 class="channel-name">VK Музыка</h3>
+                        <p class="channel-desc">Социальная сеть • Рекомендации</p>
                     </div>
-                    <div class="station-info">
-                        <h3 class="station-name">VK Музыка</h3>
-                        <p class="station-desc">Частота 98.3 FM</p>
+                    <div class="channel-action">
+                        <span>СЛУШАТЬ</span>
+                        <div class="action-arrow">→</div>
                     </div>
-                    <div class="tune-in-btn">▶ НАСТРОИТЬСЯ</div>
                 </a>
 
-                <a href="ТВОЯ_ССЫЛКА_SPOTIFY" class="station-card" data-freq="106.1">
-                    <div class="station-status">
-                        <div class="signal-indicator"></div>
-                        <span class="live-badge">ON AIR</span>
+                <a href="ТВОЯ_ССЫЛКА_SPOTIFY" class="channel-card" data-platform="spotify">
+                    <div class="channel-icon">🎧</div>
+                    <div class="channel-info">
+                        <h3 class="channel-name">Spotify</h3>
+                        <p class="channel-desc">Мировой лидер • Плейлисты</p>
                     </div>
-                    <div class="station-info">
-                        <h3 class="station-name">Spotify</h3>
-                        <p class="station-desc">Частота 106.1 FM</p>
+                    <div class="channel-action">
+                        <span>СЛУШАТЬ</span>
+                        <div class="action-arrow">→</div>
                     </div>
-                    <div class="tune-in-btn">▶ НАСТРОИТЬСЯ</div>
                 </a>
 
-                <a href="ТВОЯ_ССЫЛКА_APPLE" class="station-card" data-freq="102.5">
-                    <div class="station-status">
-                        <div class="signal-indicator"></div>
-                        <span class="live-badge">ON AIR</span>
+                <a href="ТВОЯ_ССЫЛКА_APPLE" class="channel-card" data-platform="apple">
+                    <div class="channel-icon">🍎</div>
+                    <div class="channel-info">
+                        <h3 class="channel-name">Apple Music</h3>
+                        <p class="channel-desc">Экосистема Apple • Lossless</p>
                     </div>
-                    <div class="station-info">
-                        <h3 class="station-name">Apple Music</h3>
-                        <p class="station-desc">Частота 102.5 FM</p>
+                    <div class="channel-action">
+                        <span>СЛУШАТЬ</span>
+                        <div class="action-arrow">→</div>
                     </div>
-                    <div class="tune-in-btn">▶ НАСТРОИТЬСЯ</div>
                 </a>
             </div>
 
-            <!-- Радио-статус -->
-            <div class="radio-status">
-                <div class="status-display">
-                    <span class="transmission-text">ПЕРЕДАЧА АКТИВНА</span>
-                    <div class="signal-meter">
-                        <div class="signal-bar"></div>
-                    </div>
+            <!-- Статус системы -->
+            <div class="system-status">
+                <div class="status-message">
+                    <span class="message-text">ВСЕ КАНАЛЫ АКТИВНЫ • ГОТОВ К ПРОСЛУШИВАНИЮ</span>
                 </div>
-                <div class="broadcast-info">
-                    <span class="info-text">FRODES TRANSMISSION</span>
-                    <span class="timestamp" id="currentTime"></span>
+                <div class="connection-quality">
+                    <span class="quality-text">КАЧЕСТВО ПОДКЛЮЧЕНИЯ:</span>
+                    <div class="quality-bars">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar active"></div>
+                        <div class="bar active"></div>
+                    </div>
                 </div>
             </div>
         </div>
