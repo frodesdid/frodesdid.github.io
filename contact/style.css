@@ -44,25 +44,146 @@ body {
 }
 
 .main-title {
-    font-family: 'Black Ops One', 'Orbitron', Impact, sans-serif;
-    font-size: clamp(3rem, 11vw, 7rem);
+    font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
+    font-size: clamp(4rem, 15vw, 12rem);
     font-weight: 400;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--bg-dark);
+    color: #0a0a0a;
     text-shadow: 
-        -2px -2px 0 var(--accent-red),
-        2px 2px 0 var(--accent-blue);
+        -3px -3px 0 #ff003c,
+        3px 3px 0 #0066ff;
     line-height: 0.9;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
     
-    background: linear-gradient(45deg, #8B0000, #B22222, #DC143C, var(--accent-red));
+    background: linear-gradient(45deg, #8B0000, #B22222, #DC143C, #FF0033);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     background-size: 300% 300%;
-    animation: titleShift 6s ease-in-out infinite;
+    animation: metalShift 6s ease-in-out infinite;
+}
+
+.main-title {
+    font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
+    font-size: clamp(3rem, 11.25vw, 9rem); /* уменьшил на 1/4 */
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    text-shadow: 
+        -3px -3px 0 #ff003c,
+        3px 3px 0 #0066ff;
+    line-height: 0.9;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    
+    background: linear-gradient(45deg, #8B0000, #B22222, #DC143C, #FF0033);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 300% 300%;
+    animation: metalShift 6s ease-in-out infinite;
+}
+
+.main-title::before {
+    content: 'THEFRODESDID';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Orbitron', 'Black Ops One', 'Anton', Impact, sans-serif;
+    font-size: clamp(2.4rem, 9vw, 7.2rem); /* уменьшил на 2/5 */
+    color: transparent;
+    text-shadow: 
+        -4px -4px 0 #0066ff,
+        4px 4px 0 #00ff88,
+        0 0 30px rgba(0, 102, 255, 0.5);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    background: linear-gradient(45deg, #00BFFF, #1E90FF, #0066ff, #0044cc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-size: 300% 300%;
+    animation: neonShift 4s ease-in-out infinite;
+}
+
+.title-container:hover .main-title::before {
+    opacity: 1;
+    transform: scale(1.05) rotate(1deg);
+    letter-spacing: 0.08em;
+}
+
+.title-container:hover .main-title {
+    text-shadow: 
+        -2px -2px 0 transparent,
+        2px 2px 0 transparent;
+    transform: scale(0.95);
+}
+
+@keyframes metalShift {
+    0%, 100% { 
+        background-position: 0% 50%;
+        filter: hue-rotate(0deg);
+    }
+    50% { 
+        background-position: 100% 50%;
+        filter: hue-rotate(20deg);
+    }
+}
+
+@keyframes neonShift {
+    0%, 100% { 
+        background-position: 0% 50%;
+        filter: hue-rotate(0deg);
+    }
+    50% { 
+        background-position: 100% 50%;
+        filter: hue-rotate(45deg);
+    }
+}
+
+.title-container::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, transparent 30%, rgba(255, 0, 60, 0.1) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.title-container:hover::after {
+    opacity: 1;
+    animation: sparkPulse 2s ease-in-out infinite;
+}
+
+@keyframes sparkPulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.6; }
+}
+
+.tagline {
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+}
+
+.title-container:hover ~ .tagline {
+    color: #ff003c;
+    text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
 }
 
 .subtitle-block {
@@ -322,48 +443,34 @@ body {
     height: 100%;
     pointer-events: none;
     z-index: -1;
+    overflow: hidden;
 }
 
-.signal-dot {
+.chain, .crack {
     position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--accent-blue);
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: float 6s infinite ease-in-out;
+    opacity: 0.1;
+    transition: transform 0.1s ease-out;
+    font-size: 1.5rem;
 }
 
-.dot-1 { 
-    top: 20%; left: 10%; 
-    animation-delay: 0s;
-}
-.dot-2 { 
-    bottom: 30%; right: 15%; 
-    animation-delay: 3s;
+.chain { 
+    color: #ff003c; 
+    font-size: 2rem; 
+    opacity: 0.07; 
+    transform: rotate(-45deg); 
 }
 
-.frequency-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 0, 60, 0.1), 
-        transparent);
+.crack { 
+    color: #0066ff; 
+    font-size: 3rem; 
+    opacity: 0.05; 
+    letter-spacing: -0.5em; 
 }
 
-@keyframes float {
-    0%, 100% { 
-        transform: translateY(0px) scale(1);
-        opacity: 0.2;
-    }
-    50% { 
-        transform: translateY(-20px) scale(1.2);
-        opacity: 0.4;
-    }
+.chain-1 { top: 15%; left: 5%; }
+.chain-2 { bottom: 20%; right: 8%; }
+.crack-1 { top: 40%; left: 10%; transform: rotate(15deg); }
+
 }
 
 /* === АДАПТИВНОСТЬ === */
