@@ -382,3 +382,49 @@
 .result-number {
     transition: all 0.3s ease;
 }
+
+/* Стили для коллайдера */
+#realityCanvas {
+    background: radial-gradient(circle at center, #0a0a1a 0%, #000000 100%);
+    border: 2px solid #00ffea;
+    border-radius: 50%;
+    display: block;
+    margin: 15px auto;
+    box-shadow: 
+        0 0 20px #00ffea,
+        inset 0 0 20px rgba(0, 255, 234, 0.1);
+}
+
+/* Анимация кнопки */
+.quantum-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Анимация результата */
+.result-number {
+    transition: all 0.3s ease;
+}
+
+/* Свечение при генерации */
+@keyframes collider-pulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px #00ffea;
+    }
+    50% { 
+        box-shadow: 0 0 40px #ff00ff, 0 0 60px #00ffea;
+    }
+}
+
+.generating #realityCanvas {
+    animation: collider-pulse 0.5s ease-in-out;
+}
