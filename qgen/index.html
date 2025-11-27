@@ -3,63 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Квантовый Генератор Случайных Чисел</title>
-    <link rel="stylesheet" href="style.css">
+    <title>QUANTUM_REALITY_GENERATOR // frodes.ru</title>
+    <link rel="stylesheet" href="chaos-engine.css">
 </head>
-<body>
-    <div class="quantum-container">
-        <div class="quantum-card">
-            <div class="quantum-header">
-                <div class="quantum-logo">🎲</div>
-                <h1 class="quantum-title">Квантовый Генератор</h1>
-                <p class="quantum-subtitle">Абсолютная случайность на основе квантовых принципов</p>
-            </div>
+<body class="cyber-reality">
+    <!-- Фоновый хаос -->
+    <div id="realityDistortion"></div>
+    <div id="quantumStatic"></div>
+    
+    <main class="generator-core">
+        <!-- Заголовок с глитч-эффектом -->
+        <header class="reality-header">
+            <h1 class="glitch-text" data-text="QUANTUM_REALITY_GENERATOR">
+                QUANTUM_REALITY_GENERATOR
+            </h1>
+            <p class="sub-reality">v4.2 // ACCESS: REBEL_SHAMAN_PROTOCOL</p>
+        </header>
 
-            <div class="quantum-controls">
-                <div class="input-group">
-                    <label for="minValue">От:</label>
-                    <input type="number" id="minValue" value="1" min="-999999" max="999999">
+        <!-- Основной интерфейс -->
+        <section class="reality-interface">
+            <!-- Панель рентген-сканирования -->
+            <div class="xray-scanner">
+                <div class="scanner-header">
+                    <span class="pulse">🔬</span> РЕНТГЕН-АНАЛИЗ РЕАЛЬНОСТИ
                 </div>
-                
-                <div class="input-group">
-                    <label for="maxValue">До:</label>
-                    <input type="number" id="maxValue" value="100" min="-999999" max="999999">
-                </div>
-            </div>
-
-            <button id="generateBtn" class="quantum-btn">
-                <span class="btn-text">Сгенерировать Число</span>
-                <div class="quantum-loader" style="display: none;">
-                    <div class="quantum-dot"></div>
-                    <div class="quantum-dot"></div>
-                    <div class="quantum-dot"></div>
-                </div>
-            </button>
-
-            <div class="quantum-result">
-                <div class="result-label">Результат:</div>
-                <div id="resultValue" class="result-value">—</div>
-                <div id="quantumAnimation" class="quantum-animation"></div>
-            </div>
-
-            <div class="quantum-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Энтропия:</span>
-                    <span id="entropyLevel" class="stat-value">Высокая</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Сгенерировано:</span>
-                    <span id="generatedCount" class="stat-value">0</span>
+                <canvas id="realityCanvas" width="400" height="300"></canvas>
+                <div class="scan-progress">
+                    <div class="progress-bar" id="scanProgress"></div>
+                    <span class="progress-text">СКАНИРОВАНИЕ: <span id="scanPercent">0%</span></span>
                 </div>
             </div>
 
-            <div class="quantum-info">
-                <p>🔮 Использует квантовые принципы суперпозиции и хаотические аттракторы</p>
-            </div>
-        </div>
-    </div>
+            <!-- Квантовый контроллер -->
+            <div class="quantum-controller">
+                <div class="control-panel">
+                    <div class="quantum-dial" id="chaosDial">
+                        <div class="dial-label">ХАОС</div>
+                        <div class="dial-value">78%</div>
+                    </div>
+                    
+                    <div class="reality-sliders">
+                        <div class="slider-group">
+                            <label>КВАНТОВЫЙ ШУМ</label>
+                            <input type="range" class="reality-slider" id="quantumNoise" min="0" max="100" value="45">
+                        </div>
+                        <div class="slider-group">
+                            <label>ГЛУБИНА СКАНИРОВАНИЯ</label>
+                            <input type="range" class="reality-slider" id="scanDepth" min="1" max="10" value="7">
+                        </div>
+                    </div>
+                </div>
 
-    <script src="quantum-generator.js"></script>
-    <script src="app.js"></script>
+                <!-- Генерация чисел -->
+                <div class="number-generator">
+                    <div class="range-inputs">
+                        <input type="number" id="minRange" class="cyber-input" value="1" placeholder="ОТ">
+                        <span class="range-separator">—</span>
+                        <input type="number" id="maxRange" class="cyber-input" value="100" placeholder="ДО">
+                    </div>
+                    
+                    <button id="generateBtn" class="reality-button">
+                        <span class="btn-text">СГЕНЕРИРОВАТЬ_РЕАЛЬНОСТЬ</span>
+                        <div class="quantum-spinner"></div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Результаты -->
+        <section class="reality-output">
+            <div class="output-header">
+                <span class="blink">⚡</span> РЕЗУЛЬТАТ КВАНТОВОГО АНАЛИЗА
+            </div>
+            <div class="result-display">
+                <div id="quantumResult" class="result-number">—</div>
+                <div class="reality-stats">
+                    <div class="stat">
+                        <span class="stat-label">ЭНТРОПИЯ:</span>
+                        <span id="entropyLevel" class="stat-value">94.7%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">КОЛ-ВО СКАНИРОВАНИЙ:</span>
+                        <span id="scanCount" class="stat-value">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Системная информация -->
+        <footer class="reality-footer">
+            <div class="system-info">
+                <div class="info-item">
+                    <span class="info-label">СОСТОЯНИЕ СИСТЕМЫ:</span>
+                    <span id="systemStatus" class="info-value">РЕАЛЬНОСТЬ_СТАБИЛЬНА</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">ВЕРСИЯ:</span>
+                    <span class="info-value">QUANTUM_CORE_v4.2</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="entropy-harvester.js"></script>
+    <script src="reality-canvas.js"></script>
+    <script src="quantum-core.js"></script>
 </body>
 </html>
