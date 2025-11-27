@@ -455,4 +455,60 @@ class EntropyHarvester {
         let totalFilled = 0;
         let totalSlots = 0;
         
-        Object.values
+        Object.values(this.entropyPools).forEach(pool => {
+            const filled = Array.from(pool).filter(val => val !== 0).length;
+            totalFilled += filled;
+            totalSlots += pool.length;
+        });
+        
+        this.entropyStats.quality = (totalFilled / totalSlots) * 100;
+        this.entropyStats.diversity = this.calculateDiversity();
+        
+        // Расчет rate (примерный)
+        this.entropyStats.harvestRate = this.entropyStats.totalHarvested / 
+                                      (Date.now() - this.startTime || 1) * 1000;
+    }
+
+    calculateDiversity() {
+        // Расчет разнообразия энтропии по пулам
+        const poolEntropies = Object.values(this.entropyPools).map(pool => {
+            const mean = Array.from(pool).reduce((a, b) => a + b, 0) / pool.length;
+            const variance = Array.from(pool).reduce((a, b) => a + Math.pow(b - mean, 2), 0) / pool.length;
+            return Math.sqrt(variance);
+        });
+        
+        return poolEntropies.reduce((a, b) => a + b, 0) / poolEntropies.length * 100;
+    }
+
+    getStats() {
+        return {
+            ...this.entropyStats,
+            pools: Object.keys(this.entropyPools).reduce((acc, poolName) => {
+                acc[poolName] = {
+                    size: this.entropyPools[poolName].length,
+                    filled: Array.from(this.entropyPools[poolName]).filter(v => v !== 0).length,
+                    pointer: this.poolPointers[poolName]
+                };
+                return acc;
+            }, {})
+        };
+    }
+}
+
+// Глобальная инициализация
+let entropyHarvester = null;
+
+function initEntropyHarvester() {
+    if (!entropyHarvester) {
+        entropyHarvester = new EntropyHarvester();
+    }
+    return entropyHarvester;
+}
+
+// Экспорт для использования в quantum-core.js
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { EntropyHarvester, initEntropyHarvester };
+} else {
+    window.EntropyHarvester = EntropyHarvester;
+    window.initEntropyHarvester = initEntropyHarvester;
+}
