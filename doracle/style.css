@@ -1,3 +1,128 @@
+/* ОСНОВНЫЕ СТИЛИ МАГИЧЕСКОГО ШАТРА */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #111 50%, #1a0f1a 100%);
+    color: #00ff88;
+    font-family: 'Orbitron', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* КОНТЕЙНЕР ШАТРА */
+.tent-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.tent-flap {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, #111 0%, transparent 100%);
+    opacity: 0.1;
+}
+
+.tent-flap.left {
+    left: 0;
+    transform: skewX(-5deg);
+}
+
+.tent-flap.right {
+    right: 0;
+    background: linear-gradient(270deg, #111 0%, transparent 100%);
+    transform: skewX(5deg);
+}
+
+.tent-pole {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, #332211, transparent);
+    transform: translateX(-50%);
+}
+
+/* ПАРЯЩИЕ АРТЕФАКТЫ */
+.floating-artifacts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.artifact {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.artifact.crystal {
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #00ff88, transparent);
+    top: 20%;
+    left: 25%;
+    animation-delay: 0s;
+}
+
+.artifact.rune {
+    width: 15px;
+    height: 15px;
+    background: radial-gradient(circle, #0066ff, transparent);
+    top: 60%;
+    right: 30%;
+    animation-delay: 2s;
+}
+
+.artifact.gear {
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle, #ff003c, transparent);
+    bottom: 30%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+/* ОСНОВНОЙ ИНТЕРФЕЙС */
+.oracle-interface {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.oracle-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.oracle-header h1 {
+    font-family: 'Black Ops One', cursive;
+    font-size: 3rem;
+    color: #ff003c;
+    text-shadow: 0 0 10px #ff003c33;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    opacity: 0.7;
+    letter-spacing: 2px;
+}
+
 /* КОНТЕЙНЕР МАГИЧЕСКОГО ШАРА */
 .crystal-ball-container {
     position: relative;
@@ -188,7 +313,57 @@
     font-size: 1.2rem;
 }
 
+/* ЖУРНАЛ МАНИФЕСТАЦИЙ */
+.manifestation-log {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    border: 1px solid #332211;
+    border-radius: 8px;
+    background: #0a0a0a66;
+}
+
+.manifestation-log h3 {
+    color: #ff5500;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.log-entries {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.log-entry {
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-left: 2px solid #00ff88;
+    background: #111111;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.log-entry:last-child {
+    margin-bottom: 0;
+}
+
+.log-timestamp {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    margin-bottom: 0.3rem;
+}
+
 /* АНИМАЦИИ */
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(120deg); }
+    66% { transform: translateY(5px) rotate(240deg); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 @keyframes pulseAura {
     0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
     50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
@@ -210,4 +385,54 @@
 @keyframes textFlicker {
     0%, 100% { opacity: 0.7; }
     50% { opacity: 1; }
+}
+
+@keyframes typeWriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 768px) {
+    .oracle-interface {
+        padding: 1rem;
+    }
+    
+    .oracle-header h1 {
+        font-size: 2rem;
+    }
+    
+    .crystal-ball-container {
+        width: 250px;
+        height: 350px;
+    }
+    
+    .crystal-ball {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .ball-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .control-btn {
+        width: 200px;
+        justify-content: center;
+    }
+}
+
+/* СКРОЛЛБАР */
+.log-entries::-webkit-scrollbar {
+    width: 4px;
+}
+
+.log-entries::-webkit-scrollbar-track {
+    background: #111;
+}
+
+.log-entries::-webkit-scrollbar-thumb {
+    background: #00ff88;
+    border-radius: 2px;
 }
