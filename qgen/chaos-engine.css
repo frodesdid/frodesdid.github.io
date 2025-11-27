@@ -428,3 +428,50 @@
 .generating #realityCanvas {
     animation: collider-pulse 0.5s ease-in-out;
 }
+
+/* Стили для слайдеров */
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.slider-group label {
+    color: #ff00ff;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.reality-slider {
+    -webkit-appearance: none;
+    height: 6px;
+    background: linear-gradient(90deg, #00ffea, #ff00ff);
+    border-radius: 3px;
+    outline: none;
+}
+
+.reality-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #ffffff;
+    border: 2px solid #00ffea;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00ffea;
+    transition: all 0.2s ease;
+}
+
+.reality-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px #ff00ff;
+}
+
+.slider-value {
+    color: #00ffea;
+    font-size: 0.9em;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ffea;
+}
