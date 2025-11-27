@@ -244,9 +244,13 @@ class QuantumRealityGenerator {
         return quantumValue;
     }
 
-extractEntropyRandomness() {
-    return this.entropyHarvester.getHighQualityEntropy();
-}
+    extractEntropyRandomness() {
+        // Извлечение случайности из пула энтропии
+        const startIndex = Math.floor(Math.random() * (this.entropyPool.length - 10));
+        const entropySlice = this.entropyPool.slice(startIndex, startIndex + 10);
+        
+        return this.entropyHarvester.getHighQualityEntropy();
+    }
 
     extractTemporalRandomness() {
         // Извлечение временной случайности
