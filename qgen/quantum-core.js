@@ -1,4 +1,5 @@
 // QUANTUM_CORE v4.2 - Абсолютная непредсказуемость
+import { initEntropyHarvester } from './entropy-harvester.js';
 class QuantumRealityGenerator {
     constructor() {
         this.quantumState = new Map();
@@ -9,6 +10,7 @@ class QuantumRealityGenerator {
         
         this.initQuantumSystem();
         this.startEntropyHarvesting();
+        this.entropyHarvester = initEntropyHarvester();
     }
 
     initQuantumSystem() {
@@ -242,13 +244,9 @@ class QuantumRealityGenerator {
         return quantumValue;
     }
 
-    extractEntropyRandomness() {
-        // Извлечение случайности из пула энтропии
-        const startIndex = Math.floor(Math.random() * (this.entropyPool.length - 10));
-        const entropySlice = this.entropyPool.slice(startIndex, startIndex + 10);
-        
-        return entropySlice.reduce((sum, val) => (sum + val) % 1, 0) / 10;
-    }
+extractEntropyRandomness() {
+    return this.entropyHarvester.getHighQualityEntropy();
+}
 
     extractTemporalRandomness() {
         // Извлечение временной случайности
