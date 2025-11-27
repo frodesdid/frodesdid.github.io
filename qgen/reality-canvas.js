@@ -1,4 +1,4 @@
-// REALITY_CANVAS v2.0 - Визуализация квантового сканирования реальности
+ // REALITY_CANVAS v2.0 - Визуализация квантового сканирования реальности
 class RealityCanvas {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
