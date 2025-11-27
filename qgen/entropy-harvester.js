@@ -1,4 +1,4 @@
-// ENTROPY_HARVESTER v3.0 - Максимальный сбор хаоса из реальности
+ // ENTROPY_HARVESTER v3.0 - Максимальный сбор хаоса из реальности
 class EntropyHarvester {
     constructor() {
         this.entropyPools = {
