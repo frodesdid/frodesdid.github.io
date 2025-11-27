@@ -1,0 +1,46 @@
+<!-- Заменяем ритуальный круг на магический шар -->
+<div class="crystal-ball-container">
+    <!-- Внешняя аура шара -->
+    <div class="ball-aura"></div>
+    
+    <!-- Основной шар -->
+    <div class="crystal-ball" id="magicBall">
+        <!-- Внутренние слои шара -->
+        <div class="ball-layer outer-glOW"></div>
+        <div class="ball-layer inner-core"></div>
+        
+        <!-- Динамический туман внутри шара -->
+        <div class="ball-mist">
+            <div class="mist-particle"></div>
+            <div class="mist-particle"></div>
+            <div class="mist-particle"></div>
+        </div>
+        
+        <!-- Область проявления текста -->
+        <div class="revelation-text" id="oracleText">
+            <div class="text-line">// КОСМИЧЕСКИЙ ХАОС</div>
+            <div class="text-line">// ЖДЕТ ТВОЕГО ЗАПРОСА</div>
+        </div>
+    </div>
+    
+    <!-- Подставка шара -->
+    <div class="ball-stand">
+        <div class="stand-base"></div>
+        <div class="stand-claw"></div>
+        <div class="stand-claw"></div>
+        <div class="stand-claw"></div>
+    </div>
+</div>
+
+<!-- Управление шаром -->
+<div class="ball-controls">
+    <button class="control-btn" id="activateBall">
+        <span class="btn-icon">⚡</span>
+        АКТИВИРОВАТЬ ШАР
+    </button>
+    
+    <button class="control-btn" id="clearBall">
+        <span class="btn-icon">⟲</span>
+        ОЧИСТИТЬ ВИДЕНИЕ
+    </button>
+</div>
