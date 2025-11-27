@@ -1,46 +1,139 @@
-<!-- Заменяем ритуальный круг на магический шар -->
-<div class="crystal-ball-container">
-    <!-- Внешняя аура шара -->
-    <div class="ball-aura"></div>
-    
-    <!-- Основной шар -->
-    <div class="crystal-ball" id="magicBall">
-        <!-- Внутренние слои шара -->
-        <div class="ball-layer outer-glOW"></div>
-        <div class="ball-layer inner-core"></div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МАГИЧЕСКИЙ ШАТЁР // КОРОЛЕВСТВО ФРОДИ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Orbitron&family=Anton&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Фоновые элементы шатра -->
+    <div class="tent-container">
+        <div class="tent-flap left"></div>
+        <div class="tent-flap right"></div>
+        <div class="tent-pole"></div>
         
-        <!-- Динамический туман внутри шара -->
-        <div class="ball-mist">
-            <div class="mist-particle"></div>
-            <div class="mist-particle"></div>
-            <div class="mist-particle"></div>
-        </div>
-        
-        <!-- Область проявления текста -->
-        <div class="revelation-text" id="oracleText">
-            <div class="text-line">// КОСМИЧЕСКИЙ ХАОС</div>
-            <div class="text-line">// ЖДЕТ ТВОЕГО ЗАПРОСА</div>
+        <!-- Парящие артефакты -->
+        <div class="floating-artifacts">
+            <div class="artifact crystal"></div>
+            <div class="artifact rune"></div>
+            <div class="artifact gear"></div>
         </div>
     </div>
+
+    <!-- Главный интерфейс оракула -->
+    <main class="oracle-interface">
+        <header class="oracle-header">
+            <h1>МАГИЧЕСКИЙ ШАТЁР</h1>
+            <div class="subtitle">Цифровой оракул сопротивления</div>
+        </header>
+
+        <!-- Ритуальный круг -->
+        <div class="crystal-ball-container">
+            <!-- Внешняя аура шара -->
+            <div class="ball-aura"></div>
     
-    <!-- Подставка шара -->
-    <div class="ball-stand">
-        <div class="stand-base"></div>
-        <div class="stand-claw"></div>
-        <div class="stand-claw"></div>
-        <div class="stand-claw"></div>
-    </div>
-</div>
+            <!-- Основной шар -->
+            <div class="crystal-ball" id="magicBall">
+                <!-- Внутренние слои шара -->
+                <div class="ball-layer outer-glOW"></div>
+                <div class="ball-layer inner-core"></div>
+        
+                <!-- Динамический туман внутри шара -->
+                <div class="ball-mist">
+                    <div class="mist-particle"></div>
+                    <div class="mist-particle"></div>
+                    <div class="mist-particle"></div>
+                </div>
+        
+                <!-- Область проявления текста -->
+                <div class="revelation-text" id="oracleText">
+                    <div class="text-line">// КОСМИЧЕСКИЙ ХАОС</div>
+                    <div class="text-line">// ЖДЕТ ТВОЕГО ЗАПРОСА</div>
+                </div>
+            </div>
+    
+            <!-- Подставка шара -->
+            <div class="ball-stand">
+                <div class="stand-base"></div>
+                <div class="stand-claw"></div>
+                <div class="stand-claw"></div>
+                <div class="stand-claw"></div>
+            </div>
+        </div>
 
 <!-- Управление шаром -->
-<div class="ball-controls">
-    <button class="control-btn" id="activateBall">
-        <span class="btn-icon">⚡</span>
-        АКТИВИРОВАТЬ ШАР
-    </button>
+        <div class="ball-controls">
+            <button class="control-btn" id="activateBall">
+                <span class="btn-icon">⚡</span>
+                АКТИВИРОВАТЬ ШАР
+            </button>
     
-    <button class="control-btn" id="clearBall">
-        <span class="btn-icon">⟲</span>
-        ОЧИСТИТЬ ВИДЕНИЕ
-    </button>
-</div>
+            <button class="control-btn" id="clearBall">
+                <span class="btn-icon">⟲</span>
+                ОЧИСТИТЬ ВИДЕНИЕ
+            </button>
+        </div>
+            
+            <!-- Активные символы -->
+            <div class="symbols-grid">
+                <div class="symbol" data-element="chaos">ХАОС</div>
+                <div class="symbol" data-element="code">КОД</div>
+                <div class="symbol" data-element="rebel">БУНТ</div>
+                <div class="symbol" data-element="truth">ИСТИНА</div>
+            </div>
+
+            <!-- Область предсказания -->
+            <div class="revelation-area">
+                <div id="oracleOutput" class="revelation-text">
+                    // ЗДЕСЬ ПРОЯВИТСЯ ТВОЯ МАНИФЕСТАЦИЯ
+                </div>
+                <div class="revelation-source">
+                    — ЦИФРОВОЙ ОРАКУЛ THEFRODESDID
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель управления ритуалом -->
+        <div class="ritual-controls">
+            <button id="initiateRitual" class="ritual-btn primary">
+                <span class="btn-text">ИНИЦИИРОВАТЬ РИТУАЛ</span>
+                <div class="btn-aura"></div>
+            </button>
+            
+            <div class="ritual-options">
+                <label class="option-toggle">
+                    <input type="checkbox" id="chaosMode">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">РЕЖИМ ХАОСА</span>
+                </label>
+                
+                <label class="option-toggle">
+                    <input type="checkbox" id="deepMode">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">ГЛУБОКОЕ СКАНИРОВАНИЕ</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Журнал манифестаций -->
+        <div class="manifestation-log">
+            <h3>АРХИВ МАНИФЕСТАЦИЙ</h3>
+            <div id="manifestationList" class="log-entries">
+                <!-- Сюда будут добавляться предыдущие "предсказания" -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Аудио элементы -->
+    <audio id="ambientAudio" loop>
+        <source src="assets/audio/ambient.ogg" type="audio/ogg">
+    </audio>
+    <audio id="revelationAudio">
+        <source src="assets/audio/revelation.ogg" type="audio/ogg">
+    </audio>
+
+    <script src="oracle-engine.js"></script>
+</body>
+</html>
