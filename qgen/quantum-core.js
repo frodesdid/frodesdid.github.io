@@ -1,4 +1,3 @@
-// QUANTUM_COLLIDER - Генератор с ускорителем частиц
 class QuantumCollider {
     constructor() {
         this.entropyPool = [];
@@ -6,96 +5,118 @@ class QuantumCollider {
         this.lastResult = null;
         this.particles = [];
         this.collisions = 0;
+        
+        // НАСТРОЙКИ РУЧЕК
+        this.settings = {
+            scanDepth: 7,        // Глубина сканирования (1-10)
+            quantumNoise: 45,    // Уровень квантового шума (0-100)
+            particleSpeed: 50,   // Скорость частиц (0-100)
+            collisionRate: 60    // Частота столкновений (0-100)
+        };
+        
         this.initEntropy();
         this.initCollider();
+        this.initControls(); // Инициализируем ручки!
         console.log('⚛️ Квантовый коллайдер активирован!');
     }
 
-    initEntropy() {
-        for (let i = 0; i < 1000; i++) {
-            this.entropyPool.push(Math.random());
-        }
+    initControls() {
+        // Находим слайдеры и вешаем обработчики
+        const scanDepthSlider = document.getElementById('scanDepth');
+        const quantumNoiseSlider = document.getElementById('quantumNoise');
         
-        setInterval(() => {
-            this.entropyPool.push(Math.random());
-            if (this.entropyPool.length > 2000) {
-                this.entropyPool = this.entropyPool.slice(-1000);
-            }
-        }, 50);
-    }
-
-    initCollider() {
-        const canvas = document.getElementById('realityCanvas');
-        if (!canvas) return;
-        
-        this.ctx = canvas.getContext('2d');
-        this.canvas = canvas;
-        
-        // Создаем начальные частицы
-        this.createParticles();
-        
-        // Запускаем анимацию
-        this.animate();
-    }
-
-    createParticles() {
-        this.particles = [];
-        const numParticles = 12;
-        
-        for (let i = 0; i < numParticles; i++) {
-            const angle = (i / numParticles) * Math.PI * 2;
-            this.particles.push({
-                angle: angle,
-                speed: 0.02 + Math.random() * 0.03,
-                radius: 80,
-                size: 3 + Math.random() * 4,
-                color: i % 2 === 0 ? '#00ffea' : '#ff00ff',
-                trail: [],
-                energy: 0.5 + Math.random() * 0.5
+        if (scanDepthSlider) {
+            scanDepthSlider.value = this.settings.scanDepth;
+            scanDepthSlider.addEventListener('input', (e) => {
+                this.settings.scanDepth = parseInt(e.target.value);
+                this.updateScanDepthEffects();
+                this.updateChaosDisplay();
             });
         }
+        
+        if (quantumNoiseSlider) {
+            quantumNoiseSlider.value = this.settings.quantumNoise;
+            quantumNoiseSlider.addEventListener('input', (e) => {
+                this.settings.quantumNoise = parseInt(e.target.value);
+                this.updateQuantumNoiseEffects();
+                this.updateChaosDisplay();
+            });
+        }
+        
+        // Обновляем дисплей хаоса
+        this.updateChaosDisplay();
     }
 
-    animate() {
-        if (!this.ctx) return;
+    updateScanDepthEffects() {
+        // Визуальные эффекты от глубины сканирования
+        const depth = this.settings.scanDepth;
         
-        // Очистка с прозрачностью для следов
-        this.ctx.fillStyle = 'rgba(10, 10, 20, 0.1)';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        // Меняем количество частиц
+        const targetParticles = 8 + Math.floor(depth / 2);
+        if (this.particles.length !== targetParticles) {
+            this.createParticles();
+        }
         
-        const centerX = this.canvas.width / 2;
-        const centerY = this.canvas.height / 2;
+        // Меняем скорость частиц на основе глубины и скорости
+        const baseSpeed = 0.02 + (this.settings.particleSpeed / 100) * 0.04;
+        this.particles.forEach(particle => {
+            particle.speed = baseSpeed * (0.8 + (depth / 10) * 0.4);
+        });
         
-        // Рисуем кольцо коллайдера
-        this.ctx.beginPath();
-        this.ctx.arc(centerX, centerY, 100, 0, Math.PI * 2);
-        this.ctx.strokeStyle = 'rgba(0, 255, 234, 0.3)';
-        this.ctx.lineWidth = 2;
-        this.ctx.stroke();
-        
-        // Внутреннее кольцо
-        this.ctx.beginPath();
-        this.ctx.arc(centerX, centerY, 60, 0, Math.PI * 2);
-        this.ctx.strokeStyle = 'rgba(255, 0, 255, 0.2)';
-        this.ctx.lineWidth = 1;
-        this.ctx.stroke();
-        
-        // Обновляем и рисуем частицы
-        this.updateParticles(centerX, centerY);
-        
-        requestAnimationFrame(() => this.animate());
+        console.log(`🔍 Глубина сканирования: ${depth}`);
     }
+
+    updateQuantumNoiseEffects() {
+        // Эффекты от квантового шума
+        const noiseLevel = this.settings.quantumNoise;
+        
+        // Меняем "дрожание" частиц
+        this.particles.forEach(particle => {
+            particle.jitter = (noiseLevel / 100) * 0.1;
+        });
+        
+        // Меняем частоту случайных столкновений
+        this.collisionFrequency = (noiseLevel / 100) * 0.03;
+        
+        console.log(`🌪️ Квантовый шум: ${noiseLevel}%`);
+    }
+
+    updateChaosDisplay() {
+        // Рассчитываем общий уровень хаоса на основе настроек
+        const chaos = (
+            this.settings.scanDepth * 8 + 
+            this.settings.quantumNoise * 0.7 +
+            Math.random() * 10
+        );
+        
+        const chaosElement = document.querySelector('.dial-value');
+        if (chaosElement) {
+            chaosElement.textContent = Math.min(100, Math.round(chaos)) + '%';
+        }
+    }
+
+    // ОБНОВЛЯЕМ методы для учета настроек:
 
     updateParticles(centerX, centerY) {
+        const noiseLevel = this.settings.quantumNoise / 100;
+        
         this.particles.forEach(particle => {
-            // Обновляем угол
-            particle.angle += particle.speed;
+            // Добавляем "дрожание" от квантового шума
+            let angleNoise = 0;
+            if (noiseLevel > 0) {
+                angleNoise = (Math.random() - 0.5) * noiseLevel * 0.1;
+            }
             
-            // Рассчитываем позицию
-            const x = centerX + Math.cos(particle.angle) * particle.radius;
-            const y = centerY + Math.sin(particle.angle) * particle.radius;
+            particle.angle += particle.speed + angleNoise;
             
-            // Добавляем в трейл
+            // Рассчитываем позицию с учетом шума
+            const baseX = centerX + Math.cos(particle.angle) * particle.radius;
+            const baseY = centerY + Math.sin(particle.angle) * particle.radius;
+            
+            const x = baseX + (Math.random() - 0.5) * noiseLevel * 5;
+            const y = baseY + (Math.random() - 0.5) * noiseLevel * 5;
+            
+            // Остальной код отрисовки без изменений...
             particle.trail.push({x, y});
             if (particle.trail.length > 8) {
                 particle.trail.shift();
@@ -110,7 +131,9 @@ class QuantumCollider {
                     this.ctx.lineTo(particle.trail[i].x, particle.trail[i].y);
                 }
                 
-                this.ctx.strokeStyle = particle.color + '33';
+                // Прозрачность трейла зависит от шума
+                const trailAlpha = Math.floor(20 + noiseLevel * 35).toString(16).padStart(2, '0');
+                this.ctx.strokeStyle = particle.color + trailAlpha;
                 this.ctx.lineWidth = 1;
                 this.ctx.stroke();
             }
@@ -119,7 +142,6 @@ class QuantumCollider {
             this.ctx.beginPath();
             this.ctx.arc(x, y, particle.size, 0, Math.PI * 2);
             
-            // Градиент для свечения
             const gradient = this.ctx.createRadialGradient(
                 x, y, 0,
                 x, y, particle.size * 2
@@ -136,7 +158,7 @@ class QuantumCollider {
             this.ctx.fillStyle = '#ffffff';
             this.ctx.fill();
             
-            // Проверяем столкновения
+            // Проверяем столкновения с учетом настроек
             this.checkCollisions(particle, x, y);
         });
     }
@@ -144,15 +166,16 @@ class QuantumCollider {
     checkCollisions(particle, x, y) {
         const centerX = this.canvas.width / 2;
         const centerY = this.canvas.height / 2;
+        const collisionRate = this.settings.quantumNoise / 100;
         
-        // Случайные "столкновения" в центре
-        if (Math.random() < 0.02) {
+        // Случайные "столкновения" в центре (зависит от шума)
+        if (Math.random() < 0.02 * collisionRate) {
             this.createCollisionEffect(centerX, centerY);
             this.collisions++;
         }
         
-        // Столкновения между частицами (упрощенно)
-        if (Math.random() < 0.01) {
+        // Столкновения между частицами (тоже зависит от шума)
+        if (Math.random() < 0.01 * collisionRate) {
             const otherParticle = this.particles[Math.floor(Math.random() * this.particles.length)];
             if (otherParticle !== particle) {
                 this.createEnergySpark(x, y);
@@ -160,80 +183,19 @@ class QuantumCollider {
         }
     }
 
-    createCollisionEffect(x, y) {
-        // Эффект столкновения в центре
-        for (let i = 0; i < 8; i++) {
-            const angle = (i / 8) * Math.PI * 2;
-            const speed = 2 + Math.random() * 3;
-            
-            setTimeout(() => {
-                this.createEnergySpark(
-                    x + Math.cos(angle) * 10,
-                    y + Math.sin(angle) * 10,
-                    angle,
-                    speed
-                );
-            }, i * 50);
-        }
-        
-        // Вспышка в центре
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, 30, 0, Math.PI * 2);
-        const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 30);
-        gradient.addColorStop(0, '#ffffff');
-        gradient.addColorStop(0.5, '#ff00ff');
-        gradient.addColorStop(1, '#00ffea00');
-        this.ctx.fillStyle = gradient;
-        this.ctx.fill();
-    }
-
-    createEnergySpark(x, y, angle = null, speed = null) {
-        const spark = {
-            x: x,
-            y: y,
-            vx: angle ? Math.cos(angle) * speed : (Math.random() - 0.5) * 4,
-            vy: angle ? Math.sin(angle) * speed : (Math.random() - 0.5) * 4,
-            life: 1,
-            decay: 0.02 + Math.random() * 0.03,
-            size: 2 + Math.random() * 3,
-            color: Math.random() < 0.5 ? '#00ffea' : '#ff00ff'
-        };
-        
-        const animateSpark = () => {
-            if (spark.life <= 0) return;
-            
-            spark.x += spark.vx;
-            spark.y += spark.vy;
-            spark.life -= spark.decay;
-            
-            this.ctx.beginPath();
-            this.ctx.arc(spark.x, spark.y, spark.size * spark.life, 0, Math.PI * 2);
-            this.ctx.fillStyle = spark.color + Math.floor(spark.life * 255).toString(16).padStart(2, '0');
-            this.ctx.fill();
-            
-            requestAnimationFrame(animateSpark);
-        };
-        
-        animateSpark();
-    }
-
-    startCollisionSequence() {
-        // Запускаем серию столкновений для генерации
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => {
-                this.createCollisionEffect(this.canvas.width / 2, this.canvas.height / 2);
-            }, i * 200);
-        }
-    }
-
     getUltraRandom() {
+        const depthBonus = this.settings.scanDepth / 10; // Бонус от глубины сканирования
+        const noiseBonus = this.settings.quantumNoise / 200; // Бонус от шума
+        
         const sources = [
             Math.random(),
             performance.now() % 1,
             Date.now() % 1,
             this.entropyPool[Math.floor(Math.random() * this.entropyPool.length)],
             Math.sin(performance.now() * Math.PI) % 1,
-            this.collisions % 1
+            this.collisions % 1,
+            depthBonus,
+            noiseBonus
         ];
 
         let result = 0;
@@ -247,8 +209,13 @@ class QuantumCollider {
     generate(min, max) {
         this.generatedCount++;
         
-        // Запускаем визуальное шоу столкновений
-        this.startCollisionSequence();
+        // Запускаем визуальное шоу с учетом глубины сканирования
+        const numCollisions = 3 + Math.floor(this.settings.scanDepth / 3);
+        for (let i = 0; i < numCollisions; i++) {
+            setTimeout(() => {
+                this.createCollisionEffect(this.canvas.width / 2, this.canvas.height / 2);
+            }, i * (300 - this.settings.scanDepth * 20));
+        }
         
         const range = max - min + 1;
         let result = min + Math.floor(this.getUltraRandom() * range);
