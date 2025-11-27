@@ -1,0 +1,277 @@
+/* ОСНОВНЫЕ СТИЛИ МАГИЧЕСКОГО ШАТРА */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #111 50%, #1a0f1a 100%);
+    color: #00ff88;
+    font-family: 'Orbitron', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* КОНТЕЙНЕР ШАТРА */
+.tent-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.tent-flap {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, #111 0%, transparent 100%);
+    opacity: 0.1;
+}
+
+.tent-flap.left {
+    left: 0;
+    transform: skewX(-5deg);
+}
+
+.tent-flap.right {
+    right: 0;
+    background: linear-gradient(270deg, #111 0%, transparent 100%);
+    transform: skewX(5deg);
+}
+
+.tent-pole {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, #332211, transparent);
+    transform: translateX(-50%);
+}
+
+/* ПАРЯЩИЕ АРТЕФАКТЫ */
+.floating-artifacts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.artifact {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.artifact.crystal {
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #00ff88, transparent);
+    top: 20%;
+    left: 25%;
+    animation-delay: 0s;
+}
+
+.artifact.rune {
+    width: 15px;
+    height: 15px;
+    background: radial-gradient(circle, #0066ff, transparent);
+    top: 60%;
+    right: 30%;
+    animation-delay: 2s;
+}
+
+.artifact.gear {
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle, #ff003c, transparent);
+    bottom: 30%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+/* ОСНОВНОЙ ИНТЕРФЕЙС */
+.oracle-interface {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.oracle-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.oracle-header h1 {
+    font-family: 'Black Ops One', cursive;
+    font-size: 3rem;
+    color: #ff003c;
+    text-shadow: 0 0 10px #ff003c33;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    opacity: 0.7;
+    letter-spacing: 2px;
+}
+
+/* РИТУАЛЬНЫЙ КРУГ */
+.ritual-circle {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto 3rem;
+    border: 2px solid #332211;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-outer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #00ff88;
+    border-radius: 50%;
+    animation: rotate 20s linear infinite;
+    opacity: 0.3;
+}
+
+.circle-inner {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    border: 1px solid #0066ff;
+    border-radius: 50%;
+    animation: rotate 15s linear infinite reverse;
+    opacity: 0.3;
+}
+
+/* СЕТКА СИМВОЛОВ */
+.symbols-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.symbol {
+    position: absolute;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.symbol:hover {
+    border-color: #ff5500;
+    color: #ff5500;
+}
+
+.symbol[data-element="chaos"] { top: 10%; left: 50%; transform: translateX(-50%); }
+.symbol[data-element="code"] { top: 50%; right: 10%; transform: translateY(-50%); }
+.symbol[data-element="rebel"] { bottom: 10%; left: 50%; transform: translateX(-50%); }
+.symbol[data-element="truth"] { top: 50%; left: 10%; transform: translateY(-50%); }
+
+/* ОБЛАСТЬ ОТКРОВЕНИЯ */
+.revelation-area {
+    text-align: center;
+    max-width: 300px;
+    padding: 2rem;
+}
+
+.revelation-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+}
+
+.revelation-source {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    font-style: italic;
+}
+
+/* УПРАВЛЕНИЕ РИТУАЛОМ */
+.ritual-controls {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.ritual-btn {
+    position: relative;
+    background: transparent;
+    border: 2px solid #ff003c;
+    color: #ff003c;
+    padding: 1rem 2rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.ritual-btn:hover {
+    background: #ff003c;
+    color: #0a0a0a;
+    box-shadow: 0 0 20px #ff003c;
+}
+
+.btn-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, #ff003c, transparent);
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
+.ritual-btn:hover .btn-aura {
+    width: 100px;
+    height: 100px;
+}
+
+.ritual-options {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.option-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.option-toggle:hover {
+    opacity: 1;
+}
+
+.toggle-slider {
+    width: 40px;
+    height: 20px;
+    background: #332211;
+    border-radius: 10px;
+    position: relative;
+    transition:
