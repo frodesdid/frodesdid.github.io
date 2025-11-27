@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МАГИЧЕСКИЙ ШАТЁР // КОРОЛЕВСТВО ФРОДИ</title>
     <link rel="stylesheet" href="style.css">
@@ -29,31 +29,31 @@
             <div class="subtitle">Цифровой оракул сопротивления</div>
         </header>
 
-        <!-- Ритуальный круг -->
+        <!-- Магический шар -->
         <div class="crystal-ball-container">
             <!-- Внешняя аура шара -->
             <div class="ball-aura"></div>
-    
+            
             <!-- Основной шар -->
             <div class="crystal-ball" id="magicBall">
                 <!-- Внутренние слои шара -->
-                <div class="ball-layer outer-glOW"></div>
+                <div class="ball-layer outer-glow"></div>
                 <div class="ball-layer inner-core"></div>
-        
+                
                 <!-- Динамический туман внутри шара -->
                 <div class="ball-mist">
                     <div class="mist-particle"></div>
                     <div class="mist-particle"></div>
                     <div class="mist-particle"></div>
                 </div>
-        
+                
                 <!-- Область проявления текста -->
                 <div class="revelation-text" id="oracleText">
                     <div class="text-line">// КОСМИЧЕСКИЙ ХАОС</div>
-                    <div class="text-line">// ЖДЕТ ТВОЕГО ЗАПРОСА</div>
+                    <div class="text-line">// ЖДЁТ ТВОЕГО ЗАПРОСА</div>
                 </div>
             </div>
-    
+            
             <!-- Подставка шара -->
             <div class="ball-stand">
                 <div class="stand-base"></div>
@@ -63,19 +63,18 @@
             </div>
         </div>
 
-<!-- Управление шаром -->
+        <!-- Управление шаром -->
         <div class="ball-controls">
             <button class="control-btn" id="activateBall">
                 <span class="btn-icon">⚡</span>
                 АКТИВИРОВАТЬ ШАР
             </button>
-    
+            
             <button class="control-btn" id="clearBall">
                 <span class="btn-icon">⟲</span>
                 ОЧИСТИТЬ ВИДЕНИЕ
             </button>
         </div>
-            
 
         <!-- Журнал манифестаций -->
         <div class="manifestation-log">
@@ -86,14 +85,7 @@
         </div>
     </main>
 
-    <!-- Аудио элементы -->
-    <audio id="ambientAudio" loop>
-        <source src="assets/audio/ambient.ogg" type="audio/ogg">
-    </audio>
-    <audio id="revelationAudio">
-        <source src="assets/audio/revelation.ogg" type="audio/ogg">
-    </audio>
-
-    <script src="oracle-engine.js"></script>
+    <!-- Подключаем скрипты в правильном порядке -->
+    <script src="crystal-ball.js"></script>
 </body>
 </html>
