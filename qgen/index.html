@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квантовый Генератор Случайных Чисел</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <div class="quantum-card">
+            <div class="quantum-header">
+                <div class="quantum-logo">🎲</div>
+                <h1 class="quantum-title">Квантовый Генератор</h1>
+                <p class="quantum-subtitle">Абсолютная случайность на основе квантовых принципов</p>
+            </div>
+
+            <div class="quantum-controls">
+                <div class="input-group">
+                    <label for="minValue">От:</label>
+                    <input type="number" id="minValue" value="1" min="-999999" max="999999">
+                </div>
+                
+                <div class="input-group">
+                    <label for="maxValue">До:</label>
+                    <input type="number" id="maxValue" value="100" min="-999999" max="999999">
+                </div>
+            </div>
+
+            <button id="generateBtn" class="quantum-btn">
+                <span class="btn-text">Сгенерировать Число</span>
+                <div class="quantum-loader" style="display: none;">
+                    <div class="quantum-dot"></div>
+                    <div class="quantum-dot"></div>
+                    <div class="quantum-dot"></div>
+                </div>
+            </button>
+
+            <div class="quantum-result">
+                <div class="result-label">Результат:</div>
+                <div id="resultValue" class="result-value">—</div>
+                <div id="quantumAnimation" class="quantum-animation"></div>
+            </div>
+
+            <div class="quantum-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Энтропия:</span>
+                    <span id="entropyLevel" class="stat-value">Высокая</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Сгенерировано:</span>
+                    <span id="generatedCount" class="stat-value">0</span>
+                </div>
+            </div>
+
+            <div class="quantum-info">
+                <p>🔮 Использует квантовые принципы суперпозиции и хаотические аттракторы</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="quantum-generator.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
