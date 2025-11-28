@@ -543,11 +543,17 @@ class QuantumOracle {
 // Инициализация оракула
 window.QuantumOracle = new QuantumOracle();
 
-// Функция для вызова оракула
-async function consultOracle() {
+// Функция для вызова оракула - ДОЛЖНА БЫТЬ В ГЛОБАЛЬНОЙ ОБЛАСТИ ВИДИМОСТИ
+window.consultOracle = async function() {
     const questionInput = document.getElementById('oracleQuestion');
     const outputDiv = document.getElementById('oracleOutput');
     const button = document.querySelector('.hack-button');
+    
+    if (!questionInput || !outputDiv || !button) {
+        console.error('Не найдены элементы оракула!');
+        return;
+    }
+    
     const buttonText = button.querySelector('.btn-text');
     const scanAnimation = button.querySelector('.scanning-animation');
     
@@ -601,14 +607,16 @@ function updateOracleStats(confidence) {
     const accuracyElem = document.getElementById('accuracy');
     const entropyElem = document.getElementById('entropy');
     
-    accuracyElem.textContent = (confidence * 100).toFixed(1) + '%';
+    if (accuracyElem) accuracyElem.textContent = (confidence * 100).toFixed(1) + '%';
     
     const entropyLevels = ['НИЗКАЯ', 'СРЕДНЯЯ', 'ВЫСОКАЯ', 'МАКСИМАЛЬНАЯ'];
-    entropyElem.textContent = entropyLevels[Math.floor(Math.random() * entropyLevels.length)];
+    if (entropyElem) entropyElem.textContent = entropyLevels[Math.floor(Math.random() * entropyLevels.length)];
 }
 
 function createOracleParticles(count) {
     const oracle = document.querySelector('.cyber-oracle');
+    if (!oracle) return;
+    
     for (let i = 0; i < count; i++) {
         setTimeout(() => {
             const particle = document.createElement('div');
@@ -630,7 +638,9 @@ function createOracleParticles(count) {
             document.body.appendChild(particle);
             
             setTimeout(() => {
-                particle.remove();
+                if (particle.parentNode) {
+                    particle.remove();
+                }
             }, 1500);
         }, i * 200);
     }
@@ -655,7 +665,9 @@ function showTemporaryMessage(message, type) {
     document.body.appendChild(tempDiv);
     
     setTimeout(() => {
-        tempDiv.remove();
+        if (tempDiv.parentNode) {
+            tempDiv.remove();
+        }
     }, 3000);
 }
 
@@ -670,7 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (questionInput) {
         questionInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                consultOracle();
+                window.consultOracle();
             }
         });
     }
