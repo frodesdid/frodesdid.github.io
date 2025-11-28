@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TheFrodesDiD - ЛАГЕРЬ КОРОЛЯ</title>
+    <title>TheFrodesDiD</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png" sizes="64x64">
@@ -26,6 +26,110 @@
             <p class="tagline">Я не тот, кого все любят, и меня это устраивает. Я доволен тем, кто я есть.</p>
         </header>
 
+        <div class="cyber-synth">
+    <!-- Панель управления -->
+    <div class="synth-header">
+        <span class="blink">🎵</span> NEURO_SYNTH v2.0
+        <div class="subtitle">РЕАЛЬНОСТЬ_ГЕНЕРАТОР</div>
+    </div>
+
+    <!-- Матрица частот -->
+    <div class="frequency-matrix">
+        <div class="matrix-row">
+            <div class="freq-node" data-freq="174" data-intent="foundation">
+                <div class="node-label">174Hz</div>
+                <div class="node-desc">ОСНОВАНИЕ</div>
+            </div>
+            <div class="freq-node" data-freq="285" data-intent="energy">
+                <div class="node-label">285Hz</div>
+                <div class="node-desc">ЭНЕРГИЯ</div>
+            </div>
+            <div class="freq-node" data-freq="396" data-intent="liberation">
+                <div class="node-label">396Hz</div>
+                <div class="node-desc">ОСВОБОЖДЕНИЕ</div>
+            </div>
+        </div>
+        
+        <div class="matrix-row">
+            <div class="freq-node" data-freq="417" data-intent="change">
+                <div class="node-label">417Hz</div>
+                <div class="node-desc">ПЕРЕМЕНЫ</div>
+            </div>
+            <div class="freq-node active" data-freq="432" data-intent="harmony">
+                <div class="node-label">432Hz</div>
+                <div class="node-desc">ГАРМОНИЯ</div>
+            </div>
+            <div class="freq-node" data-freq="528" data-intent="healing">
+                <div class="node-label">528Hz</div>
+                <div class="node-desc">ИСЦЕЛЕНИЕ</div>
+            </div>
+        </div>
+
+        <div class="matrix-row">
+            <div class="freq-node" data-freq="639" data-intent="connection">
+                <div class="node-label">639Hz</div>
+                <div class="node-desc">СВЯЗИ</div>
+            </div>
+            <div class="freq-node" data-freq="741" data-intent="intuition">
+                <div class="node-label">741Hz</div>
+                <div class="node-desc">ИНТУИЦИЯ</div>
+            </div>
+            <div class="freq-node" data-freq="852" data-intent="awakening">
+                <div class="node-label">852Hz</div>
+                <div class="node-desc">ПРОБУЖДЕНИЕ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Визуализатор -->
+    <div class="synth-visualizer">
+        <div class="wave-display" id="waveDisplay">
+            <div class="sine-wave"></div>
+            <div class="harmonics"></div>
+            <div class="energy-particles"></div>
+        </div>
+        <div class="frequency-display">
+            ТЕКУЩАЯ ЧАСТОТА: <span id="currentFreq">432</span> Hz
+        </div>
+    </div>
+
+    <!-- Контролы -->
+    <div class="synth-controls">
+        <div class="control-group">
+            <label>ИНТЕНСИВНОСТЬ</label>
+            <input type="range" class="cyber-slider" id="intensity" min="0" max="100" value="50">
+        </div>
+        
+        <div class="control-group">
+            <label>МОДУЛЯЦИЯ</label>
+            <input type="range" class="cyber-slider" id="modulation" min="0" max="100" value="30">
+        </div>
+
+        <div class="control-buttons">
+            <button class="synth-btn play" onclick="startFrequency()">
+                <span class="btn-icon">▶</span> ГЕНЕРИРОВАТЬ
+            </button>
+            <button class="synth-btn stop" onclick="stopFrequency()">
+                <span class="btn-icon">⏹</span> СТОП
+            </button>
+            <button class="synth-btn mix" onclick="createFrequencyMix()">
+                <span class="btn-icon">⚡</span> МИКС
+            </button>
+        </div>
+    </div>
+
+    <!-- Статус -->
+    <div class="synth-status">
+        <div class="status-item">
+            <span class="status-label">СОСТОЯНИЕ:</span>
+            <span class="status-value" id="synthStatus">ОЖИДАНИЕ</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">ЭНЕРГИЯ:</span>
+            <span class="status-value" id="energyLevel">0%</span>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
