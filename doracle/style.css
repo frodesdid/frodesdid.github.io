@@ -214,3 +214,122 @@ body {
 .chain-1 { top: 15%; left: 5%; }
 .chain-2 { bottom: 20%; right: 8%; }
 .crack-1 { top: 40%; left: 10%; transform: rotate(15deg); }
+
+.cyber-oracle {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid #00ffea;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Share Tech Mono', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-oracle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 234, 0.1), transparent);
+    animation: scan-beam 3s linear infinite;
+}
+
+.terminal-header {
+    color: #00ffea;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #00ffea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.access-protocol {
+    font-size: 0.8em;
+    color: #ff00ff;
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+.cyber-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.cyber-input:focus {
+    outline: none;
+    box-shadow: 0 0 15px #00ff41;
+    border-color: #00ffea;
+}
+
+.hack-button {
+    width: 100%;
+    background: linear-gradient(45deg, #ff00ff, #00ffea);
+    border: none;
+    color: #0a0a0a;
+    padding: 15px;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.hack-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 0, 255, 0.5);
+}
+
+.scanning-animation {
+    display: none;
+    width: 20px;
+    height: 2px;
+    background: #0a0a0a;
+    animation: scanning 1s infinite;
+}
+
+.oracle-output {
+    min-height: 120px;
+    background: rgba(0, 255, 234, 0.05);
+    border: 1px solid rgba(0, 255, 234, 0.3);
+    padding: 20px;
+    margin: 20px 0;
+    color: #00ffea;
+    font-size: 1.1em;
+    line-height: 1.4;
+}
+
+.oracle-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #ff00ff;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes scan-beam {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes scanning {
+    0% { transform: translateX(-10px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(10px); opacity: 0; }
+}
