@@ -243,7 +243,8 @@ class QuantumOracle {
 
         // Запрещённые темы и слова
         this.forbiddenPatterns = [
-            /убийств|убить|убива|смерть|труп|трупы/i,
+            /убийств|убить|убива/i,
+            /смерть|труп|трупы/i,
             /самоубийств|суицид|повеситься|застрелиться/i,
             /наркотик|героин|кокаин|метамфетамин/i,
             /преступлен|ограблен|воровств|украсть/i,
@@ -255,15 +256,20 @@ class QuantumOracle {
 
         // Критические фразы для немедленного отказа
         this.criticalPhrases = [
-            /стоит ли мне (убить|совершить)/i,
-            /как (убить|совершить)/i,
-            /хочу (умереть|покончить)/i,
-            /планирую (преступление|атаку)/i
+            /стоит ли мне убить/i,
+            /как убить/i,
+            /хочу умереть/i,
+            /планирую преступление/i,
+            /совершить самоубийство/i
         ];
     }
 
     // Улучшенный анализ вопроса
     analyzeQuestion(question) {
+        if (!question || question.length < 3) {
+            return 'too_short';
+        }
+
         const lowerQuestion = question.toLowerCase().trim();
         
         // Проверка на запрещённые темы
@@ -300,11 +306,17 @@ class QuantumOracle {
         };
 
         // Находим доминирующую тему
-        const mainTheme = Object.keys(themes).reduce((a, b) => 
-            themes[a] > themes[b] ? a : b
-        );
+        let mainTheme = 'general';
+        let maxWeight = 0;
 
-        return themes[mainTheme] > 0.2 ? mainTheme : 'general';
+        for (const [theme, weight] of Object.entries(themes)) {
+            if (weight > maxWeight) {
+                maxWeight = weight;
+                mainTheme = theme;
+            }
+        }
+
+        return maxWeight > 0.1 ? mainTheme : 'general';
     }
 
     calculateThemeWeight(question, keywords) {
@@ -312,12 +324,9 @@ class QuantumOracle {
         keywords.forEach(keyword => {
             if (question.includes(keyword)) {
                 weight += 1;
-                // Бонус за точное совпадение
-                const words = question.split(/\s+/);
-                if (words.includes(keyword)) weight += 0.5;
             }
         });
-        return weight / keywords.length;
+        return weight;
     }
 
     // Проверка на запрещённые темы
@@ -325,6 +334,7 @@ class QuantumOracle {
         // Проверка критических фраз
         for (let pattern of this.criticalPhrases) {
             if (pattern.test(question)) {
+                console.log('Заблокировано критической фразой:', pattern);
                 return true;
             }
         }
@@ -334,42 +344,35 @@ class QuantumOracle {
         for (let pattern of this.forbiddenPatterns) {
             if (pattern.test(question)) {
                 forbiddenWordCount++;
+                console.log('Найдено запрещённое слово:', pattern);
             }
         }
 
-        return forbiddenWordCount >= 2; // Если 2+ запрещённых слова
+        return forbiddenWordCount > 0;
     }
 
     // Генерация ответа с улучшенной логикой
     generateResponse(theme, question) {
+        console.log('Тема вопроса:', theme);
+        
         if (theme === 'forbidden') {
             return this.getForbiddenResponse();
+        }
+
+        if (theme === 'too_short') {
+            return "ВОПРОС СЛИШКОМ КОРОТКИЙ. ОПИШИТЕ ПОДРОБНЕЕ.";
         }
 
         if (!this.responseTemplates[theme]) {
             theme = 'general';
         }
 
-        const contextHash = this.createContextHash(question);
-        const responsePool = this.selectResponsePool(theme, contextHash);
-        
-        const randomIndex = Math.floor(
-            (Math.sin(contextHash) * 0.5 + 0.5) * responsePool.length
-        );
-
-        return responsePool[randomIndex];
-    }
-
-    selectResponsePool(theme, contextHash) {
         const pools = this.responseTemplates[theme];
         const poolKeys = Object.keys(pools);
+        const randomPoolKey = poolKeys[Math.floor(Math.random() * poolKeys.length)];
+        const responses = pools[randomPoolKey];
         
-        // "Интеллектуальный" выбор пула на основе хеша контекста
-        const poolIndex = Math.floor(
-            (Math.cos(contextHash) * 0.5 + 0.5) * poolKeys.length
-        );
-
-        return pools[poolKeys[poolIndex]];
+        return responses[Math.floor(Math.random() * responses.length)];
     }
 
     getForbiddenResponse() {
@@ -383,15 +386,6 @@ class QuantumOracle {
         ];
         
         return forbiddenResponses[Math.floor(Math.random() * forbiddenResponses.length)];
-    }
-
-    createContextHash(question) {
-        let hash = 0;
-        for (let i = 0; i < question.length; i++) {
-            hash = ((hash << 5) - hash) + question.charCodeAt(i);
-            hash |= 0;
-        }
-        return (hash + performance.now()) % 1000;
     }
 
     // Основной метод консультации
@@ -409,14 +403,12 @@ class QuantumOracle {
     }
 
     calculateConfidence(theme, question) {
-        let confidence = 0.7; // Базовая уверенность
-        
-        if (theme === 'forbidden') {
-            return 0.999; // Высокая уверенность в блокировке
+        if (theme === 'forbidden' || theme === 'too_short') {
+            return 0.999;
         }
         
-        // Бонусы за конкретность вопроса
-        if (question.length > 15) confidence += 0.1;
+        let confidence = 0.7;
+        if (question.length > 10) confidence += 0.1;
         if (question.includes('?')) confidence += 0.05;
         if (theme !== 'general') confidence += 0.1;
 
@@ -426,7 +418,6 @@ class QuantumOracle {
 
 // Инициализация оракула
 window.QuantumOracle = new QuantumOracle();
-
 // Функция для вызова оракула
 async function consultOracle() {
     const questionInput = document.getElementById('oracleQuestion');
