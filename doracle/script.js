@@ -68,7 +68,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// ===== КВАНТОВЫЙ ОРАКУЛ v2.0 =====
+// ===== КВАНТОВЫЙ ОРАКУЛ v2.2 =====
 class QuantumOracle {
     constructor() {
         this.responseTemplates = {
@@ -240,10 +240,6 @@ class QuantumOracle {
                 ]
             }
         };
-// ===== КВАНТОВЫЙ ОРАКУЛ v2.2 =====
-class QuantumOracle {
-    constructor() {
-        // ... все responseTemplates остаются без изменений ...
 
         // Запрещённые темы и слова
         this.forbiddenPatterns = [
@@ -436,7 +432,7 @@ class QuantumOracle {
 
 // Инициализация оракула
 window.QuantumOracle = new QuantumOracle();
-        
+
 // Функция для вызова оракула
 async function consultOracle() {
     const questionInput = document.getElementById('oracleQuestion');
@@ -481,6 +477,7 @@ async function consultOracle() {
         createOracleParticles(5);
         
     } catch (error) {
+        console.error('Ошибка оракула:', error);
         outputDiv.innerHTML = '<div class="response-placeholder">ОШИБКА СИСТЕМЫ - КВАНТОВЫЙ ШУМ...</div>';
     }
 
@@ -560,11 +557,13 @@ function delay(ms) {
 document.addEventListener('DOMContentLoaded', function() {
     const questionInput = document.getElementById('oracleQuestion');
     
-    questionInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            consultOracle();
-        }
-    });
+    if (questionInput) {
+        questionInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                consultOracle();
+            }
+        });
+    }
     
     console.log('✅ Quantum Oracle загружен и готов к работе');
 });
