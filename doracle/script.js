@@ -240,6 +240,10 @@ class QuantumOracle {
                 ]
             }
         };
+// ===== КВАНТОВЫЙ ОРАКУЛ v2.2 =====
+class QuantumOracle {
+    constructor() {
+        // ... все responseTemplates остаются без изменений ...
 
         // Запрещённые темы и слова
         this.forbiddenPatterns = [
