@@ -21,7 +21,42 @@
                 <h1 class="main-title" id="mainTitle">THEFRODESDID</h1>
             </div>
             <p class="tagline">I'm not the hero they want. I'm the consequence they deserve.</p>
-        </header>
+            </header>
+
+    <!-- НАЧАЛО ОРАКУЛА - вставляется после header -->
+    <section class="oracle-section">
+        <div class="cyber-oracle">
+            <div class="terminal-header">
+                <span class="blink">⚡</span> QUANTUM_ORACLE // PROTOCOL: REBEL_TRUTH
+            </div>
+            
+            <div class="query-interface">
+                <input type="text" id="oracleQuestion" 
+                       class="cyber-input" 
+                       placeholder="> ЗАПРОСИТЬ ПРОРОЧЕСТВО..."
+                       maxlength="100">
+                <button class="hack-button" onclick="consultOracle()">
+                    <span class="btn-text">АНАЛИЗИРОВАТЬ_БУДУЩЕЕ</span>
+                    <div class="scanning-animation"></div>
+                </button>
+            </div>
+
+            <div class="oracle-response" id="oracleOutput">
+                <div class="response-placeholder">
+                    ОРАКУЛ ОЖИДАЕТ ВАШЕГО ВОПРОСА...
+                </div>
+            </div>
+
+            <div class="oracle-stats">
+                <div class="stat">ТОЧНОСТЬ: <span id="accuracy">97.3%</span></div>
+                <div class="stat">ЭНТРОПИЯ: <span id="entropy">ВЫСОКАЯ</span></div>
+            </div>
+        </div>
+    </section>
+    <!-- КОНЕЦ ОРАКУЛА -->
+
+    <!-- Параллакс элементы -->
+    <div class="visual-elements">
     </div>
 
     <!-- Параллакс элементы -->
@@ -31,44 +66,7 @@
         <div class="crack crack-1" data-depth="0.2">⌇⌇⌇⌇⌇</div>
     </div>
 
-    <!-- Добавьте этот блок в ваш сайт -->
-<div class="cyber-oracle">
-    <div class="oracle-terminal">
-        <div class="terminal-header">
-            <span class="blink">⚡</span> NEURO_ORACLE v3.0
-            <div class="access-protocol">ACCESS: REBEL_SHAMAN</div>
-        </div>
-        
-        <div class="query-section">
-            <input type="text" id="oracleQuestion" 
-                   class="cyber-input" 
-                   placeholder="> ЗАПРОСИТЬ ПРЕДСКАЗАНИЕ..."
-                   maxlength="60">
-            <button class="hack-button" onclick="initiateOracle()">
-                <span class="btn-text">АНАЛИЗИРОВАТЬ_БУДУЩЕЕ</span>
-                <div class="scanning-animation"></div>
-            </button>
-        </div>
 
-        <div class="oracle-output" id="oracleOutput">
-            <div class="default-message">
-                СИСТЕМА ГОТОВА К ПРИЁМУ ЗАПРОСОВ<br>
-                <span class="sub-message">Задайте вопрос о будущем</span>
-            </div>
-        </div>
-
-        <div class="oracle-stats">
-            <div class="stat">
-                <span class="stat-label">ТОЧНОСТЬ:</span>
-                <span class="stat-value">87.3%</span>
-            </div>
-            <div class="stat">
-                <span class="stat-label">КВАНТОВЫЙ_ШУМ:</span>
-                <span class="stat-value" id="quantumNoise">12.7%</span>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="script.js"></script>
 
