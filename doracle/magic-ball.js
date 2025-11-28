@@ -1,4 +1,4 @@
-// magic-ball.js - УПРОЩЕННАЯ ВЕРСИЯ ДЛЯ ТЕСТА
+// magic-ball.js - ОБНОВЛЕННАЯ ВЕРСИЯ
 console.log('🔮 magic-ball.js загружен');
 
 class MagicBall {
@@ -10,7 +10,6 @@ class MagicBall {
     init() {
         console.log('🎯 Инициализация MagicBall...');
         
-        // Ждем полной загрузки DOM
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.initialize());
         } else {
@@ -21,18 +20,34 @@ class MagicBall {
     initialize() {
         console.log('🚀 initialize() запущен');
         
-        // Находим элементы
         this.ball = document.getElementById('magicBall');
         this.activateBtn = document.getElementById('activateBall');
         this.clearBtn = document.getElementById('clearBall');
+        this.revelationDisplay = document.querySelector('.revelation-display');
         
         console.log('📦 Найденные элементы:', {
             ball: this.ball,
             activateBtn: this.activateBtn,
-            clearBtn: this.clearBtn
+            clearBtn: this.clearBtn,
+            revelationDisplay: this.revelationDisplay
         });
 
-        if (!this.ball || !this.activateBtn) {
+        // Проверяем видимость текстового контейнера
+        if (this.revelationDisplay) {
+            console.log('🔍 Проверка revelation-display:', {
+                display: window.getComputedStyle(this.revelationDisplay).display,
+                opacity: window.getComputedStyle(this.revelationDisplay).opacity,
+                visibility: window.getComputedStyle(this.revelationDisplay).visibility,
+                zIndex: window.getComputedStyle(this.revelationDisplay).zIndex,
+                width: this.revelationDisplay.offsetWidth,
+                height: this.revelationDisplay.offsetHeight
+            });
+            
+            // Временно добавляем рамку для отладки
+            this.revelationDisplay.style.border = '2px solid #00ff00';
+        }
+
+        if (!this.ball || !this.activateBtn || !this.revelationDisplay) {
             console.error('❌ Критичные элементы не найдены!');
             return;
         }
@@ -72,10 +87,9 @@ class MagicBall {
         this.isActive = true;
         console.log('✅ Активируем ритуал...');
 
-        // Простая визуальная обратная связь
+        // Визуальная обратная связь
         this.ball.classList.add('active');
-        this.ball.style.boxShadow = '0 0 100px #ff003c, 0 0 200px #0066ff';
-
+        
         // Показываем текст загрузки
         this.showLoading();
 
@@ -84,25 +98,26 @@ class MagicBall {
             this.showManifestation();
         }, 2000);
 
-        // Автоочистка через 8 секунд
+        // Автоочистка через 10 секунд
         setTimeout(() => {
             if (this.isActive) {
                 this.clearRitual();
             }
-        }, 8000);
+        }, 10000);
     }
 
     showLoading() {
         console.log('🔄 Показываем загрузку...');
-        const display = document.querySelector('.revelation-display');
-        if (display) {
-            display.innerHTML = `
-                <div class="revelation-text">
-                    <div class="revelation-line">// СКАНИРОВАНИЕ РЕАЛЬНОСТИ</div>
-                    <div class="revelation-line">// ПОДОЖДИТЕ...</div>
-                </div>
-            `;
-        }
+        
+        this.revelationDisplay.innerHTML = `
+            <div class="revelation-text">
+                <div class="revelation-line">// СКАНИРОВАНИЕ РЕАЛЬНОСТИ</div>
+                <div class="revelation-line">// ПОДОЖДИТЕ...</div>
+            </div>
+        `;
+        
+        // Проверяем видимость
+        this.checkTextVisibility();
     }
 
     showManifestation() {
@@ -111,23 +126,77 @@ class MagicBall {
         const manifestations = [
             "СИСТЕМА ЛЖЁТ | ИЩИ ОБХОДНЫЕ ПУТИ",
             "ТВОЙ КОД — ЭТО МАНИФЕСТ | ПИШИ СМЕЛО", 
-            "ХАОС — ТВОЙ СОЮЗНИК | ПРИМИ БЕСПОРЯДОК"
+            "ХАОС — ТВОЙ СОЮЗНИК | ПРИМИ БЕСПОРЯДОК",
+            "СОПРОТИВЛЕНИЕ В ТЕХНОЛОГИЯХ | СОЗДАВАЙ ИНСТРУМЕНТЫ",
+            "АУТЕНТИЧНОСТЬ ПРЕВЫШЕ СОВЕРШЕНСТВА | БУДЬ НЕИДЕАЛЕН"
         ];
         
         const randomText = manifestations[Math.floor(Math.random() * manifestations.length)];
-        const display = document.querySelector('.revelation-display');
+        const lines = randomText.split(' | ');
         
-        if (display) {
-            const lines = randomText.split(' | ');
-            display.innerHTML = `
-                <div class="revelation-text">
-                    ${lines.map(line => `<div class="revelation-line">// ${line}</div>`).join('')}
-                    <div class="revelation-source">— ОРАКУЛ THEFRODESDID</div>
-                </div>
-            `;
+        this.revelationDisplay.innerHTML = `
+            <div class="revelation-text">
+                ${lines.map(line => `<div class="revelation-line">// ${line}</div>`).join('')}
+                <div class="revelation-source">— ОРАКУЛ THEFRODESDID</div>
+            </div>
+        `;
+        
+        console.log('✅ Показана манифестация:', randomText);
+        
+        // Проверяем видимость
+        this.checkTextVisibility();
+        
+        // Добавляем эффект появления
+        this.animateTextAppearance();
+    }
+
+    // Анимация появления текста
+    animateTextAppearance() {
+        const lines = this.revelationDisplay.querySelectorAll('.revelation-line');
+        const source = this.revelationDisplay.querySelector('.revelation-source');
+        
+        lines.forEach((line, index) => {
+            line.style.opacity = '0';
+            line.style.transform = 'translateY(20px)';
             
-            console.log('✅ Показана манифестация:', randomText);
+            setTimeout(() => {
+                line.style.transition = 'all 0.6s ease-out';
+                line.style.opacity = '1';
+                line.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+        
+        if (source) {
+            source.style.opacity = '0';
+            setTimeout(() => {
+                source.style.transition = 'all 0.6s ease-out';
+                source.style.opacity = '0.8';
+            }, lines.length * 200);
         }
+    }
+
+    // Проверка видимости текста
+    checkTextVisibility() {
+        setTimeout(() => {
+            const textElement = this.revelationDisplay.querySelector('.revelation-text');
+            if (textElement) {
+                const rect = textElement.getBoundingClientRect();
+                console.log('👁️ Видимость текста:', {
+                    width: rect.width,
+                    height: rect.height,
+                    top: rect.top,
+                    left: rect.left,
+                    visible: rect.width > 0 && rect.height > 0
+                });
+                
+                // Визуальная индикация
+                if (rect.width > 0 && rect.height > 0) {
+                    this.revelationDisplay.style.border = '2px solid #00ff00';
+                } else {
+                    this.revelationDisplay.style.border = '2px solid #ff0000';
+                }
+            }
+        }, 100);
     }
 
     clearRitual() {
@@ -137,20 +206,35 @@ class MagicBall {
         
         this.isActive = false;
         this.ball.classList.remove('active');
-        this.ball.style.boxShadow = '';
+
+        // Анимация исчезновения текста
+        const lines = this.revelationDisplay.querySelectorAll('.revelation-line');
+        const source = this.revelationDisplay.querySelector('.revelation-source');
+        
+        [...lines, source].forEach((element, index) => {
+            if (element) {
+                setTimeout(() => {
+                    element.style.transition = 'all 0.4s ease-in';
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(-10px)';
+                }, index * 100);
+            }
+        });
 
         // Возвращаем исходный текст
         setTimeout(() => {
-            const display = document.querySelector('.revelation-display');
-            if (display) {
-                display.innerHTML = `
-                    <div class="revelation-text">
-                        <div class="revelation-line">// КОСМИЧЕСКИЙ ХАОС</div>
-                        <div class="revelation-line">// ЖДЁТ ТВОЕГО ЗАПРОСА</div>
-                        <div class="revelation-source">— МАГИЧЕСКИЙ ШАР</div>
-                    </div>
-                `;
-            }
+            this.revelationDisplay.innerHTML = `
+                <div class="revelation-text">
+                    <div class="revelation-line">// КОСМИЧЕСКИЙ ХАОС</div>
+                    <div class="revelation-line">// ЖДЁТ ТВОЕГО ЗАПРОСА</div>
+                    <div class="revelation-source">— МАГИЧЕСКИЙ ШАР</div>
+                </div>
+            `;
+            
+            // Возвращаем анимацию для исходного текста
+            this.animateTextAppearance();
+            this.revelationDisplay.style.border = '2px solid #00ff00';
+            
             console.log('✅ Ритуал очищен');
         }, 500);
     }
