@@ -1,140 +1,31 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>МАГИЧЕСКИЙ ШАТЁР // КОРОЛЕВСТВО ФРОДИ</title>
+    <title>TheFrodesDiD - ЛАГЕРЬ КОРОЛЯ</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png" sizes="64x64">
+    <link rel="icon" type="image/png" href="assets/favicon32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="assets/favicon16.png" sizes="16x16">
+    
+    <!-- Шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Orbitron:wght@400;700&family=Anton&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Атмосфера шатра -->
-    <div class="tent-atmosphere">
-        <div class="tent-wall left"></div>
-        <div class="tent-wall right"></div>
-        <div class="tent-pillar"></div>
-        
-        <div class="magic-artifacts">
-            <div class="artifact crystal"></div>
-            <div class="artifact rune"></div>
-            <div class="artifact symbol"></div>
-        </div>
-    </div>
-
-    <!-- Главное святилище -->
-    <main class="oracle-shrine">
-        <header class="shrine-header">
-            <h1 class="shrine-title">МАГИЧЕСКИЙ ШАТЁР</h1>
-            <div class="shrine-subtitle">ЦИФРОВОЙ ОРАКУЛ СОПРОТИВЛЕНИЯ</div>
+    <div class="container">
+        <header class="hero">
+            <div class="title-container">
+                <h1 class="main-title" id="mainTitle">TheFrodesDiD</h1>
+            </div>
+            <p class="tagline">Я не тот, кого все любят, и меня это устраивает. Я доволен тем, кто я есть.</p>
         </header>
 
-        <!-- Магический шар -->
-        <!--<div class="magic-sphere-container">
-            <div class="sphere-aura"></div>
-            
-            <!-- ОСНОВНОЙ ШАР С ПРАВИЛЬНЫМ ID -->
-            <!--<div class="magic-sphere" id="magicBall">
-                <div class="sphere-layer layer-outer"></div>
-                <div class="sphere-layer layer-inner"></div>
-                
-                <div class="sphere-mist">
-                    <div class="mist-particle"></div>
-                    <div class="mist-particle"></div>
-                    <div class="mist-particle"></div>
-                    <div class="mist-particle"></div>
-                </div>
-        <!-- Оставляем только текст -->
-                
-                <div class="revelation-display">
-                    <div class="revelation-text">
-                        <div class="revelation-line">// КОСМИЧЕСКИЙ ХАОС</div>
-                        <div class="revelation-line">// ЖДЁТ ТВОЕГО ЗАПРОСА</div>
-                        <div class="revelation-source">— МАГИЧЕСКИЙ ШАР</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="sphere-pedestal">
-                <div class="pedestal-base"></div>
-                <div class="pedestal-claw"></div>
-                <div class="pedestal-claw"></div>
-                <div class="pedestal-claw"></div>
-            </div>
-        </div>
 
-        <!-- КНОПКИ С ПРАВИЛЬНЫМИ ID -->
-        <div class="ritual-controls">
-            <button class="control-button primary" id="activateBall">
-                ⚡ АКТИВИРОВАТЬ ШАР
-            </button>
-            <button class="control-button" id="clearBall">
-                ⟲ ОЧИСТИТЬ ВИДЕНИЕ
-            </button>
-        </div>
-
-        <!-- Архив -->
-        <section class="manifestation-archive">
-            <h2 class="archive-title">АРХИВ МАНИФЕСТАЦИЙ</h2>
-            <div class="archive-entries" id="archiveEntries">
-                <!-- Архив будет заполняться автоматически -->
-            </div>
-        </section>
-    </main>
-
-    <!-- ПОДКЛЮЧАЕМ ВСЕ СКРИПТЫ -->
-    <script src="oracle-engine.js"></script>
-    <script src="ritual-effects.js"></script>
-    <script src="magic-ball.js"></script>
-    
-    <!-- СКРИПТ ДЛЯ ДИАГНОСТИКИ -->
-    <script>
-        console.log('🔍 Диагностика запущена...');
-        
-        // Проверяем загрузку DOM
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ DOM загружен');
-            
-            // Проверяем основные элементы
-            const elements = {
-                magicBall: document.getElementById('magicBall'),
-                activateBtn: document.getElementById('activateBall'),
-                clearBtn: document.getElementById('clearBall'),
-                archiveEntries: document.getElementById('archiveEntries')
-            };
-            
-            console.log('📋 Найденные элементы:', elements);
-            
-            // Проверяем стили
-            const ball = elements.magicBall;
-            if (ball) {
-                console.log('🎯 Стили шара:', {
-                    width: ball.offsetWidth,
-                    height: ball.offsetHeight,
-                    display: window.getComputedStyle(ball).display
-                });
-            }
-            
-            // Простая проверка клика
-            if (elements.activateBtn) {
-                elements.activateBtn.addEventListener('click', function() {
-                    console.log('🎯 Кнопка "Активировать" нажата!');
-                    // Просто меняем цвет для теста
-                    if (ball) {
-                        ball.style.boxShadow = '0 0 50px #ff0000';
-                        setTimeout(() => {
-                            ball.style.boxShadow = '';
-                        }, 1000);
-                    }
-                });
-            }
-            
-            console.log('🔮 Глобальный magicBall:', window.magicBall);
-        });
-        
-        // Проверяем ошибки загрузки скриптов
-        window.addEventListener('error', function(e) {
-            console.error('❌ Ошибка загрузки:', e.error);
-        });
-    </script>
 </body>
 </html>
