@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
- 
+
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #0a0a0a;
@@ -18,12 +18,21 @@ body {
     padding: 0 20px;
 }
 
-/* === ЗАГОЛОВОК С ГЛИЧЕМ === */
+/* === АКЦИДЕНТНЫЙ ЗАГОЛОВОК === */
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .title-container {
     position: relative;
     display: inline-block;
-    text-align: center;
-    margin: 0 auto;
+    margin-bottom: 2rem;
 }
 
 .main-title {
@@ -33,97 +42,106 @@ body {
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #0a0a0a;
-    text-shadow: -2px -2px 0 #ff003c, 2px 2px 0 #0066ff;
-    margin-bottom: 1rem;
+    text-shadow: 
+        -3px -3px 0 #ff003c,
+        3px 3px 0 #0066ff;
     line-height: 0.9;
     cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
-    z-index: 3;
-    transition: all 0.3s ease;
-}
-
-.glitch-layers {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.glitch-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'FatGrot', 'Impact', sans-serif;
-    font-size: clamp(4rem, 15vw, 12rem);
-    font-weight: 400;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    
+    /* Эффект металлической текстуры */
+    background: linear-gradient(45deg, #8B0000, #B22222, #DC143C, #FF0033);
+    -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
-    text-shadow: -2px -2px 0 #ff003c, 2px 2px 0 #0066ff;
+    background-size: 300% 300%;
+    animation: metalShift 6s ease-in-out infinite;
+}
+
+.main-title::before {
+    content: 'THEFRODESDID';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Broken Knight', 'Impact', sans-serif;
+    color: transparent;
+    text-shadow: 
+        -4px -4px 0 #0066ff,
+        4px 4px 0 #00ff88,
+        0 0 30px rgba(0, 102, 255, 0.5);
     opacity: 0;
-    transition: all 0.4s ease;
-    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* Эффект неонового свечения */
+    background: linear-gradient(45deg, #00BFFF, #1E90FF, #0066ff, #0044cc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-size: 300% 300%;
+    animation: neonShift 4s ease-in-out infinite;
 }
 
-.glitch-layers .glitch-layer:nth-child(1) {
-    color: #ff003c;
-    transform: translateX(-5px);
-}
-
-.glitch-layers .glitch-layer:nth-child(2) {
-    color: #0066ff;
-    transform: translateX(5px);
-}
-
-.glitch-layers .glitch-layer:nth-child(3) {
-    color: #00ff88;
-    transform: translateY(3px);
+.title-container:hover .main-title::before {
+    opacity: 1;
+    transform: scale(1.05) rotate(1deg);
+    letter-spacing: 0.08em;
 }
 
 .title-container:hover .main-title {
-    animation: text-flicker 0.3s ease;
-    color: transparent;
-    text-shadow: none;
+    text-shadow: 
+        -2px -2px 0 transparent,
+        2px 2px 0 transparent;
+    transform: scale(0.95);
 }
 
-.title-container:hover .glitch-layer:nth-child(1) {
-    opacity: 0.8;
-    animation: glitch-1 0.8s infinite linear;
+/* Анимации градиентов */
+@keyframes metalShift {
+    0%, 100% { 
+        background-position: 0% 50%;
+        filter: hue-rotate(0deg);
+    }
+    50% { 
+        background-position: 100% 50%;
+        filter: hue-rotate(20deg);
+    }
 }
 
-.title-container:hover .glitch-layer:nth-child(2) {
-    opacity: 0.6;
-    animation: glitch-2 0.6s infinite linear;
+@keyframes neonShift {
+    0%, 100% { 
+        background-position: 0% 50%;
+        filter: hue-rotate(0deg);
+    }
+    50% { 
+        background-position: 100% 50%;
+        filter: hue-rotate(45deg);
+    }
 }
 
-.title-container:hover .glitch-layer:nth-child(3) {
-    opacity: 0.4;
-    animation: glitch-3 1s infinite linear;
+/* Эффект искр при наведении */
+.title-container::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, transparent 30%, rgba(255, 0, 60, 0.1) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
 }
 
-@keyframes glitch-1 {
-    0%, 100% { transform: translateX(-3px) skewX(-2deg); }
-    50% { transform: translateX(3px) skewX(2deg); }
+.title-container:hover::after {
+    opacity: 1;
+    animation: sparkPulse 2s ease-in-out infinite;
 }
 
-@keyframes glitch-2 {
-    0%, 100% { transform: translateX(2px) skewY(1deg); }
-    50% { transform: translateX(-2px) skewY(-1deg); }
-}
-
-@keyframes glitch-3 {
-    0%, 100% { transform: translateY(1px); }
-    25% { transform: translateY(-1px); }
-    50% { transform: translateY(2px); }
-    75% { transform: translateY(-2px); }
-}
-
-@keyframes text-flicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+@keyframes sparkPulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.6; }
 }
 
 .tagline {
@@ -131,6 +149,13 @@ body {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #888;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+}
+
+.title-container:hover ~ .tagline {
+    color: #ff003c;
+    text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
 }
 
 /* === ПАРАЛЛАКС ЭЛЕМЕНТЫ === */
@@ -152,8 +177,19 @@ body {
     font-size: 1.5rem;
 }
 
-.chain { color: #ff003c; font-size: 2rem; opacity: 0.07; transform: rotate(-45deg); }
-.crack { color: #0066ff; font-size: 3rem; opacity: 0.05; letter-spacing: -0.5em; }
+.chain { 
+    color: #ff003c; 
+    font-size: 2rem; 
+    opacity: 0.07; 
+    transform: rotate(-45deg); 
+}
+
+.crack { 
+    color: #0066ff; 
+    font-size: 3rem; 
+    opacity: 0.05; 
+    letter-spacing: -0.5em; 
+}
 
 .chain-1 { top: 15%; left: 5%; }
 .chain-2 { bottom: 20%; right: 8%; }
