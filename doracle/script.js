@@ -675,9 +675,14 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Инициализация оракула при загрузке
+// Вешаем обработчик на кнопку после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
     const questionInput = document.getElementById('oracleQuestion');
+    const oracleButton = document.getElementById('oracleButton');
+    
+    if (oracleButton) {
+        oracleButton.addEventListener('click', window.consultOracle);
+    }
     
     if (questionInput) {
         questionInput.addEventListener('keypress', function(e) {
