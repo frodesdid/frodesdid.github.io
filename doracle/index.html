@@ -14,7 +14,6 @@
         <div class="tent-wall right"></div>
         <div class="tent-pillar"></div>
         
-        <!-- Магические артефакты -->
         <div class="magic-artifacts">
             <div class="artifact crystal"></div>
             <div class="artifact rune"></div>
@@ -24,7 +23,6 @@
 
     <!-- Главное святилище -->
     <main class="oracle-shrine">
-        <!-- Заголовок -->
         <header class="shrine-header">
             <h1 class="shrine-title">МАГИЧЕСКИЙ ШАТЁР</h1>
             <div class="shrine-subtitle">ЦИФРОВОЙ ОРАКУЛ СОПРОТИВЛЕНИЯ</div>
@@ -32,16 +30,13 @@
 
         <!-- Магический шар -->
         <div class="magic-sphere-container">
-            <!-- Аура шара -->
             <div class="sphere-aura"></div>
             
-            <!-- Основной шар -->
+            <!-- ОСНОВНОЙ ШАР С ПРАВИЛЬНЫМ ID -->
             <div class="magic-sphere" id="magicBall">
-                <!-- Слои шара -->
                 <div class="sphere-layer layer-outer"></div>
                 <div class="sphere-layer layer-inner"></div>
                 
-                <!-- Магический туман -->
                 <div class="sphere-mist">
                     <div class="mist-particle"></div>
                     <div class="mist-particle"></div>
@@ -49,7 +44,6 @@
                     <div class="mist-particle"></div>
                 </div>
                 
-                <!-- Область откровений -->
                 <div class="revelation-display">
                     <div class="revelation-text">
                         <div class="revelation-line">// КОСМИЧЕСКИЙ ХАОС</div>
@@ -59,7 +53,6 @@
                 </div>
             </div>
             
-            <!-- Подставка -->
             <div class="sphere-pedestal">
                 <div class="pedestal-base"></div>
                 <div class="pedestal-claw"></div>
@@ -68,7 +61,7 @@
             </div>
         </div>
 
-        <!-- Управление ритуалом -->
+        <!-- КНОПКИ С ПРАВИЛЬНЫМИ ID -->
         <div class="ritual-controls">
             <button class="control-button primary" id="activateBall">
                 ⚡ АКТИВИРОВАТЬ ШАР
@@ -78,7 +71,7 @@
             </button>
         </div>
 
-        <!-- Архив манифестаций -->
+        <!-- Архив -->
         <section class="manifestation-archive">
             <h2 class="archive-title">АРХИВ МАНИФЕСТАЦИЙ</h2>
             <div class="archive-entries" id="archiveEntries">
@@ -87,9 +80,60 @@
         </section>
     </main>
 
-    <!-- Подключение скриптов -->
+    <!-- ПОДКЛЮЧАЕМ ВСЕ СКРИПТЫ -->
     <script src="oracle-engine.js"></script>
     <script src="ritual-effects.js"></script>
     <script src="magic-ball.js"></script>
+    
+    <!-- СКРИПТ ДЛЯ ДИАГНОСТИКИ -->
+    <script>
+        console.log('🔍 Диагностика запущена...');
+        
+        // Проверяем загрузку DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM загружен');
+            
+            // Проверяем основные элементы
+            const elements = {
+                magicBall: document.getElementById('magicBall'),
+                activateBtn: document.getElementById('activateBall'),
+                clearBtn: document.getElementById('clearBall'),
+                archiveEntries: document.getElementById('archiveEntries')
+            };
+            
+            console.log('📋 Найденные элементы:', elements);
+            
+            // Проверяем стили
+            const ball = elements.magicBall;
+            if (ball) {
+                console.log('🎯 Стили шара:', {
+                    width: ball.offsetWidth,
+                    height: ball.offsetHeight,
+                    display: window.getComputedStyle(ball).display
+                });
+            }
+            
+            // Простая проверка клика
+            if (elements.activateBtn) {
+                elements.activateBtn.addEventListener('click', function() {
+                    console.log('🎯 Кнопка "Активировать" нажата!');
+                    // Просто меняем цвет для теста
+                    if (ball) {
+                        ball.style.boxShadow = '0 0 50px #ff0000';
+                        setTimeout(() => {
+                            ball.style.boxShadow = '';
+                        }, 1000);
+                    }
+                });
+            }
+            
+            console.log('🔮 Глобальный magicBall:', window.magicBall);
+        });
+        
+        // Проверяем ошибки загрузки скриптов
+        window.addEventListener('error', function(e) {
+            console.error('❌ Ошибка загрузки:', e.error);
+        });
+    </script>
 </body>
 </html>
