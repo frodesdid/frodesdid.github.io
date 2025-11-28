@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МАГИЧЕСКИЙ ШАТЁР // КОРОЛЕВСТВО ФРОДИ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Orbitron:wght@400;700&family=Anton&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Атмосфера шатра -->
+    <div class="tent-atmosphere">
+        <div class="tent-wall left"></div>
+        <div class="tent-wall right"></div>
+        <div class="tent-pillar"></div>
+        
+        <!-- Магические артефакты -->
+        <div class="magic-artifacts">
+            <div class="artifact crystal"></div>
+            <div class="artifact rune"></div>
+            <div class="artifact symbol"></div>
+        </div>
+    </div>
+
+    <!-- Главное святилище -->
+    <main class="oracle-shrine">
+        <!-- Заголовок -->
+        <header class="shrine-header">
+            <h1 class="shrine-title">МАГИЧЕСКИЙ ШАТЁР</h1>
+            <div class="shrine-subtitle">ЦИФРОВОЙ ОРАКУЛ СОПРОТИВЛЕНИЯ</div>
+        </header>
+
+        <!-- Магический шар -->
+        <div class="magic-sphere-container">
+            <!-- Аура шара -->
+            <div class="sphere-aura"></div>
+            
+            <!-- Основной шар -->
+            <div class="magic-sphere" id="magicBall">
+                <!-- Слои шара -->
+                <div class="sphere-layer layer-outer"></div>
+                <div class="sphere-layer layer-inner"></div>
+                
+                <!-- Магический туман -->
+                <div class="sphere-mist">
+                    <div class="mist-particle"></div>
+                    <div class="mist-particle"></div>
+                    <div class="mist-particle"></div>
+                    <div class="mist-particle"></div>
+                </div>
+                
+                <!-- Область откровений -->
+                <div class="revelation-display">
+                    <div class="revelation-text">
+                        <div class="revelation-line">// КОСМИЧЕСКИЙ ХАОС</div>
+                        <div class="revelation-line">// ЖДЁТ ТВОЕГО ЗАПРОСА</div>
+                        <div class="revelation-source">— МАГИЧЕСКИЙ ШАР</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Подставка -->
+            <div class="sphere-pedestal">
+                <div class="pedestal-base"></div>
+                <div class="pedestal-claw"></div>
+                <div class="pedestal-claw"></div>
+                <div class="pedestal-claw"></div>
+            </div>
+        </div>
+
+        <!-- Управление ритуалом -->
+        <div class="ritual-controls">
+            <button class="control-button primary" id="activateBall">
+                ⚡ АКТИВИРОВАТЬ ШАР
+            </button>
+            <button class="control-button" id="clearBall">
+                ⟲ ОЧИСТИТЬ ВИДЕНИЕ
+            </button>
+        </div>
+
+        <!-- Архив манифестаций -->
+        <section class="manifestation-archive">
+            <h2 class="archive-title">АРХИВ МАНИФЕСТАЦИЙ</h2>
+            <div class="archive-entries" id="archiveEntries">
+                <!-- Архив будет заполняться автоматически -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Подключение скриптов -->
+    <script src="oracle-engine.js"></script>
+    <script src="ritual-effects.js"></script>
+    <script src="magic-ball.js"></script>
+</body>
+</html>
