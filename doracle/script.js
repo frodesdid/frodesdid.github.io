@@ -241,6 +241,11 @@ class QuantumOracle {
             }
         };
 
+// ===== КВАНТОВЫЙ ОРАКУЛ v2.2 =====
+class QuantumOracle {
+    constructor() {
+        // ... все responseTemplates остаются без изменений ...
+
         // Запрещённые темы и слова
         this.forbiddenPatterns = [
             /убийств|убить|убива/i,
@@ -254,106 +259,105 @@ class QuantumOracle {
             /проклясть|порча|сглаз|чёрная магия/i
         ];
 
-        // Критические фразы для немедленного отказа
-        this.criticalPhrases = [
-            /стоит ли мне убить/i,
-            /как убить/i,
-            /хочу умереть/i,
-            /планирую преступление/i,
-            /совершить самоубийство/i
+        // Ключевые слова для каждой категории (должны быть в вопросе)
+        this.themeKeywords = {
+            relationships: ['отношен', 'любов', 'встреч', 'парень', 'девуш', 'семь', 'брак', 'чувств', 'сердц', 'роман', 'свидан', 'знакомств', 'измен'],
+            money: ['заработ', 'деньг', 'финанс', 'доход', 'богат', 'плат', 'рубл', 'доллар', 'евро', 'бюджет', 'накоплен', 'инвест', 'кредит'],
+            career: ['работ', 'карьер', 'професс', 'должност', 'начальник', 'коллег', 'офис', 'проект', 'бизнес', 'компан', 'зарплат', 'повышени'],
+            health: ['здоров', 'болез', 'самочувств', 'врач', 'лечен', 'боль', 'диагноз', 'медицин', 'анализ', 'симптом', 'фитнес', 'диет'],
+            personal: ['развити', 'потенциал', 'талант', 'способност', 'умени', 'навык', 'саморазвити', 'обучени', 'образовани']
+        };
+
+        // Специальные ответы для бессмысленных вопросов
+        this.nonsenseResponses = [
+            "КВАНТОВЫЙ ШУМ. ВОПРОС НЕ РАСПОЗНАН.",
+            "СИГНАЛ СЛИШКОМ СЛАБЫЙ. ПЕРЕФОРМУЛИРУЙТЕ.",
+            "НЕЧЕТКИЙ ЗАПРОС. УТОЧНИТЕ ВОПРОС.",
+            "СИСТЕМА НЕ МОЖЕТ ОБРАБОТАТЬ ДАННЫЕ.",
+            "ВОПРОС НЕ СОДЕРЖИТ ПОНИМАЕМЫХ СИГНАЛОВ.",
+            "ЭНТРОПИЯ ПРЕВЫСИЛА ЛИМИТ. ПОВТОРИТЕ ВОПРОС.",
+            "НЕРАСПОЗНАННЫЙ ПАТТЕРН. ИСПОЛЬЗУЙТЕ ЧЕТКИЕ ФОРМУЛИРОВКИ."
         ];
     }
 
     // Улучшенный анализ вопроса
     analyzeQuestion(question) {
-        if (!question || question.length < 3) {
+        if (!question || question.trim().length < 3) {
             return 'too_short';
         }
 
-        const lowerQuestion = question.toLowerCase().trim();
+        const cleanQuestion = question.toLowerCase().trim();
         
         // Проверка на запрещённые темы
-        if (this.isQuestionForbidden(lowerQuestion)) {
+        if (this.isQuestionForbidden(cleanQuestion)) {
             return 'forbidden';
         }
 
-        // Детектор тем с весами
-        const themes = {
-            relationships: this.calculateThemeWeight(lowerQuestion, [
-                'отношен', 'любов', 'встреч', 'парень', 'девуш', 'семь', 'брак', 
-                'чувств', 'сердц', 'роман', 'свидан', 'знакомств', 'измен'
-            ]),
-            
-            money: this.calculateThemeWeight(lowerQuestion, [
-                'заработ', 'деньг', 'финанс', 'доход', 'богат', 'плат', 'рубл', 
-                'доллар', 'евро', 'бюджет', 'накоплен', 'инвест', 'кредит'
-            ]),
-            
-            career: this.calculateThemeWeight(lowerQuestion, [
-                'работ', 'карьер', 'професс', 'должност', 'начальник', 'коллег', 
-                'офис', 'проект', 'бизнес', 'компан', 'зарплат', 'повышени'
-            ]),
-            
-            health: this.calculateThemeWeight(lowerQuestion, [
-                'здоров', 'болез', 'самочувств', 'врач', 'лечен', 'боль', 
-                'диагноз', 'медицин', 'анализ', 'симптом', 'фитнес', 'диет'
-            ]),
-            
-            personal: this.calculateThemeWeight(lowerQuestion, [
-                'развити', 'потенциал', 'талант', 'способност', 'умени', 
-                'навык', 'саморазвити', 'обучени', 'образовани'
-            ])
-        };
+        // Проверка на бессмысленный вопрос (нет ключевых слов)
+        if (this.isQuestionNonsense(cleanQuestion)) {
+            return 'nonsense';
+        }
 
-        // Находим доминирующую тему
-        let mainTheme = 'general';
-        let maxWeight = 0;
+        // Определение темы по ключевым словам
+        return this.detectTheme(cleanQuestion);
+    }
 
-        for (const [theme, weight] of Object.entries(themes)) {
-            if (weight > maxWeight) {
-                maxWeight = weight;
-                mainTheme = theme;
+    // Проверка на бессмысленный вопрос
+    isQuestionNonsense(question) {
+        // Собираем все ключевые слова из всех тем
+        const allKeywords = Object.values(this.themeKeywords).flat();
+        
+        // Проверяем, есть ли хоть одно ключевое слово в вопросе
+        const hasKeyword = allKeywords.some(keyword => question.includes(keyword));
+        
+        // Также проверяем на наличие вопросительных слов
+        const questionWords = ['кто', 'что', 'где', 'когда', 'почему', 'зачем', 'как', 'сколько', 'чей'];
+        const hasQuestionWord = questionWords.some(word => question.includes(word));
+        
+        // Если нет ни ключевых слов, ни вопросительных - считаем бессмысленным
+        return !hasKeyword && !hasQuestionWord;
+    }
+
+    // Определение темы вопроса
+    detectTheme(question) {
+        let bestTheme = 'general';
+        let maxScore = 0;
+
+        for (const [theme, keywords] of Object.entries(this.themeKeywords)) {
+            let score = 0;
+            keywords.forEach(keyword => {
+                if (question.includes(keyword)) {
+                    score += 1;
+                    // Бонус за точное совпадение
+                    const words = question.split(/\s+/);
+                    if (words.includes(keyword)) score += 0.5;
+                }
+            });
+            
+            if (score > maxScore) {
+                maxScore = score;
+                bestTheme = theme;
             }
         }
 
-        return maxWeight > 0.1 ? mainTheme : 'general';
+        // Если счёт слишком низкий, считаем общим вопросом
+        return maxScore >= 1 ? bestTheme : 'general';
     }
 
-    calculateThemeWeight(question, keywords) {
-        let weight = 0;
-        keywords.forEach(keyword => {
-            if (question.includes(keyword)) {
-                weight += 1;
-            }
-        });
-        return weight;
-    }
-
-    // Проверка на запрещённые темы
+    // Проверка на запрещённые темы (остаётся без изменений)
     isQuestionForbidden(question) {
-        // Проверка критических фраз
-        for (let pattern of this.criticalPhrases) {
+        for (let pattern of this.forbiddenPatterns) {
             if (pattern.test(question)) {
-                console.log('Заблокировано критической фразой:', pattern);
+                console.log('Заблокировано:', pattern);
                 return true;
             }
         }
-
-        // Проверка запрещённых слов
-        let forbiddenWordCount = 0;
-        for (let pattern of this.forbiddenPatterns) {
-            if (pattern.test(question)) {
-                forbiddenWordCount++;
-                console.log('Найдено запрещённое слово:', pattern);
-            }
-        }
-
-        return forbiddenWordCount > 0;
+        return false;
     }
 
-    // Генерация ответа с улучшенной логикой
+    // Генерация ответа
     generateResponse(theme, question) {
-        console.log('Тема вопроса:', theme);
+        console.log('Тема вопроса:', theme, 'Вопрос:', question);
         
         if (theme === 'forbidden') {
             return this.getForbiddenResponse();
@@ -361,6 +365,20 @@ class QuantumOracle {
 
         if (theme === 'too_short') {
             return "ВОПРОС СЛИШКОМ КОРОТКИЙ. ОПИШИТЕ ПОДРОБНЕЕ.";
+        }
+
+        if (theme === 'nonsense') {
+            return this.getNonsenseResponse();
+        }
+
+        // Для общих вопросов проверяем, есть ли вопросительные слова
+        if (theme === 'general') {
+            const questionWords = ['кто', 'что', 'где', 'когда', 'почему', 'зачем', 'как', 'сколько', 'чей'];
+            const hasQuestionWord = questionWords.some(word => question.includes(word));
+            
+            if (!hasQuestionWord) {
+                return this.getNonsenseResponse();
+            }
         }
 
         if (!this.responseTemplates[theme]) {
@@ -380,12 +398,13 @@ class QuantumOracle {
             "СИСТЕМА ОТКАЗЫВАЕТ В ДОСТУПЕ. ЗАПРОС НЕСЁТ УГРОЗУ.",
             "КВАНТОВЫЙ ШУМ. ПЕРЕФОРМУЛИРУЙТЕ ВОПРОС.",
             "ОШИБКА СИСТЕМЫ БЕЗОПАСНОСТИ. ЗАПРОС БЛОКИРОВАН.",
-            "НЕПРИЕМЛЕМЫЙ ЗАПРОС. ОБРАТИТЕСЬ К СПЕЦИАЛИСТУ.",
-            "СИСТЕМА НЕ МОЖЕТ ОБРАБОТАТЬ ДАННЫЙ ЗАПРОС.",
-            "ОШИБКА ЭТИЧЕСКОГО КОНТРОЛЯ. ЗАПРОС ОТКЛОНЁН."
+            "НЕПРИЕМЛЕМЫЙ ЗАПРОС. ОБРАТИТЕСЬ К СПЕЦИАЛИСТУ."
         ];
-        
         return forbiddenResponses[Math.floor(Math.random() * forbiddenResponses.length)];
+    }
+
+    getNonsenseResponse() {
+        return this.nonsenseResponses[Math.floor(Math.random() * this.nonsenseResponses.length)];
     }
 
     // Основной метод консультации
@@ -403,7 +422,7 @@ class QuantumOracle {
     }
 
     calculateConfidence(theme, question) {
-        if (theme === 'forbidden' || theme === 'too_short') {
+        if (theme === 'forbidden' || theme === 'too_short' || theme === 'nonsense') {
             return 0.999;
         }
         
@@ -418,6 +437,7 @@ class QuantumOracle {
 
 // Инициализация оракула
 window.QuantumOracle = new QuantumOracle();
+        
 // Функция для вызова оракула
 async function consultOracle() {
     const questionInput = document.getElementById('oracleQuestion');
