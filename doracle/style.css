@@ -617,6 +617,78 @@ body {
     border-radius: 3px;
 }
 
+/* ===== ИСПРАВЛЕНИЯ ДЛЯ ТЕКСТА В ШАРЕ ===== */
+
+/* Убедимся, что текст поверх всех слоев */
+.revelation-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 240px;
+    z-index: 1000 !important; /* Важно: поверх всех слоев */
+    pointer-events: none;
+}
+
+.revelation-text {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    text-shadow: 
+        0 0 10px var(--acid),
+        0 0 20px var(--electric),
+        0 0 30px var(--cinnabar);
+    opacity: 0.95;
+    color: var(--acid) !important; /* Принудительно задаем цвет */
+    filter: drop-shadow(0 0 10px var(--acid));
+}
+
+.revelation-line {
+    margin-bottom: 0.8rem;
+    opacity: 1 !important; /* Принудительно делаем видимым */
+    transform: translateY(0) !important;
+    animation: none !important; /* Отключаем анимации для теста */
+    color: var(--acid) !important;
+    text-shadow: 
+        0 0 5px var(--acid),
+        0 0 10px var(--electric),
+        0 0 15px var(--cinnabar);
+}
+
+.revelation-source {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    opacity: 0.8 !important;
+    margin-top: 1rem;
+    color: var(--fire) !important;
+    text-shadow: 0 0 5px var(--fire);
+}
+
+/* Убедимся, что слои шара не перекрывают текст */
+.sphere-layer {
+    z-index: 2 !important; /* Слои под текстом */
+}
+
+.sphere-mist {
+    z-index: 3 !important; /* Туман под текстом */
+}
+
+.magic-sphere {
+    z-index: 1 !important; /* Сам шар под текстом */
+}
+
+/* Дебаг-стили для проверки видимости */
+.debug-visible {
+    border: 2px solid #00ff00 !important;
+    background: rgba(0, 255, 0, 0.1) !important;
+}
+
+.debug-hidden {
+    border: 2px solid #ff0000 !important;
+    background: rgba(255, 0, 0, 0.1) !important;
+}
+
 .archive-entries::-webkit-scrollbar-thumb:hover {
     background: var(--cinnabar);
 }
