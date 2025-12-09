@@ -220,5 +220,163 @@
         
         console.log('✅ Экстренная лава-лампа готова');
     </script>
+
+    <script>
+    // Инициализация полной системы
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 Запуск цифровой лава-лампы');
+    
+        // Создаем движок
+        const engine = new LavaLampEngine({
+            blobCount: 15,
+            temperature: 0.6,
+            viscosity: 0.3,
+            chaos: 0.2
+        });
+    
+        // Создаем рендерер
+        const renderer = new LavaLampRenderer(engine, 'lavaCanvas');
+    
+        // Создаем панель управления
+        createControlPanel(engine, renderer);
+    
+        // Глобальный доступ для отладки
+        window.lavaLamp = { engine, renderer };
+    
+        console.log('🎉 Цифровая лава-лампа запущена!');
+    
+        // Автозапуск через 1 секунду
+        setTimeout(() => {
+            engine.isRunning = true;
+            renderer.start();
+        }, 1000);
+    });
+
+    function createControlPanel(engine, renderer) {
+        const panel = document.createElement('div');
+        panel.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid #0066ff;
+            border-radius: 10px;
+            padding: 15px;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            z-index: 10000;
+            min-width: 250px;
+            backdrop-filter: blur(10px);
+        `;
+    
+        panel.innerHTML = `
+            <h3 style="margin-top: 0; color: #ff003c;">ЛАВА-ЛАМПА 3000</h3>
+        
+            <div style="margin: 10px 0;">
+                <label>ТЕМПЕРАТУРА: <span id="tempValue">0.6</span></label>
+                <input type="range" id="tempSlider" min="0" max="1" step="0.01" value="0.6" 
+                       style="width: 100%; margin: 5px 0;">
+            </div>
+        
+            <div style="margin: 10px 0;">
+                <label>ВЯЗКОСТЬ: <span id="viscValue">0.3</span></label>
+                <input type="range" id="viscSlider" min="0" max="1" step="0.01" value="0.3" 
+                       style="width: 100%; margin: 5px 0;">
+            </div>
+        
+            <div style="margin: 10px 0;">
+                <label>ХАОС: <span id="chaosValue">0.2</span></label>
+                <input type="range" id="chaosSlider" min="0" max="1" step="0.01" value="0.2" 
+                       style="width: 100%; margin: 5px 0;">
+            </div>
+        
+            <div style="margin: 15px 0;">
+                <button id="addBlobBtn" style="
+                    background: #ff003c;
+                    color: white;
+                    border: none;
+                    padding: 8px;
+                    margin: 3px;
+                    cursor: pointer;
+                    width: 48%;
+                ">+ КАПЛЯ</button>
+            
+                <button id="resetBtn" style="
+                    background: #0066ff;
+                    color: white;
+                    border: none;
+                    padding: 8px;
+                    margin: 3px;
+                    cursor: pointer;
+                    width: 48%;
+                ">СБРОС</button>
+            </div>
+        
+            <div style="margin: 15px 0;">
+                <button id="screenshotBtn" style="
+                    background: #00ff88;
+                    color: #0a0a0a;
+                    border: none;
+                    padding: 8px;
+                    margin: 3px;
+                    cursor: pointer;
+                    width: 100%;
+                ">📸 СНИМОК</button>
+            </div>
+        
+            <div style="font-size: 12px; opacity: 0.7; margin-top: 10px;">
+                <div>КАПЕЛЬ: <span id="blobCount">15</span></div>
+                <div>СТАТУС: <span id="status">АКТИВНА</span></div>
+            </div>
+        `;
+    
+        document.body.appendChild(panel);
+    
+        // Обработчики
+        document.getElementById('tempSlider').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            engine.setTemperature(value);
+            document.getElementById('tempValue').textContent = value.toFixed(2);
+        });
+    
+        document.getElementById('viscSlider').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            engine.setViscosity(value);
+            document.getElementById('viscValue').textContent = value.toFixed(2);
+        });
+    
+        document.getElementById('chaosSlider').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            engine.setChaos(value);
+            document.getElementById('chaosValue').textContent = value.toFixed(2);
+        });
+    
+        document.getElementById('addBlobBtn').addEventListener('click', () => {
+            engine.addBlob();
+            updateStats();
+        });
+    
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            engine.reset();
+            updateStats();
+        });
+        
+        document.getElementById('screenshotBtn').addEventListener('click', () => {
+            renderer.takeScreenshot();
+        });
+        
+        // Обновление статистики
+        function updateStats() {
+            const state = engine.getState();
+            document.getElementById('blobCount').textContent = state.blobCount;
+            document.getElementById('status').textContent = 
+                state.isRunning ? 'АКТИВНА' : 'ПАУЗА';
+        }
+    
+        // Периодическое обновление
+        setInterval(updateStats, 1000);
+    }
+    </script>
+    
 </body>
 </html>
