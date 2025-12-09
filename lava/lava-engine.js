@@ -1,4 +1,4 @@
-// lava-engine.js - Ядро физики цифровой лава-лампы
+// lava-engine.js - Ядро физики цифровой лава-лампы 
 
 console.log('🔥 lava-engine.js загружен');
 
