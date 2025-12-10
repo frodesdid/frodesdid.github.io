@@ -1,4 +1,4 @@
-// Показать диалог приглашения
+// Показать диалог приглашения 
 async function showInviteDialog() {
     try {
         const modal = document.getElementById('invite-modal');
