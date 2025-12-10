@@ -1,45 +1,61 @@
-// Открытие чата
-async function openChat(chatId) {
+// Экспортируем функции ГЛОБАЛЬНО
+window.openChat = async function(chatId) {
     try {
         currentChatId = chatId;
-        
-        // Обновляем активный чат в списке
-        document.querySelectorAll('.chat-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.dataset.chatId === chatId) {
-                item.classList.add('active');
-                // Сбрасываем счетчик непрочитанных
-                const badge = item.querySelector('.unread-badge');
-                if (badge) badge.remove();
-            }
-        });
         
         // Скрываем заглушку, показываем чат
         document.getElementById('chat-placeholder').style.display = 'none';
         document.getElementById('chat-container').style.display = 'flex';
         
-        // Загружаем информацию о чате
-        await loadChatInfo(chatId);
+        // Находим собеседника
+        const chatDoc = await db.collection('chats').doc(chatId).get();
+        const chatData = chatDoc.data();
+        const otherUserId = chatData.participants.find(id => id !== currentUser.uid);
+        
+        // Загружаем информацию о собеседнике
+        const userDoc = await db.collection('users').doc(otherUserId).get();
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+            document.getElementById('chat-partner-name').textContent = userData.displayName;
+            document.getElementById('chat-avatar').src = userData.photoURL || 'assets/default-avatar.png';
+        }
         
         // Загружаем сообщения
-        await loadMessages(chatId);
+        const messagesQuery = await db.collection('chats')
+            .doc(chatId)
+            .collection('messages')
+            .orderBy('timestamp', 'asc')
+            .get();
         
-        // Подписываемся на новые сообщения
-        subscribeToMessages(chatId);
+        const container = document.getElementById('messages-container');
+        container.innerHTML = '';
         
-        // Помечаем сообщения как прочитанные
-        await markMessagesAsRead(chatId);
+        messagesQuery.forEach(doc => {
+            const message = doc.data();
+            const div = document.createElement('div');
+            div.className = `message-wrapper ${message.senderId === currentUser.uid ? 'sent' : 'received'}`;
+            div.innerHTML = `
+                <div class="message-bubble">
+                    <p>${message.content}</p>
+                    <div class="message-footer">
+                        <span class="message-time">${message.timestamp?.toDate().toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+        
+        // Прокручиваем вниз
+        container.scrollTop = container.scrollHeight;
         
         // Фокусируемся на поле ввода
-        setTimeout(() => {
-            document.getElementById('message-input').focus();
-        }, 100);
+        document.getElementById('message-input').focus();
         
     } catch (error) {
         console.error("Ошибка открытия чата:", error);
-        showNotification("Не удалось открыть чат", "error");
+        alert("Не удалось открыть чат: " + error.message);
     }
-}
+};
 
 // Загрузка информации о чате
 async function loadChatInfo(chatId) {
