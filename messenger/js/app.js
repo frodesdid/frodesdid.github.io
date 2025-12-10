@@ -205,7 +205,14 @@ function createChatElement(chat) {
     `;
     
     // При клике на чат
-    div.addEventListener('click', () => openChat(chat.id));
+    div.addEventListener('click', function() {
+        if (typeof openChat === 'function') {
+            openChat(chat.id);
+        } else {
+            console.error("Функция openChat не найдена");
+            alert("Ошибка загрузки чата. Обновите страницу.");
+        }
+    });
     
     // Загружаем информацию о собеседнике асинхронно
     loadChatPartnerInfo(otherUserId, div);
