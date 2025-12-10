@@ -1,4 +1,4 @@
-// Проверяем состояние авторизации при загрузке
+// Проверяем состояние авторизации при загрузке 
 document.addEventListener('DOMContentLoaded', () => {
     auth.onAuthStateChanged((user) => {
         const authContainer = document.getElementById('auth-container');
