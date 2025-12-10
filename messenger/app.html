@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frodes Messenger</title>
+    <style>
+        body { margin: 0; font-family: Arial; display: flex; height: 100vh; }
+        /* Левая панель */
+        .sidebar { width: 300px; background: #2c3e50; color: white; padding: 20px; }
+        .sidebar h3 { margin-top: 0; }
+        .friend-item { padding: 10px; border-bottom: 1px solid #34495e; cursor: pointer; }
+        .friend-item:hover { background: #34495e; }
+        
+        /* Правая часть - чат */
+        .chat-area { flex: 1; display: flex; flex-direction: column; }
+        .chat-header { background: #ecf0f1; padding: 15px; border-bottom: 1px solid #ddd; }
+        .messages { flex: 1; padding: 20px; overflow-y: auto; }
+        .message-input { display: flex; padding: 15px; border-top: 1px solid #ddd; }
+        .message-input input { flex: 1; padding: 10px; font-size: 16px; }
+        .message-input button { padding: 10px 20px; background: #2c3e50; color: white; border: none; }
+        
+        /* Сообщения */
+        .message { margin: 10px 0; padding: 10px; border-radius: 10px; max-width: 60%; }
+        .received { background: #ecf0f1; align-self: flex-start; }
+        .sent { background: #3498db; color: white; align-self: flex-end; margin-left: auto; }
+    </style>
+</head>
+<body>
+    <!-- Левая панель -->
+    <div class="sidebar">
+        <h3>👤 <span id="username">Пользователь</span></h3>
+        <hr>
+        <h4>Друзья</h4>
+        <div id="friends-list">
+            <!-- Друзья загружаются тут -->
+        </div>
+        <button onclick="addTestFriend()" style="margin-top: 20px;">+ Добавить тестового друга</button>
+        <button onclick="logout()" style="margin-top: 10px;">Выйти</button>
+    </div>
+    
+    <!-- Область чата -->
+    <div class="chat-area">
+        <div class="chat-header">
+            <h3 id="chat-with">Выберите друга для общения</h3>
+        </div>
+        
+        <div class="messages" id="messages-container">
+            <!-- Сообщения появятся здесь -->
+            <div style="text-align: center; color: #999; margin-top: 50px;">
+                <h3>💬 Начните общение</h3>
+                <p>Выберите друга из списка слева</p>
+            </div>
+        </div>
+        
+        <div class="message-input">
+            <input type="text" id="message-input" placeholder="Введите сообщение..." disabled>
+            <button onclick="sendMessage()" disabled id="send-btn">Отправить</button>
+        </div>
+    </div>
+    
+    <script>
+        // Глобальные переменные
+        let currentUser = null;
+        let currentFriend = null;
+        
+        // При загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            currentUser = localStorage.getItem('frodes_user');
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('username').textContent = currentUser;
+            loadFriends();
+        });
+        
+        // Загрузка друзей
+        function loadFriends() {
+            const friends = JSON.parse(localStorage.getItem('frodes_friends') || '[]');
+            const list = document.getElementById('friends-list');
+            
+            if (friends.length === 0) {
+                list.innerHTML = '<p>Пока нет друзей</p>';
+                return;
+            }
+            
+            list.innerHTML = '';
+            friends.forEach(friend => {
+                const div = document.createElement('div');
+                div.className = 'friend-item';
+                div.textContent = friend.name;
+                div.onclick = () => openChat(friend);
+                list.appendChild(div);
+            });
+        }
+        
+        // Открыть чат с другом
+        function openChat(friend) {
+            currentFriend = friend;
+            document.getElementById('chat-with').textContent = `Чат с ${friend.name}`;
+            document.getElementById('message-input').disabled = false;
+            document.getElementById('send-btn').disabled = false;
+            
+            loadMessages(friend.id);
+        }
+        
+        // Загрузить сообщения
+        function loadMessages(friendId) {
+            const chats = JSON.parse(localStorage.getItem('frodes_chats') || '{}');
+            const messages = chats[friendId] || [];
+            const container = document.getElementById('messages-container');
+            
+            container.innerHTML = '';
+            messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = `message ${msg.sender === 'me' ? 'sent' : 'received'}`;
+                div.textContent = msg.text;
+                container.appendChild(div);
+            });
+        }
+        
+        // Отправить сообщение
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            
+            if (!text || !currentFriend) return;
+            
+            // Сохраняем сообщение
+            const chats = JSON.parse(localStorage.getItem('frodes_chats') || '{}');
+            if (!chats[currentFriend.id]) {
+                chats[currentFriend.id] = [];
+            }
+            
+            chats[currentFriend.id].push({
+                sender: 'me',
+                text: text,
+                time: new Date().toLocaleTimeString()
+            });
+            
+            localStorage.setItem('frodes_chats', JSON.stringify(chats));
+            
+            // Очищаем поле и обновляем чат
+            input.value = '';
+            loadMessages(currentFriend.id);
+        }
+        
+        // Добавить тестового друга
+        function addTestFriend() {
+            const friends = JSON.parse(localStorage.getItem('frodes_friends') || '[]');
+            const newFriend = {
+                id: 'friend_' + Date.now(),
+                name: 'Тестовый Друг'
+            };
+            
+            friends.push(newFriend);
+            localStorage.setItem('frodes_friends', JSON.stringify(friends));
+            loadFriends();
+            alert(`Добавлен друг: ${newFriend.name}`);
+        }
+        
+        // Выйти
+        function logout() {
+            localStorage.removeItem('frodes_user');
+            window.location.href = 'index.html';
+        }
+        
+        // Экспорт функций для кнопок
+        window.openChat = openChat;
+        window.sendMessage = sendMessage;
+        window.logout = logout;
+    </script>
+</body>
+</html>
