@@ -181,11 +181,30 @@ function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
+// Функция удаления инвайта (используем другое имя чтобы не было конфликта)
+async function deleteInviteFunction(inviteId) {
+    if (!confirm("Удалить этот инвайт-код?")) return;
+    
+    try {
+        await db.collection('invites').doc(inviteId).delete();
+        alert('Инвайт удален');
+        showInviteDialog(); // Обновляем список
+    } catch (error) {
+        console.error("Ошибка удаления инвайта:", error);
+        alert("Ошибка: " + error.message);
+    }
+}
+
+// Функция-обертка с правильным именем для HTML
+async function deleteInvite(inviteId) {
+    return deleteInviteFunction(inviteId);
+}
+
 // Экспортируем функции
 window.showInviteDialog = showInviteDialog;
 window.createNewInvite = createNewInvite;
 window.copyInviteCode = copyInviteCode;
-window.deleteInvite = deleteInvite;
+window.deleteInvite = deleteInvite; // Теперь работает!
 window.closeModal = closeModal;
 window.startNewChat = startNewChat;
 
