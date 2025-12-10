@@ -3,380 +3,933 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ЦИФРОВАЯ ЛАВА-ЛАМПА // THEFRODESDID</title>
-    <link rel="stylesheet" href="lava-styles.css">
+    <title>Цифровая Лава-Лампа 🪔</title>
     <style>
-        /* Экстренные стили для немедленного отображения */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #0a0a0a; 
-            color: #00ff88;
-            font-family: 'Courier New', monospace;
+        /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Теплая палитра как у настоящей лава-лампы */
+            --glass-color: #1a0f0f;
+            --glass-glow: #2a1a1a;
+            --wax-yellow: #ffaa00;
+            --wax-orange: #ff5500;
+            --wax-red: #ff3300;
+            --fluid-blue: #0066aa;
+            --fluid-purple: #6633aa;
+            --base-gold: #aa7700;
+            --ambient-light: #ffdd99;
+            --background-dark: #0a0606;
+            --background-light: #1a1010;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
+            color: #ffdd99;
+            font-family: 'Georgia', 'Times New Roman', serif;
             overflow: hidden;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* ===== ФОНОВЫЕ ЭФФЕКТЫ ===== */
+        .ambient-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 170, 0, 0.1) 0%,
+                rgba(255, 85, 0, 0.05) 30%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .wall-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 221, 153, 0.03) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(255, 170, 0, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px, 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ===== КОНТЕЙНЕР ЛАМПЫ ===== */
+        .lamp-container {
+            position: relative;
+            width: 300px;
+            height: 500px;
+            margin: 20px auto;
+            filter: drop-shadow(0 0 30px rgba(255, 170, 0, 0.3));
+        }
+
+        /* Основание лампы */
+        .lamp-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 40px;
+            background: linear-gradient(
+                to top,
+                var(--base-gold) 0%,
+                #cc9900 20%,
+                var(--base-gold) 100%
+            );
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: 
+                inset 0 5px 10px rgba(255, 255, 255, 0.2),
+                inset 0 -5px 10px rgba(0, 0, 0, 0.4),
+                0 5px 20px rgba(0, 0, 0, 0.5);
+            z-index: 3;
+        }
+
+        .base-details {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            right: 20px;
+            height: 3px;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            border-radius: 2px;
+        }
+
+        /* Колба лампы */
+        .lamp-glass {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 400px;
+            background: linear-gradient(
+                to right,
+                var(--glass-color) 0%,
+                var(--glass-glow) 50%,
+                var(--glass-color) 100%
+            );
+            border-radius: 90px 90px 20px 20px;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 0 50px rgba(0, 0, 0, 0.8),
+                inset 0 0 100px rgba(0, 0, 0, 0.6),
+                0 0 30px rgba(255, 170, 0, 0.2);
+            z-index: 2;
+        }
+
+        .glass-reflection {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            right: 10px;
+            height: 30px;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 100%
+            );
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        /* Крышка лампы */
+        .lamp-cap {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 190px;
+            height: 20px;
+            background: linear-gradient(
+                to bottom,
+                #887744 0%,
+                var(--base-gold) 50%,
+                #665522 100%
+            );
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: 
+                inset 0 2px 5px rgba(255, 255, 255, 0.3),
+                0 2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 4;
+        }
+
+        /* ===== ЖИДКОСТЬ И ВОСК ===== */
+        .lamp-fluid {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 380px;
+            overflow: hidden;
+            border-radius: 80px 80px 15px 15px;
+            z-index: 1;
+        }
+
+        /* Жидкость (нижний слой) */
+        .fluid-background {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to top,
+                var(--fluid-purple) 0%,
+                var(--fluid-blue) 100%
+            );
+            opacity: 0.7;
+        }
+
+        /* ===== CANVAS ДЛЯ АНИМАЦИИ ВОСКА ===== */
+        #waxCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ ===== */
+        .info-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 15, 15, 0.8);
+            border: 1px solid rgba(170, 119, 0, 0.3);
+            border-radius: 15px;
+            padding: 15px 25px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+        }
+
+        .lamp-title {
+            font-size: 1.5em;
+            color: var(--ambient-light);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .control-btn {
+            background: rgba(170, 119, 0, 0.3);
+            border: 1px solid rgba(255, 170, 0, 0.5);
+            color: var(--ambient-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 0.9em;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 170, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 170, 0, 0.2);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* ===== МЕДИАТИВНЫЙ ТЕКСТ ===== */
+        .meditation-text {
+            position: fixed;
+            top: 30px;
+            width: 100%;
+            text-align: center;
+            font-style: italic;
+            opacity: 0.7;
+            font-size: 1.1em;
+            padding: 0 20px;
+            text-shadow: 0 0 5px rgba(255, 221, 153, 0.5);
+        }
+
+        /* ===== АДАПТИВНОСТЬ ===== */
+        @media (max-width: 768px) {
+            .lamp-container {
+                width: 250px;
+                height: 400px;
+            }
+            
+            .lamp-glass {
+                width: 150px;
+                height: 320px;
+                border-radius: 75px 75px 15px 15px;
+            }
+            
+            .lamp-fluid {
+                width: 130px;
+                height: 300px;
+                border-radius: 65px 65px 12px 12px;
+            }
+            
+            .info-panel {
+                width: 90%;
+                min-width: auto;
+                padding: 10px 15px;
+            }
+        }
+
+        /* ===== АНИМАЦИИ ===== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+        }
+
+        .lamp-container {
+            animation: float 8s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
-    <!-- Экстренный контейнер -->
-    <div id="emergencyContainer" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    ">
-        <h1 style="color: #ff003c; margin-bottom: 20px;">ЦИФРОВАЯ ЛАВА-ЛАМПА</h1>
-        <div id="statusMessage" style="margin-bottom: 20px;">Инициализация...</div>
-        <canvas id="emergencyCanvas" width="400" height="600" style="
-            border: 2px solid #0066ff;
-            border-radius: 10px;
-            background: #111;
-        "></canvas>
-        <div style="margin-top: 20px;">
-            <button id="startBtn" style="
-                background: #ff003c;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                margin: 5px;
-            ">СТАРТ</button>
-            <button id="stopBtn" style="
-                background: #0066ff;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                margin: 5px;
-            ">СТОП</button>
+    <!-- Фоновые эффекты -->
+    <div class="ambient-glow"></div>
+    <div class="wall-texture"></div>
+
+    <!-- Медитативный текст -->
+    <div class="meditation-text">
+        «Пламя, которое не обжигает, а согревает душу»
+    </div>
+
+    <!-- Основная лампа -->
+    <div class="lamp-container">
+        <!-- Крышка -->
+        <div class="lamp-cap"></div>
+        
+        <!-- Стеклянная колба -->
+        <div class="lamp-glass">
+            <div class="glass-reflection"></div>
+        </div>
+        
+        <!-- Основание -->
+        <div class="lamp-base">
+            <div class="base-details"></div>
+        </div>
+        
+        <!-- Жидкость и воск -->
+        <div class="lamp-fluid">
+            <div class="fluid-background"></div>
+            <canvas id="waxCanvas"></canvas>
         </div>
     </div>
 
-    <!-- Основные скрипты -->
-    <script src="lava-engine.js"></script>
-    <script src="lava-renderer.js"></script>
-    
-    <!-- Экстренный скрипт -->
+    <!-- Панель управления -->
+    <div class="info-panel">
+        <div class="lamp-title">
+            <span class="status-indicator"></span>
+            ЦИФРОВАЯ ЛАВА-ЛАМПА
+        </div>
+        <div style="opacity: 0.8; margin-bottom: 10px;">
+            Температура: <span id="tempValue">37°C</span> | 
+            Капель: <span id="blobCount">12</span>
+        </div>
+        <div class="controls">
+            <button class="control-btn" id="heatBtn">➕ Нагрев</button>
+            <button class="control-btn" id="coolBtn">➖ Охлаждение</button>
+            <button class="control-btn" id="addBtn">✨ Добавить каплю</button>
+            <button class="control-btn" id="resetBtn">🔄 Сброс</button>
+        </div>
+    </div>
+
+    <!-- ВСЯ ЛОГИКА В ОДНОМ СКРИПТЕ -->
     <script>
-        console.log('🔥 Экстренная инициализация лава-лампы');
-        
+        console.log('🪔 Инициализация цифровой лава-лампы...');
+
+        // ===== КОНФИГУРАЦИЯ =====
+        const CONFIG = {
+            // Физика
+            BLOB_COUNT: 12,
+            MAX_BLOBS: 25,
+            GRAVITY: 0.1,
+            BUOYANCY: 0.08,
+            VISCOSITY: 0.4,
+            TEMPERATURE: 0.5,
+            HEAT_SOURCE_Y: 0.9,
+            
+            // Визуал
+            WAX_COLORS: [
+                '#ff5500', // Оранжевый
+                '#ff3300', // Красный
+                '#ffaa00', // Желтый
+                '#ff8800'  // Янтарный
+            ],
+            FLUID_COLORS: {
+                top: '#0066aa',
+                bottom: '#6633aa'
+            },
+            
+            // Поведение
+            MERGE_CHANCE: 0.002,
+            CHAOS_LEVEL: 0.1,
+            TRAIL_LENGTH: 8
+        };
+
+        // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+        let canvas, ctx;
+        let blobs = [];
+        let isRunning = true;
+        let lastTime = 0;
+        let heatPower = 0.5;
         let animationId = null;
-        const canvas = document.getElementById('emergencyCanvas');
-        const ctx = canvas.getContext('2d');
-        const statusMessage = document.getElementById('statusMessage');
-        
-        // Простейшая физика капель
-        class Blob {
-            constructor() {
-                this.x = canvas.width / 2;
-                this.y = canvas.height;
-                this.radius = 15 + Math.random() * 25;
-                this.color = Math.random() > 0.5 ? '#ff003c' : '#ff5500';
-                this.speedY = -1 - Math.random() * 2;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.wobble = 0;
-                this.wobbleSpeed = 0.05 + Math.random() * 0.1;
+
+        // ===== КЛАСС КАПЛИ ВОСКА =====
+        class WaxBlob {
+            constructor(x, y, isInitial = false) {
+                this.id = Date.now() + Math.random();
+                this.x = x || 0.3 + Math.random() * 0.4;
+                this.y = y || (isInitial ? 0.9 : 0.1 + Math.random() * 0.8);
+                this.radius = 0.02 + Math.random() * 0.03;
+                this.mass = Math.PI * this.radius * this.radius;
+                
+                // Физика
+                this.vx = (Math.random() - 0.5) * 0.01;
+                this.vy = isInitial ? -0.02 : (Math.random() - 0.5) * 0.01;
+                this.temperature = 0.3 + Math.random() * 0.4;
+                this.buoyancy = 0;
+                
+                // Визуал
+                this.color = CONFIG.WAX_COLORS[Math.floor(Math.random() * CONFIG.WAX_COLORS.length)];
+                this.glow = 0.3 + Math.random() * 0.4;
+                this.wobble = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = 0.03 + Math.random() * 0.04;
+                
+                // Трейл
+                this.trail = [];
+                this.trailMax = CONFIG.TRAIL_LENGTH;
+                
+                // Состояние
+                this.isHeated = false;
+                this.life = 1.0;
             }
             
-            update() {
-                this.y += this.speedY;
-                this.x += this.speedX + Math.sin(this.wobble) * 0.3;
-                this.wobble += this.wobbleSpeed;
+            update(deltaTime, heatPower) {
+                // Обновляем трейл
+                this.trail.unshift({ x: this.x, y: this.y, life: this.life });
+                if (this.trail.length > this.trailMax) this.trail.pop();
                 
-                // Отталкивание от стенок
-                if (this.x < this.radius || this.x > canvas.width - this.radius) {
-                    this.speedX *= -0.8;
+                // Обновляем колебания
+                this.wobble += this.wobbleSpeed * deltaTime * 60;
+                
+                // Тепловое воздействие
+                const distanceToHeat = Math.abs(this.y - CONFIG.HEAT_SOURCE_Y);
+                if (distanceToHeat < 0.2) {
+                    const heatIntensity = (0.2 - distanceToHeat) / 0.2 * heatPower;
+                    this.temperature = Math.min(1, this.temperature + heatIntensity * 0.02);
+                    this.isHeated = true;
+                    
+                    // Нагрев увеличивает подъемную силу
+                    this.buoyancy = CONFIG.BUOYANCY * this.temperature * heatIntensity;
+                } else {
+                    this.isHeated = false;
+                    this.temperature = Math.max(0.3, this.temperature - 0.001);
+                    this.buoyancy = CONFIG.BUOYANCY * this.temperature * 0.1;
                 }
                 
-                // Достиг верха - падаем вниз
-                if (this.y < this.radius) {
-                    this.speedY = Math.abs(this.speedY) * 0.5;
-                }
+                // Физика
+                const tempEffect = this.temperature * CONFIG.TEMPERATURE;
                 
-                // Падение вниз
-                if (this.y > canvas.height - this.radius) {
-                    this.speedY = -Math.abs(this.speedY);
-                    this.radius = 15 + Math.random() * 25;
-                }
+                // Подъемная сила
+                this.vy -= this.buoyancy * tempEffect;
                 
                 // Гравитация
-                this.speedY += 0.05;
+                this.vy += CONFIG.GRAVITY * (1 - tempEffect) * (1 - CONFIG.VISCOSITY);
+                
+                // Случайные движения
+                if (Math.random() < CONFIG.CHAOS_LEVEL) {
+                    this.vx += (Math.random() - 0.5) * 0.005 * CONFIG.CHAOS_LEVEL;
+                    this.vy += (Math.random() - 0.5) * 0.005 * CONFIG.CHAOS_LEVEL;
+                }
+                
+                // Сопротивление
+                this.vx *= 1 - CONFIG.VISCOSITY * 0.08;
+                this.vy *= 1 - CONFIG.VISCOSITY * 0.08;
+                
+                // Обновление позиции
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Эффект "пульсации" при нагреве
+                if (this.isHeated) {
+                    const pulse = Math.sin(Date.now() * 0.01 + this.id) * 0.001;
+                    this.radius += pulse;
+                    this.radius = Math.max(0.015, Math.min(0.045, this.radius));
+                }
+                
+                // Затухание трейла
+                this.trail.forEach(point => point.life *= 0.9);
+                
+                return true;
             }
             
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            draw(ctx, width, height) {
+                const pixelX = this.x * width;
+                const pixelY = this.y * height;
+                const pixelRadius = this.radius * Math.min(width, height);
                 
+                // Рисуем трейл
+                if (this.trail.length > 1) {
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'lighter';
+                    
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        const point = this.trail[i];
+                        const nextPoint = this.trail[i + 1];
+                        
+                        if (point.life > 0.01) {
+                            const alpha = point.life * 0.3;
+                            const trailX = point.x * width;
+                            const trailY = point.y * height;
+                            const trailRadius = pixelRadius * 0.5 * point.life;
+                            
+                            const gradient = ctx.createRadialGradient(
+                                trailX, trailY, 0,
+                                trailX, trailY, trailRadius
+                            );
+                            gradient.addColorStop(0, this.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba'));
+                            gradient.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                            
+                            ctx.beginPath();
+                            ctx.arc(trailX, trailY, trailRadius, 0, Math.PI * 2);
+                            ctx.fillStyle = gradient;
+                            ctx.fill();
+                        }
+                    }
+                    
+                    ctx.restore();
+                }
+                
+                // Основная капля
+                ctx.save();
+                
+                // Колебания
+                const wobbleX = Math.sin(this.wobble) * pixelRadius * 0.1;
+                const wobbleY = Math.cos(this.wobble * 1.3) * pixelRadius * 0.1;
+                ctx.translate(wobbleX, wobbleY);
+                
+                // Свечение
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = pixelRadius * this.glow * 3;
+                
+                // Градиент для объема
                 const gradient = ctx.createRadialGradient(
-                    this.x - this.radius/3, 
-                    this.y - this.radius/3, 
+                    pixelX - pixelRadius * 0.3,
+                    pixelY - pixelRadius * 0.3,
                     0,
-                    this.x, 
-                    this.y, 
-                    this.radius
+                    pixelX,
+                    pixelY,
+                    pixelRadius
                 );
                 
                 gradient.addColorStop(0, this.color);
-                gradient.addColorStop(1, this.color + '66');
+                gradient.addColorStop(0.7, this.color);
+                gradient.addColorStop(1, this.color + '00');
                 
+                // Рисуем каплю
+                ctx.beginPath();
+                ctx.arc(pixelX, pixelY, pixelRadius, 0, Math.PI * 2);
                 ctx.fillStyle = gradient;
                 ctx.fill();
                 
-                // Свечение
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = this.color;
+                // Яркое ядро
+                ctx.beginPath();
+                ctx.arc(
+                    pixelX - pixelRadius * 0.2,
+                    pixelY - pixelRadius * 0.2,
+                    pixelRadius * 0.4,
+                    0, Math.PI * 2
+                );
+                
+                const coreGradient = ctx.createRadialGradient(
+                    pixelX - pixelRadius * 0.2,
+                    pixelY - pixelRadius * 0.2,
+                    0,
+                    pixelX - pixelRadius * 0.2,
+                    pixelY - pixelRadius * 0.2,
+                    pixelRadius * 0.4
+                );
+                
+                coreGradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+                coreGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                ctx.fillStyle = coreGradient;
                 ctx.fill();
-                ctx.shadowBlur = 0;
+                
+                // Эффект нагрева (рябь)
+                if (this.isHeated && this.temperature > 0.6) {
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.globalAlpha = 0.1;
+                    
+                    for (let i = 0; i < 3; i++) {
+                        const rippleRadius = pixelRadius * (1 + i * 0.3);
+                        ctx.beginPath();
+                        ctx.arc(pixelX, pixelY, rippleRadius, 0, Math.PI * 2);
+                        ctx.strokeStyle = '#ffaa00';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                    
+                    ctx.restore();
+                }
+                
+                ctx.restore();
             }
         }
-        
-        let blobs = [];
-        const BLOB_COUNT = 8;
-        
-        // Создаем начальные капли
-        for (let i = 0; i < BLOB_COUNT; i++) {
-            setTimeout(() => {
-                blobs.push(new Blob());
-            }, i * 300);
+
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        function init() {
+            console.log('🎨 Инициализация canvas...');
+            
+            canvas = document.getElementById('waxCanvas');
+            if (!canvas) {
+                console.error('❌ Canvas не найден!');
+                return;
+            }
+            
+            ctx = canvas.getContext('2d');
+            
+            // Устанавливаем размеры canvas
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Создаем начальные капли
+            createInitialBlobs();
+            
+            // Назначаем обработчики кнопок
+            setupControls();
+            
+            // Запускаем анимацию
+            startAnimation();
+            
+            console.log('✅ Лампа инициализирована');
         }
-        
-        function animate() {
-            // Очищаем с эффектом затухания
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        function resizeCanvas() {
+            const fluidContainer = document.querySelector('.lamp-fluid');
+            if (!fluidContainer) return;
             
-            // Рисуем колбу
-            ctx.strokeStyle = '#0066ff';
-            ctx.lineWidth = 3;
-            ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
+            const width = fluidContainer.clientWidth;
+            const height = fluidContainer.clientHeight;
             
-            // Обновляем и рисуем капли
-            blobs.forEach(blob => {
-                blob.update();
-                blob.draw();
-                
-                // Простые столкновения
-                blobs.forEach(other => {
-                    if (blob !== other) {
-                        const dx = other.x - blob.x;
-                        const dy = other.y - blob.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        const minDistance = blob.radius + other.radius;
-                        
-                        if (distance < minDistance) {
-                            // Отталкивание
-                            const angle = Math.atan2(dy, dx);
-                            const targetX = blob.x + Math.cos(angle) * minDistance;
-                            const targetY = blob.y + Math.sin(angle) * minDistance;
-                            
-                            const ax = (targetX - other.x) * 0.05;
-                            const ay = (targetY - other.y) * 0.05;
-                            
-                            blob.x -= ax;
-                            blob.y -= ay;
-                            other.x += ax;
-                            other.y += ay;
-                        }
-                    }
-                });
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            
+            console.log(`📐 Canvas размер: ${width}x${height}`);
+        }
+
+        function createInitialBlobs() {
+            blobs = [];
+            for (let i = 0; i < CONFIG.BLOB_COUNT; i++) {
+                // Создаем капли внизу (как в реальной лава-лампе)
+                setTimeout(() => {
+                    blobs.push(new WaxBlob(null, null, true));
+                }, i * 100);
+            }
+            
+            updateBlobCount();
+        }
+
+        function setupControls() {
+            document.getElementById('heatBtn').addEventListener('click', () => {
+                heatPower = Math.min(1, heatPower + 0.1);
+                updateTemperatureDisplay();
             });
             
+            document.getElementById('coolBtn').addEventListener('click', () => {
+                heatPower = Math.max(0, heatPower - 0.1);
+                updateTemperatureDisplay();
+            });
+            
+            document.getElementById('addBtn').addEventListener('click', () => {
+                if (blobs.length < CONFIG.MAX_BLOBS) {
+                    blobs.push(new WaxBlob(0.5, 0.9, true));
+                    updateBlobCount();
+                }
+            });
+            
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                blobs = [];
+                setTimeout(() => {
+                    createInitialBlobs();
+                    heatPower = 0.5;
+                    updateTemperatureDisplay();
+                }, 300);
+            });
+            
+            // Пауза/продолжение по клику на лампу
+            document.querySelector('.lamp-container').addEventListener('click', () => {
+                isRunning = !isRunning;
+                if (isRunning) {
+                    startAnimation();
+                } else {
+                    stopAnimation();
+                }
+            });
+        }
+
+        function updateTemperatureDisplay() {
+            const tempCelsius = 20 + Math.round(heatPower * 40);
+            document.getElementById('tempValue').textContent = `${tempCelsius}°C`;
+            
+            // Визуальная обратная связь
+            const lampGlass = document.querySelector('.lamp-glass');
+            lampGlass.style.boxShadow = `
+                inset 0 0 50px rgba(0, 0, 0, 0.8),
+                inset 0 0 100px rgba(0, 0, 0, 0.6),
+                0 0 ${20 + heatPower * 40}px rgba(255, ${100 + heatPower * 155}, 0, ${0.1 + heatPower * 0.2})
+            `;
+        }
+
+        function updateBlobCount() {
+            document.getElementById('blobCount').textContent = blobs.length;
+        }
+
+        // ===== АНИМАЦИЯ =====
+        function startAnimation() {
+            if (animationId) return;
+            
+            console.log('▶️ Запуск анимации');
+            isRunning = true;
+            lastTime = performance.now();
             animationId = requestAnimationFrame(animate);
         }
-        
-        // Управление
-        document.getElementById('startBtn').addEventListener('click', () => {
-            if (!animationId) {
-                statusMessage.textContent = 'ЛАМПА АКТИВИРОВАНА';
-                statusMessage.style.color = '#00ff88';
-                animate();
-            }
-        });
-        
-        document.getElementById('stopBtn').addEventListener('click', () => {
+
+        function stopAnimation() {
             if (animationId) {
                 cancelAnimationFrame(animationId);
                 animationId = null;
-                statusMessage.textContent = 'ЛАМПА ОСТАНОВЛЕНА';
-                statusMessage.style.color = '#ff003c';
+                console.log('⏸️ Анимация остановлена');
             }
-        });
-        
-        // Автозапуск через 2 секунды
-        setTimeout(() => {
-            if (!animationId) {
-                statusMessage.textContent = 'АВТОМАТИЧЕСКИЙ СТАРТ...';
-                animate();
-            }
-        }, 2000);
-        
-        console.log('✅ Экстренная лава-лампа готова');
-    </script>
-
-    <script>
-    // Инициализация полной системы
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Запуск цифровой лава-лампы');
-    
-        // Создаем движок
-        const engine = new LavaLampEngine({
-            blobCount: 15,
-            temperature: 0.6,
-            viscosity: 0.3,
-            chaos: 0.2
-        });
-    
-        // Создаем рендерер
-        const renderer = new LavaLampRenderer(engine, 'lavaCanvas');
-    
-        // Создаем панель управления
-        createControlPanel(engine, renderer);
-    
-        // Глобальный доступ для отладки
-        window.lavaLamp = { engine, renderer };
-    
-        console.log('🎉 Цифровая лава-лампа запущена!');
-    
-        // Автозапуск через 1 секунду
-        setTimeout(() => {
-            engine.isRunning = true;
-            renderer.start();
-        }, 1000);
-    });
-
-    function createControlPanel(engine, renderer) {
-        const panel = document.createElement('div');
-        panel.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(10, 10, 10, 0.8);
-            border: 2px solid #0066ff;
-            border-radius: 10px;
-            padding: 15px;
-            color: #00ff88;
-            font-family: 'Courier New', monospace;
-            z-index: 10000;
-            min-width: 250px;
-            backdrop-filter: blur(10px);
-        `;
-    
-        panel.innerHTML = `
-            <h3 style="margin-top: 0; color: #ff003c;">ЛАВА-ЛАМПА 3000</h3>
-        
-            <div style="margin: 10px 0;">
-                <label>ТЕМПЕРАТУРА: <span id="tempValue">0.6</span></label>
-                <input type="range" id="tempSlider" min="0" max="1" step="0.01" value="0.6" 
-                       style="width: 100%; margin: 5px 0;">
-            </div>
-        
-            <div style="margin: 10px 0;">
-                <label>ВЯЗКОСТЬ: <span id="viscValue">0.3</span></label>
-                <input type="range" id="viscSlider" min="0" max="1" step="0.01" value="0.3" 
-                       style="width: 100%; margin: 5px 0;">
-            </div>
-        
-            <div style="margin: 10px 0;">
-                <label>ХАОС: <span id="chaosValue">0.2</span></label>
-                <input type="range" id="chaosSlider" min="0" max="1" step="0.01" value="0.2" 
-                       style="width: 100%; margin: 5px 0;">
-            </div>
-        
-            <div style="margin: 15px 0;">
-                <button id="addBlobBtn" style="
-                    background: #ff003c;
-                    color: white;
-                    border: none;
-                    padding: 8px;
-                    margin: 3px;
-                    cursor: pointer;
-                    width: 48%;
-                ">+ КАПЛЯ</button>
-            
-                <button id="resetBtn" style="
-                    background: #0066ff;
-                    color: white;
-                    border: none;
-                    padding: 8px;
-                    margin: 3px;
-                    cursor: pointer;
-                    width: 48%;
-                ">СБРОС</button>
-            </div>
-        
-            <div style="margin: 15px 0;">
-                <button id="screenshotBtn" style="
-                    background: #00ff88;
-                    color: #0a0a0a;
-                    border: none;
-                    padding: 8px;
-                    margin: 3px;
-                    cursor: pointer;
-                    width: 100%;
-                ">📸 СНИМОК</button>
-            </div>
-        
-            <div style="font-size: 12px; opacity: 0.7; margin-top: 10px;">
-                <div>КАПЕЛЬ: <span id="blobCount">15</span></div>
-                <div>СТАТУС: <span id="status">АКТИВНА</span></div>
-            </div>
-        `;
-    
-        document.body.appendChild(panel);
-    
-        // Обработчики
-        document.getElementById('tempSlider').addEventListener('input', (e) => {
-            const value = parseFloat(e.target.value);
-            engine.setTemperature(value);
-            document.getElementById('tempValue').textContent = value.toFixed(2);
-        });
-    
-        document.getElementById('viscSlider').addEventListener('input', (e) => {
-            const value = parseFloat(e.target.value);
-            engine.setViscosity(value);
-            document.getElementById('viscValue').textContent = value.toFixed(2);
-        });
-    
-        document.getElementById('chaosSlider').addEventListener('input', (e) => {
-            const value = parseFloat(e.target.value);
-            engine.setChaos(value);
-            document.getElementById('chaosValue').textContent = value.toFixed(2);
-        });
-    
-        document.getElementById('addBlobBtn').addEventListener('click', () => {
-            engine.addBlob();
-            updateStats();
-        });
-    
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            engine.reset();
-            updateStats();
-        });
-        
-        document.getElementById('screenshotBtn').addEventListener('click', () => {
-            renderer.takeScreenshot();
-        });
-        
-        // Обновление статистики
-        function updateStats() {
-            const state = engine.getState();
-            document.getElementById('blobCount').textContent = state.blobCount;
-            document.getElementById('status').textContent = 
-                state.isRunning ? 'АКТИВНА' : 'ПАУЗА';
         }
-    
-        // Периодическое обновление
-        setInterval(updateStats, 1000);
-    }
+
+        function animate(currentTime) {
+            if (!isRunning) return;
+            
+            const deltaTime = lastTime ? (currentTime - lastTime) / 1000 : 0.016;
+            lastTime = currentTime;
+            
+            // Очищаем с эффектом затухания
+            ctx.fillStyle = `rgba(102, 51, 170, 0.05)`;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Обновляем и рисуем капли
+            for (let i = blobs.length - 1; i >= 0; i--) {
+                const blob = blobs[i];
+                
+                if (!blob.update(deltaTime, heatPower)) {
+                    // Удаляем "мертвые" капли
+                    blobs.splice(i, 1);
+                    continue;
+                }
+                
+                // Проверяем границы
+                const margin = 0.05;
+                if (blob.x < blob.radius + margin) {
+                    blob.x = blob.radius + margin;
+                    blob.vx = Math.abs(blob.vx) * 0.8;
+                }
+                if (blob.x > 1 - blob.radius - margin) {
+                    blob.x = 1 - blob.radius - margin;
+                    blob.vx = -Math.abs(blob.vx) * 0.8;
+                }
+                if (blob.y < blob.radius + margin) {
+                    blob.y = blob.radius + margin;
+                    blob.vy = Math.abs(blob.vy) * 0.8;
+                }
+                if (blob.y > 1 - blob.radius - margin) {
+                    blob.y = 1 - blob.radius - margin;
+                    blob.vy = -Math.abs(blob.vy) * 0.8;
+                }
+                
+                // Рисуем каплю
+                blob.draw(ctx, canvas.width, canvas.height);
+                
+                // Проверяем столкновения для слияния
+                for (let j = i + 1; j < blobs.length; j++) {
+                    const other = blobs[j];
+                    const dx = other.x - blob.x;
+                    const dy = other.y - blob.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDistance = blob.radius + other.radius;
+                    
+                    if (distance < minDistance) {
+                        // Отталкивание
+                        const force = 0.1 * (1 - distance / minDistance);
+                        const ax = dx * force / blob.mass;
+                        const ay = dy * force / blob.mass;
+                        
+                        blob.vx -= ax;
+                        blob.vy -= ay;
+                        other.vx += ax;
+                        other.vy += ay;
+                        
+                        // Случайное слияние
+                        if (blob.temperature > 0.7 && other.temperature > 0.7 && 
+                            Math.random() < CONFIG.MERGE_CHANCE) {
+                            mergeBlobs(i, j);
+                        }
+                    }
+                }
+            }
+            
+            // Рисуем источник тепла (внизу)
+            drawHeatSource();
+            
+            // Продолжаем анимацию
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function mergeBlobs(indexA, indexB) {
+            const blobA = blobs[indexA];
+            const blobB = blobs[indexB];
+            
+            // Создаем новую каплю
+            const newBlob = new WaxBlob(
+                (blobA.x + blobB.x) / 2,
+                (blobA.y + blobB.y) / 2
+            );
+            
+            newBlob.radius = Math.sqrt(blobA.radius * blobA.radius + blobB.radius * blobB.radius) * 0.8;
+            newBlob.mass = Math.PI * newBlob.radius * newBlob.radius;
+            newBlob.temperature = (blobA.temperature + blobB.temperature) / 2;
+            newBlob.color = Math.random() > 0.5 ? blobA.color : blobB.color;
+            newBlob.vx = (blobA.vx + blobB.vx) / 2;
+            newBlob.vy = (blobA.vy + blobB.vy) / 2;
+            
+            // Удаляем старые, добавляем новую
+            blobs.splice(Math.max(indexA, indexB), 1);
+            blobs.splice(Math.min(indexA, indexB), 1);
+            blobs.push(newBlob);
+            
+            updateBlobCount();
+            console.log('🌀 Слияние капель!');
+        }
+
+        function drawHeatSource() {
+            const heatY = CONFIG.HEAT_SOURCE_Y * canvas.height;
+            const heatWidth = canvas.width;
+            const heatHeight = 20;
+            
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            
+            // Градиент тепла
+            const gradient = ctx.createLinearGradient(0, heatY, 0, heatY + heatHeight);
+            gradient.addColorStop(0, `rgba(255, ${85 + heatPower * 170}, 0, ${0.1 + heatPower * 0.2})`);
+            gradient.addColorStop(1, 'rgba(255, 85, 0, 0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, heatY, heatWidth, heatHeight);
+            
+            // Эффект пламени
+            for (let i = 0; i < 5; i++) {
+                const flameX = Math.random() * heatWidth;
+                const flameHeight = 5 + Math.random() * 10 * heatPower;
+                const flameWidth = 10 + Math.random() * 20;
+                
+                const flameGradient = ctx.createRadialGradient(
+                    flameX, heatY, 0,
+                    flameX, heatY, flameWidth
+                );
+                flameGradient.addColorStop(0, `rgba(255, ${100 + heatPower * 155}, 0, 0.8)`);
+                flameGradient.addColorStop(1, 'rgba(255, 85, 0, 0)');
+                
+                ctx.fillStyle = flameGradient;
+                ctx.beginPath();
+                ctx.arc(flameX, heatY, flameWidth, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            ctx.restore();
+        }
+
+        // ===== ЗАПУСК =====
+        // Ждем полной загрузки страницы
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+        
+        // Глобальный доступ для отладки
+        window.lavaLamp = {
+            getBlobs: () => blobs,
+            getHeat: () => heatPower,
+            setHeat: (value) => {
+                heatPower = Math.max(0, Math.min(1, value));
+                updateTemperatureDisplay();
+            },
+            addBlob: () => {
+                if (blobs.length < CONFIG.MAX_BLOBS) {
+                    blobs.push(new WaxBlob(0.5, 0.9, true));
+                    updateBlobCount();
+                }
+            },
+            reset: () => {
+                blobs = [];
+                setTimeout(() => {
+                    createInitialBlobs();
+                    heatPower = 0.5;
+                    updateTemperatureDisplay();
+                }, 300);
+            }
+        };
+        
+        console.log('🪔 Скрипт лава-лампы загружен');
     </script>
-    
 </body>
 </html>
