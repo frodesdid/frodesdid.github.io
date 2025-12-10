@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frodes Messenger</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        .box { background: #f0f0f0; padding: 30px; border-radius: 10px; display: inline-block; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>🔒 Frodes Messenger</h1>
+    <p>Приватный чат для друзей</p>
+    
+    <div class="box">
+        <h3>Тестовая версия (без Firebase)</h3>
+        <button onclick="localRegister()">Создать тестовый аккаунт</button>
+        <button onclick="localLogin()">Войти в тестовый режим</button>
+    </div>
+    
+    <script>
+        function localRegister() {
+            const username = prompt("Введите ваше имя:");
+            if (username) {
+                localStorage.setItem('frodes_user', username);
+                localStorage.setItem('frodes_friends', JSON.stringify([]));
+                localStorage.setItem('frodes_chats', JSON.stringify({}));
+                alert("Аккаунт создан! Теперь войдите.");
+            }
+        }
+        
+        function localLogin() {
+            const user = localStorage.getItem('frodes_user');
+            if (user) {
+                window.location.href = 'app.html';
+            } else {
+                alert("Сначала создайте аккаунт!");
+            }
+        }
+    </script>
+</body>
+</html>
