@@ -146,6 +146,19 @@
         // Открыть чат с другом
         async function openChatWithFriend(friendId) {
             try {
+                console.log("Открываем чат с другом:", friendId);
+        
+                // Проверяем авторизацию
+                if (!auth.currentUser) {
+                    alert("Вы не авторизованы!");
+                    return;
+                }
+        
+                const yourUid = auth.currentUser.uid;
+                const chatId = [yourUid, friendId].sort().join('_');
+        
+                console.log("ID чата:", chatId);
+        
                 // Создаем ID чата
                 currentChatId = [currentUser.uid, friendId].sort().join('_');
                 
