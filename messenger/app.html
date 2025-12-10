@@ -139,8 +139,43 @@
 <!-- Уведомления -->
 <div id="notification-container" class="notifications"></div>
 
-<!-- Подключаем скрипты -->
-<script src="js/app.js"></script>
-<script src="js/messenger.js"></script>
-<script src="js/friends.js"></script>
-<script src="js/profile.js"></script>
+<!-- Подключаем скрипты в правильном порядке -->
+<script>
+    // Ждем полной загрузки DOM и проверяем аутентификацию
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ждем инициализации Firebase
+        const checkAuth = setInterval(() => {
+            if (typeof auth !== 'undefined' && auth.currentUser) {
+                clearInterval(checkAuth);
+                // Загружаем скрипты только после подтверждения авторизации
+                loadAppScripts();
+            }
+        }, 100);
+        
+        // Если через 5 секунд нет пользователя, редирект на вход
+        setTimeout(() => {
+            if (!auth?.currentUser) {
+                window.location.href = 'index.html';
+            }
+        }, 5000);
+    });
+    
+    function loadAppScripts() {
+        const scripts = [
+            'js/app.js',
+            'js/messenger.js', 
+            'js/friends.js',
+            'js/profile.js'
+        ];
+        
+        // Загружаем скрипты последовательно
+        scripts.forEach((src, index) => {
+            setTimeout(() => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => console.log(`✅ Загружен: ${src}`);
+                document.body.appendChild(script);
+            }, index * 100); // Задержка между скриптами
+        });
+    }
+</script>
