@@ -58,29 +58,40 @@ async function register() {
     showMessage('Проверка инвайта...', 'info');
     
     try {
-        // 1. Проверяем инвайт
-        const invitesRef = db.collection('invites');
-        const query = await invitesRef.where('code', '==', invite).get();
-        
-        if (query.empty) {
-            throw new Error('Неверный инвайт-код');
+        // ========== 1. ПРОВЕРКА ИНВАЙТА (УПРОЩЕННАЯ) ==========
+        let inviteFound = false;
+        let inviteData = null;
+        let inviteDocRef = null;
+
+        // Получаем ВСЕ инвайты и фильтруем локально
+        const allInvites = await db.collection('invites').get();
+
+        allInvites.forEach(doc => {
+            const data = doc.data();
+            if (data.code === invite && !data.used) {
+                inviteFound = true;
+                inviteData = data;
+                inviteDocRef = doc.ref;
+            }
+        });
+
+        if (!inviteFound) {
+            throw new Error('Неверный или уже использованный инвайт-код');
         }
-        
-        const inviteDoc = query.docs[0];
-        const inviteData = inviteDoc.data();
-        
-        if (inviteData.used) {
-            throw new Error('Инвайт уже использован');
+
+        // Проверяем срок действия
+        if (inviteData.expiresAt && new Date(inviteData.expiresAt.seconds * 1000) < new Date()) {
+            throw new Error('Инвайт-код истек');
         }
-        
-        // 2. Создаем пользователя
+
+        // ========== 2. СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ ==========
         showMessage('Создание аккаунта...', 'info');
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
-        
+
         // 3. Обновляем профиль
         await user.updateProfile({ displayName: name });
-        
+
         // 4. Создаем запись в Firestore
         await db.collection('users').doc(user.uid).set({
             uid: user.uid,
@@ -88,34 +99,40 @@ async function register() {
             displayName: name,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             status: 'online',
-            friends: [inviteData.createdBy || 'admin'],
+            friends: [],
             photoURL: ''
         });
-        
+
         // 5. Обновляем инвайт
-        await inviteDoc.ref.update({
+        await inviteDocRef.update({
             used: true,
             usedBy: user.uid,
             usedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-        
-        // 6. Добавляем нового пользователя в друзья создателю
+
+        // 6. Если инвайт создан не админом, добавляем друг друга в друзья
         if (inviteData.createdBy && inviteData.createdBy !== 'admin') {
+            // Добавляем создателя инвайта в друзья новому пользователю
+            await db.collection('users').doc(user.uid).update({
+                friends: firebase.firestore.FieldValue.arrayUnion(inviteData.createdBy)
+            });
+
+            // Добавляем нового пользователя в друзья создателю инвайта
             await db.collection('users').doc(inviteData.createdBy).update({
                 friends: firebase.firestore.FieldValue.arrayUnion(user.uid)
             });
         }
-        
-        showMessage('Аккаунт создан!', 'success');
-        
+
+        showMessage('✅ Аккаунт создан! Перенаправление...', 'success');
+
         // Переход в мессенджер
         setTimeout(() => {
             window.location.href = 'app.html';
         }, 1500);
-        
+
     } catch (error) {
-        showMessage('Ошибка: ' + error.message, 'error');
-        console.error(error);
+        console.error("Ошибка регистрации:", error);
+        showMessage('❌ Ошибка: ' + error.message, 'error');
     }
 }
 
