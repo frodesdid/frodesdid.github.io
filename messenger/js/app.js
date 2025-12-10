@@ -1,4 +1,4 @@
-// Глобальные переменные
+// Глобальные переменные 
 let currentUser = null;
 let currentChatId = null;
 let unsubscribeFunctions = {};
