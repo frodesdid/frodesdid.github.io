@@ -1,4 +1,4 @@
-// Переключение между вкладками
+// Переключение между вкладками 
 function showTab(tabName) {
     // Скрываем все формы
     document.querySelectorAll('.form-container').forEach(form => {
