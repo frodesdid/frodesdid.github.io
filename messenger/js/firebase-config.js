@@ -1,4 +1,4 @@
-// Инициализация Firebase
+// Инициализация Firebase 
 const firebaseConfig = {
   apiKey: "AIzaSyArRRQtb0Jb5PBITLvXIQwpo9GXjZn5a9Q",
   authDomain: "frodes-messenger.firebaseapp.com",
