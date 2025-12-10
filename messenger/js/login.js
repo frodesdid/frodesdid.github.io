@@ -123,10 +123,24 @@ async function registerUser(event) {
             usedCount: increment(1)
         });
         
-        // 6. Добавляем нового пользователя в друзья к создателю инвайта
-        await db.collection('users').doc(inviteData.createdBy).update({
+        // 6. ВЗАИМНО добавляем в друзья
+        const batch = db.batch();
+
+        // Новый пользователь добавляет создателя инвайта в друзья
+        const newUserRef = db.collection('users').doc(user.uid);
+        batch.update(newUserRef, {
+            friends: firebase.firestore.FieldValue.arrayUnion(inviteData.createdBy)
+        });
+
+        // Создатель инвайта добавляет нового пользователя в друзья
+        const inviterRef = db.collection('users').doc(inviteData.createdBy);
+        batch.update(inviterRef, {
             friends: firebase.firestore.FieldValue.arrayUnion(user.uid)
         });
+
+        // Выполняем оба обновления
+        await batch.commit();
+        console.log("✅ Друзья добавлены взаимно");
         
         // 7. Создаем чат между ними
         const chatId = [inviteData.createdBy, user.uid].sort().join('_');
