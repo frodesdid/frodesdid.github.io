@@ -145,6 +145,42 @@
         
         // Открыть чат с другом
         async function openChatWithFriend(friendId) {
+            // ========== ДОБАВЬТЕ ЭТОТ БЛОК В НАЧАЛО ==========
+            console.log("🔧 Автоматическое создание/проверка чата...");
+    
+            const yourUid = auth.currentUser.uid;
+            const chatId = [yourUid, friendId].sort().join('_');
+    
+            // Проверяем, существует ли чат
+            const chatDoc = await db.collection('chats').doc(chatId).get();
+    
+            if (!chatDoc.exists) {
+                console.log("🛠️ Чат не найден, создаем автоматически...");
+        
+                // Создаем чат
+                await db.collection('chats').doc(chatId).set({
+                    id: chatId,
+                    participants: [yourUid, friendId],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastMessage: null,
+                    unreadCount: {
+                        [yourUid]: 0,
+                        [friendId]: 0
+                    }
+                });
+        
+                // Добавляем системное сообщение
+                await db.collection('chats').doc(chatId).collection('messages').add({
+                    senderId: 'system',
+                    content: 'Чат создан',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    type: 'system'
+                });
+        
+                console.log("✅ Чат создан автоматически!");
+            } else {
+                console.log("✅ Чат уже существует");
+            }
             try {
                 console.log("Открываем чат с другом:", friendId);
         
