@@ -376,8 +376,268 @@ function getNotificationIcon(type) {
     return icons[type] || 'ℹ️';
 }
 
+// ========== ФУНКЦИЯ OPENCHAT ==========
+async function openChat(chatId) {
+    try {
+        console.log("🔥 Открываем чат:", chatId);
+        
+        // 1. Сохраняем ID текущего чата
+        currentChatId = chatId;
+        
+        // 2. Обновляем активный чат в списке
+        document.querySelectorAll('.chat-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.chatId === chatId) {
+                item.classList.add('active');
+            }
+        });
+        
+        // 3. Показываем чат, скрываем заглушку
+        document.getElementById('chat-placeholder').style.display = 'none';
+        document.getElementById('chat-container').style.display = 'flex';
+        
+        // 4. Загружаем информацию о чате
+        const chatDoc = await db.collection('chats').doc(chatId).get();
+        if (!chatDoc.exists) {
+            alert("Чат не найден!");
+            return;
+        }
+        
+        const chatData = chatDoc.data();
+        const otherUserId = chatData.participants.find(id => id !== currentUser.uid);
+        
+        // 5. Загружаем информацию о собеседнике
+        if (otherUserId) {
+            const userDoc = await db.collection('users').doc(otherUserId).get();
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                document.getElementById('chat-partner-name').textContent = userData.displayName || "Друг";
+                const avatar = document.getElementById('chat-avatar');
+                avatar.src = userData.photoURL || 'assets/default-avatar.png';
+                
+                // Статус
+                const statusEl = document.getElementById('chat-partner-status');
+                statusEl.textContent = userData.status === 'online' ? 'в сети' : 'не в сети';
+                statusEl.className = `status ${userData.status || 'offline'}`;
+            }
+        }
+        
+        // 6. Загружаем сообщения
+        await loadChatMessages(chatId);
+        
+        // 7. Фокусируемся на поле ввода
+        setTimeout(() => {
+            const input = document.getElementById('message-input');
+            if (input) input.focus();
+        }, 100);
+        
+        console.log("✅ Чат успешно открыт");
+        
+    } catch (error) {
+        console.error("❌ Ошибка открытия чата:", error);
+        alert("Не удалось открыть чат. Ошибка: " + error.message);
+    }
+}
+
+// ========== ФУНКЦИЯ ЗАГРУЗКИ СООБЩЕНИЙ ==========
+async function loadChatMessages(chatId) {
+    const container = document.getElementById('messages-container');
+    if (!container) {
+        console.error("Не найден контейнер сообщений!");
+        return;
+    }
+    
+    container.innerHTML = '<div class="loading">Загрузка сообщений...</div>';
+    
+    try {
+        const messagesQuery = await db.collection('chats')
+            .doc(chatId)
+            .collection('messages')
+            .orderBy('timestamp', 'asc')
+            .limit(50)
+            .get();
+        
+        if (messagesQuery.empty) {
+            container.innerHTML = '<div class="empty-state">Пока нет сообщений. Начните диалог!</div>';
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        messagesQuery.forEach(doc => {
+            const message = doc.data();
+            const isSent = message.senderId === currentUser.uid;
+            const time = message.timestamp ? 
+                message.timestamp.toDate().toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'}) : 
+                'только что';
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-wrapper ${isSent ? 'sent' : 'received'}`;
+            
+            // Проверяем тип сообщения
+            let contentHtml = `<p>${message.content || ''}</p>`;
+            if (message.type === 'image') {
+                contentHtml = `<img src="${message.content}" style="max-width: 200px; border-radius: 10px;" alt="Изображение">`;
+            } else if (message.type === 'file') {
+                contentHtml = `<div class="file-message">📎 <strong>Файл</strong></div>`;
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    ${contentHtml}
+                    <div class="message-footer">
+                        <span class="message-time">${time}</span>
+                        ${isSent ? '<span class="message-status">✓✓</span>' : ''}
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(messageDiv);
+        });
+        
+        // Прокрутка вниз
+        container.scrollTop = container.scrollHeight;
+        
+    } catch (error) {
+        console.error("Ошибка загрузки сообщений:", error);
+        container.innerHTML = '<div class="error">Ошибка загрузки сообщений</div>';
+    }
+}
+
+// ========== ФУНКЦИЯ STARTCHATWITH ==========
+async function startChatWith(friendId) {
+    if (!friendId) {
+        alert("Ошибка: ID друга не указан");
+        return;
+    }
+    
+    try {
+        const user = currentUser;
+        if (!user) {
+            alert("Вы не авторизованы!");
+            return;
+        }
+        
+        // Создаем ID чата (отсортированные ID через _)
+        const chatId = [user.uid, friendId].sort().join('_');
+        
+        // Проверяем, есть ли уже такой чат
+        const chatDoc = await db.collection('chats').doc(chatId).get();
+        
+        if (!chatDoc.exists) {
+            // Создаем новый чат
+            await db.collection('chats').doc(chatId).set({
+                id: chatId,
+                participants: [user.uid, friendId],
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                lastMessage: null,
+                unreadCount: {
+                    [user.uid]: 0,
+                    [friendId]: 0
+                }
+            });
+            
+            // Добавляем системное сообщение
+            await db.collection('chats').doc(chatId).collection('messages').add({
+                senderId: 'system',
+                content: 'Чат создан',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                type: 'system'
+            });
+            
+            console.log("✅ Создан новый чат:", chatId);
+        }
+        
+        // Открываем чат
+        openChat(chatId);
+        
+    } catch (error) {
+        console.error("❌ Ошибка создания чата:", error);
+        alert("Не удалось создать чат: " + error.message);
+    }
+}
+
+// ========== ФУНКЦИЯ ОТПРАВКИ СООБЩЕНИЙ ==========
+async function sendMessage() {
+    if (!currentChatId) {
+        alert("Сначала выберите чат!");
+        return;
+    }
+    
+    const input = document.getElementById('message-input');
+    const text = input.value.trim();
+    
+    if (!text) {
+        alert("Введите сообщение!");
+        return;
+    }
+    
+    try {
+        const user = currentUser;
+        
+        // 1. Добавляем сообщение в чат
+        await db.collection('chats')
+            .doc(currentChatId)
+            .collection('messages')
+            .add({
+                senderId: user.uid,
+                content: text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                type: 'text',
+                status: 'sent'
+            });
+        
+        // 2. Обновляем последнее сообщение в чате
+        await db.collection('chats').doc(currentChatId).update({
+            'lastMessage.content': text,
+            'lastMessage.senderId': user.uid,
+            'lastMessage.timestamp': firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        // 3. Очищаем поле ввода
+        input.value = '';
+        
+        // 4. Перезагружаем сообщения
+        await loadChatMessages(currentChatId);
+        
+        console.log("✅ Сообщение отправлено");
+        
+    } catch (error) {
+        console.error("❌ Ошибка отправки:", error);
+        alert("Не удалось отправить сообщение: " + error.message);
+    }
+}
+
+// ========== ФУНКЦИЯ ВЫХОДА ==========
+async function logout() {
+    if (confirm("Выйти из аккаунта?")) {
+        try {
+            // Обновляем статус на "offline"
+            if (currentUser) {
+                await db.collection('users').doc(currentUser.uid).update({
+                    status: 'offline',
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+            
+            // Выходим из Firebase
+            await auth.signOut();
+            
+            // Перенаправляем на страницу входа
+            window.location.href = 'index.html';
+            
+        } catch (error) {
+            console.error("Ошибка выхода:", error);
+            alert("Ошибка при выходе: " + error.message);
+        }
+    }
+}
+
 // Экспортируем функции, которые понадобятся в других файлах
 window.openChat = openChat;
 window.startChatWith = startChatWith;
 window.showNotification = showNotification;
 window.logout = logout;
+window.sendMessage = sendMessage;
+window.loadChatMessages = loadChatMessages;
+
