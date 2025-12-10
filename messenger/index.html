@@ -2,41 +2,39 @@
 <html>
 <head>
     <title>Frodes Messenger</title>
-    <style>
-        body { font-family: Arial; text-align: center; padding: 50px; }
-        .box { background: #f0f0f0; padding: 30px; border-radius: 10px; display: inline-block; }
-        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>🔒 Frodes Messenger</h1>
-    <p>Приватный чат для друзей</p>
-    
-    <div class="box">
-        <h3>Тестовая версия (без Firebase)</h3>
-        <button onclick="localRegister()">Создать тестовый аккаунт</button>
-        <button onclick="localLogin()">Войти в тестовый режим</button>
+    <div class="container">
+        <h1>🔒 Frodes Messenger</h1>
+        
+        <div id="login-form" class="form">
+            <h2>Вход</h2>
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Пароль">
+            <button onclick="login()">Войти</button>
+            <p><a href="#" onclick="showRegister()">Нет аккаунта? Создать</a></p>
+        </div>
+        
+        <div id="register-form" class="form" style="display:none">
+            <h2>Регистрация</h2>
+            <input type="email" id="reg-email" placeholder="Email">
+            <input type="password" id="reg-password" placeholder="Пароль (6+ символов)">
+            <input type="text" id="reg-name" placeholder="Ваше имя">
+            <input type="text" id="reg-invite" placeholder="Инвайт-код">
+            <button onclick="register()">Создать аккаунт</button>
+            <p><a href="#" onclick="showLogin()">Уже есть аккаунт? Войти</a></p>
+        </div>
+        
+        <div id="message" class="message"></div>
     </div>
     
-    <script>
-        function localRegister() {
-            const username = prompt("Введите ваше имя:");
-            if (username) {
-                localStorage.setItem('frodes_user', username);
-                localStorage.setItem('frodes_friends', JSON.stringify([]));
-                localStorage.setItem('frodes_chats', JSON.stringify({}));
-                alert("Аккаунт создан! Теперь войдите.");
-            }
-        }
-        
-        function localLogin() {
-            const user = localStorage.getItem('frodes_user');
-            if (user) {
-                window.location.href = 'app.html';
-            } else {
-                alert("Сначала создайте аккаунт!");
-            }
-        }
-    </script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
 </body>
 </html>
