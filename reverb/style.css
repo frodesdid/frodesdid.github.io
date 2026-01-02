@@ -21,7 +21,7 @@
 
 .main-title {
     font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
-    font-size: clamp(0.85rem, 3.06vw, 1.92rem); /* Уменьшил в 2 раза */
+    font-size: clamp(2.2rem, 2.6vw, 3rem); /* Уменьшил в 2 раза */
     font-weight: 400;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -53,7 +53,7 @@
     width: 100%;
     height: 100%;
     font-family: 'Orbitron', 'Black Ops One', 'Anton', Impact, sans-serif;
-    font-size: clamp(0.75rem, 3vw, 1.75rem); /* Уменьшил в 2 раза и СДЕЛАЛ МЕНЬШЕ основного! */
+    font-size: clamp(2.14rem, 2.54vw, 2.94rem); /* Уменьшил в 2 раза и СДЕЛАЛ МЕНЬШЕ основного! */
     color: transparent;
     text-shadow: 
         -2px -2px 0 #0066ff,
@@ -94,7 +94,7 @@
     width: 100%;
     max-width: 800px;
     padding: 0 15px;
-    white-space: nowrap; /* Запрещаем перенос текста */
+    white-space: normal; /* Запрещаем перенос текста */
 }
 
 /* Адаптация для очень маленьких экранов */
@@ -132,7 +132,7 @@
     }
     
     .main-title::before {
-        font-size: 1.7rem;
+        font-size: 2.1rem;
     }
 }
 
