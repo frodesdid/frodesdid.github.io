@@ -2,39 +2,49 @@
 document.addEventListener('DOMContentLoaded', function() {
     const titleContainer = document.querySelector('.title-container');
     const title = document.getElementById('mainTitle');
+    const channelsHeader = document.querySelector('.channels-header');
     
     // Создаем частицы при наведении
     titleContainer.addEventListener('mouseenter', function() {
-        createParticles(10);
+        createParticles(15);
     });
     
     function createParticles(count) {
+        const titleRect = title.getBoundingClientRect();
+        const headerRect = channelsHeader.getBoundingClientRect();
+        
         for (let i = 0; i < count; i++) {
             setTimeout(() => {
                 const particle = document.createElement('div');
                 particle.style.cssText = `
-                    position: fixed;
+                    position: absolute; /* Меняем fixed на absolute */
                     width: 4px;
                     height: 4px;
                     background: ${Math.random() > 0.5 ? '#ff003c' : '#0066ff'};
                     border-radius: 50%;
                     pointer-events: none;
                     z-index: 1000;
-                    top: ${title.getBoundingClientRect().top + title.offsetHeight/2}px;
-                    left: ${title.getBoundingClientRect().left + Math.random() * title.offsetWidth}px;
+                    top: ${titleRect.top - headerRect.top + title.offsetHeight/2}px;
+                    left: ${titleRect.left - headerRect.left + Math.random() * title.offsetWidth}px;
                     animation: particleFloat 1s ease-out forwards;
                 `;
                 
-                document.body.appendChild(particle);
+                channelsHeader.appendChild(particle);
                 
                 setTimeout(() => {
                     particle.remove();
                 }, 1000);
-            }, i * 100);
+            }, i * 50); // Уменьшил задержку для более плавного эффекта
         }
     }
     
-    console.log('✅ Этап 1 загружен: Акцидентный заголовок');
+    // Адаптация к ресайзу окна
+    window.addEventListener('resize', function() {
+        // Пересчитываем позиции при изменении размера
+        titleContainer.style.transform = 'none'; // Сбрасываем любые трансформации
+    });
+    
+    console.log('✅ Акцидентный заголовок загружен');
 });
 
 // Добавляем CSS для частиц
@@ -46,9 +56,30 @@ style.textContent = `
             opacity: 1;
         }
         100% {
-            transform: translateY(-100px) scale(0);
+            transform: translateY(-80px) scale(0);
             opacity: 0;
         }
+    }
+    
+    /* Гарантируем центрирование контейнера */
+    .channels-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+    
+    .title-container {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    .main-title {
+        text-align: center !important;
+        margin: 0 auto !important;
+        display: inline-block !important;
     }
 `;
 document.head.appendChild(style);
