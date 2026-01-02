@@ -100,11 +100,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция расчета с точным округлением и увеличенными коэффициентами
     function calculateReverb() {
-        // Коэффициенты для разных размеров комнат (УВЕЛИЧЕНЫ для более обволакивающего звука)
+        // Коэффициенты для разных размеров комнат (МАКСИМАЛЬНО увеличены для обволакивающего звука)
         const roomCoefficients = {
-            small: { pre: 0.25, decay: 3.0 },     // decay увеличен в 2 раза
-            medium: { pre: 0.5, decay: 6.0 },     // decay увеличен в 3 раза
-            large: { pre: 0.75, decay: 9.0 }      // decay увеличен в 3 раза
+            small: { pre: 0.25, decay: 5.0 },     // small теперь ощутимо больше
+            medium: { pre: 0.5, decay: 10.0 },    // medium - очень обволакивающий
+            large: { pre: 0.75, decay: 15.0 }     // large - эпический разлёт
         };
         
         const coeff = roomCoefficients[currentRoomSize];
