@@ -98,27 +98,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Функция расчета
+    // Функция расчета с точным округлением и увеличенными коэффициентами
     function calculateReverb() {
-        // Коэффициенты для разных размеров комнат
+        // Коэффициенты для разных размеров комнат (УВЕЛИЧЕНЫ для более обволакивающего звука)
         const roomCoefficients = {
-            small: { pre: 0.25, decay: 1.5 },
-            medium: { pre: 0.5, decay: 2.0 },
-            large: { pre: 0.75, decay: 3.0 }
+            small: { pre: 0.25, decay: 3.0 },     // decay увеличен в 2 раза
+            medium: { pre: 0.5, decay: 6.0 },     // decay увеличен в 3 раза
+            large: { pre: 0.75, decay: 9.0 }      // decay увеличен в 3 раза
         };
         
         const coeff = roomCoefficients[currentRoomSize];
         const beatLength = 60000 / currentBPM; // Длительность доли в ms
         
-        // Расчет значений
-        const preDelay = Math.round((beatLength / 16) * coeff.pre);
-        const decayTime = Math.round((beatLength / 4) * coeff.decay);
-        const totalReverb = Math.round(preDelay + decayTime);
+        // Расчет значений (теперь с плавающей точкой)
+        const preDelayMs = (beatLength / 16) * coeff.pre;
+        const decayTimeMs = (beatLength / 4) * coeff.decay;
+        const totalReverbMs = preDelayMs + decayTimeMs;
         
-        // Обновление интерфейса
-        preDelayElem.textContent = `${preDelay} ms`;
-        decayTimeElem.textContent = `${decayTime} ms`;
-        totalReverbElem.textContent = `${totalReverb} ms`;
+        // Форматирование (разные единицы измерения и точность)
+        preDelayElem.textContent = `${preDelayMs.toFixed(1)} ms`;      // до десятых, ms
+        decayTimeElem.textContent = `${(decayTimeMs / 1000).toFixed(2)} s`; // до сотых, секунды
+        totalReverbElem.textContent = `${totalReverbMs.toFixed(2)} ms`;   // до сотых, ms
         
         // Показать результаты (если скрыты)
         results.style.display = 'flex';
