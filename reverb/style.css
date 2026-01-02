@@ -45,7 +45,7 @@ body {
 
 .main-title {
     font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
-    font-size: clamp(2rem, 7.5vw, 6rem); /* уменьшил на 1/3 */
+    font-size: clamp(0.8rem, 3vw, 2.4rem); /* уменьшил на 1/3 */
     font-weight: 400;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -74,7 +74,7 @@ body {
     width: 100%;
     height: 100%;
     font-family: 'Orbitron', 'Black Ops One', 'Anton', Impact, sans-serif;
-    font-size: clamp(1.8rem, 7vw, 5.2rem); /* уменьшил на 2/5 */
+    font-size: clamp(0.72rem, 2.8vw, 2.08rem); /* уменьшил на 2/5 */
     color: transparent;
     text-shadow: 
         -4px -4px 0 #0066ff,
