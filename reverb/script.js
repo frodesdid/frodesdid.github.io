@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const titleContainer = document.querySelector('.title-container');
     const title = document.getElementById('mainTitle');
     
-    // Создаем частицы при наведении
+    // Частицы при наведении
     titleContainer.addEventListener('mouseenter', function() {
         createParticles(10);
     });
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Этап 1 загружен: Акцидентный заголовок');
 });
 
-// Добавляем CSS для частиц
+// CSS для частиц
 const style = document.createElement('style');
 style.textContent = `
     @keyframes particleFloat {
@@ -85,22 +85,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция расчета с точным округлением и увеличенными коэффициентами
     function calculateReverb() {
-        // Коэффициенты для разных размеров комнат (МАКСИМАЛЬНО увеличены для обволакивающего звука)
+        // Коэффициенты для разных размеров комнат
         const roomCoefficients = {
-            small: { pre: 0.25, decay: 5.0 },     // small теперь ощутимо больше
-            medium: { pre: 0.5, decay: 10.0 },    // medium - очень обволакивающий
-            large: { pre: 0.75, decay: 15.0 }     // large - эпический разлёт
+            small: { pre: 0.25, decay: 5.0 },     // small 
+            medium: { pre: 0.5, decay: 10.0 },    // medium 
+            large: { pre: 0.75, decay: 15.0 }     // large 
         };
         
         const coeff = roomCoefficients[currentRoomSize];
         const beatLength = 60000 / currentBPM; // Длительность доли в ms
         
-        // Расчет значений (теперь с плавающей точкой)
+        // Расчет значений (с плавающей точкой) //
         const preDelayMs = (beatLength / 16) * coeff.pre;
         const decayTimeMs = (beatLength / 4) * coeff.decay;
         const totalReverbMs = preDelayMs + decayTimeMs;
         
-        // Форматирование (разные единицы измерения и точность)
+        // Форматирование (разные единицы измерения и точность, мне удобнее в В valhalla room)
         preDelayElem.textContent = `${preDelayMs.toFixed(1)} ms`;      // до десятых, ms
         decayTimeElem.textContent = `${(decayTimeMs / 1000).toFixed(2)} s`; // до сотых, секунды
         totalReverbElem.textContent = `${totalReverbMs.toFixed(2)} ms`;   // до сотых, ms
@@ -126,3 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         calculateReverb();
     });
 });
+
+/*  Формула реверберации (для особо дотошных звукарей, убеждайтесь, или пишите почему я неправ в тг https://t.me/frodes или сюда @Braun22) */
+/* preDelay = (60000 / BPM / 16) × коэффициентPre */
+/* decay = (60000 / BPM / 4) × коэффициентDecay */
