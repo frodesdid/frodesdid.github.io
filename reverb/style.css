@@ -1,14 +1,14 @@
-/* === ЗАГОЛОВОК КАНАЛОВ === */
+/* === ЗАГОЛОВОК === */
 .channels-header {
     text-align: center;
-    padding: 40px 20px 30px; /* Уменьшил паддинг */
+    padding: 40px 20px 30px; 
     position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 30vh; /* Уменьшил высоту */
+    min-height: 30vh; 
 }
 
 .title-container {
@@ -16,26 +16,26 @@
     display: inline-block;
     margin-bottom: 1.5rem;
     max-width: 95%;
-    overflow: hidden; /* Добавляем чтобы текст не вылезал */
+    overflow: hidden; 
 }
 
 .main-title {
     font-family: 'Black Ops One', 'Orbitron', 'Anton', Impact, sans-serif;
-    font-size: clamp(2.2rem, 2.6vw, 3rem); /* Уменьшил в 2 раза */
+    font-size: clamp(2.2rem, 2.6vw, 3rem); /* ЗНАЧЕНИЕ РАЗМЕРА ТЕКСТА ДО */
     font-weight: 400;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #0a0a0a;
     text-shadow: 
         -2px -2px 0 #ff003c,
-        2px 2px 0 #0066ff; /* Уменьшил тень */
+        2px 2px 0 #0066ff; /* ТЕНЬ */
     line-height: 0.9;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     display: block;
     width: 100%;
-    white-space: nowrap; /* Запрещаем перенос текста */
+    white-space: nowrap; /* ПЕРЕНОС ТЕКСТА ЗАПРЕЩЕН */
     
     background: linear-gradient(45deg, #8B0000, #B22222, #DC143C, #FF0033);
     -webkit-background-clip: text;
@@ -53,12 +53,12 @@
     width: 100%;
     height: 100%;
     font-family: 'Orbitron', 'Black Ops One', 'Anton', Impact, sans-serif;
-    font-size: clamp(2.14rem, 2.54vw, 2.94rem); /* Уменьшил в 2 раза и СДЕЛАЛ МЕНЬШЕ основного! */
+    font-size: clamp(2.14rem, 2.54vw, 2.94rem); /* ЗНАЧЕНИЕ РАЗМЕРА ТЕКСТА ПОСЛЕ */
     color: transparent;
     text-shadow: 
         -2px -2px 0 #0066ff,
         2px 2px 0 #00ff88,
-        0 0 20px rgba(0, 102, 255, 0.5); /* Уменьшил свечение */
+        0 0 20px rgba(0, 102, 255, 0.5); /* СВЕЧЕНИЕ ПОСЛЕ */
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     
@@ -67,14 +67,12 @@
     background-clip: text;
     background-size: 300% 300%;
     animation: neonShift 4s ease-in-out infinite;
-    /* Убираем transform чтобы не сбивать центрирование */
-    white-space: nowrap; /* Запрещаем перенос текста */
+    white-space: nowrap; /* ПЕРЕНОС ТЕКСТА ЗАПРЕЩЕН */
 }
 
 .title-container:hover .main-title::before {
     opacity: 1;
-    letter-spacing: 0.05em; /* Уменьшил увеличение межбуквенного */
-    /* НИКАКОГО transform! */
+    letter-spacing: 0.05em; 
 }
 
 .title-container:hover .main-title {
@@ -84,7 +82,7 @@
 }
 
 .tagline {
-    font-size: clamp(0.8rem, 2vw, 1.2rem); /* Уменьшил в 2 раза */
+    font-size: clamp(0.8rem, 2vw, 1.2rem); /* ТЕКСТ ПОДЗАГОЛОВКА */
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: #888;
@@ -94,10 +92,10 @@
     width: 100%;
     max-width: 800px;
     padding: 0 15px;
-    white-space: normal; /* Запрещаем перенос текста */
+    white-space: normal; /* ПЕРЕНОС ТЕКСТА РАЗРЕШЕН */
 }
 
-/* Адаптация для очень маленьких экранов */
+/* АДАПТАЦИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */
 @media (max-width: 480px) {
     .channels-header {
         padding: 20px 10px;
@@ -105,23 +103,23 @@
     }
     
     .main-title {
-        font-size: clamp(0.9rem, 3.5vw, 2rem);
+        font-size: clamp(2.2rem, 2.6vw, 3rem); /* РАЗМЕР ТЕКСТА НА МОБИЛЬНЫХ ДО */
         letter-spacing: 0.03em;
     }
     
     .main-title::before {
-        font-size: clamp(0.7rem, 2.5vw, 1.5rem);
+        font-size: clamp(2.14rem, 2.54vw, 2.94rem); /* РАЗМЕР ТЕКСТА НА МОБИЛЬНЫХ ПОСЛЕ*/
     }
     
     .tagline {
         font-size: clamp(0.7rem, 1.8vw, 1rem);
         letter-spacing: 0.1em;
-        white-space: normal; /* Разрешаем перенос на мобилках */
+        white-space: normal; /* ПЕРЕНОС РАЗРЕШЕН НА МОБИЛЬНЫХ */
         word-break: break-word;
     }
 }
 
-/* Для очень больших экранов */
+/* АДАПТАЦИЯ БОЛЬШИХ ЭКРАНОВ */
 @media (min-width: 1400px) {
     .channels-header {
         min-height: 35vh;
@@ -136,7 +134,7 @@
     }
 }
 
-/* Сброс и базовые стили */
+/* === КАЛЬКУЛЯТОР === */
 * {
     margin: 0;
     padding: 0;
