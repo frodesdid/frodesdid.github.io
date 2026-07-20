@@ -116,7 +116,7 @@
                 <label>Пароль</label>
                 <input type="password" id="adminPassword" placeholder="Введи пароль">
             </div>
-            <button class="submit-btn" onclick="login()">ВОЙТИ</button>
+            <button class="submit-btn" id="loginBtn">ВОЙТИ</button>
             <div id="loginStatus" class="status error"></div>
         </div>
 
@@ -139,7 +139,7 @@
                 <label>Slug (для ссылки, латиница, через дефис)</label>
                 <input type="text" id="newsSlug" placeholder="novyy-albom-15-iyunya">
             </div>
-            <button class="submit-btn" onclick="publishNews()">ОПУБЛИКОВАТЬ</button>
+            <button class="submit-btn" id="publishBtn">ОПУБЛИКОВАТЬ</button>
             <div id="publishStatus" class="status"></div>
         </div>
     </div>
@@ -148,90 +148,107 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script>
-        // ===== КЛЮЧИ =====
-        const SUPABASE_URL = 'https://fggfkxnjahgrkrewhjzhk.supabase.co';
-        const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnZ2ZreG5qYWhncmtyZXdqaHprIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzExNDkyMSwiZXhwIjoyMDk4NjkwOTIxfQ.14bNs2s3a5PhU_j5Mfsh598_vYzEtuMqm0cZKdMoS9I';
+        (function() {
+            'use strict';
 
-        // ===== ХЕШ ПАРОЛЯ (SHA-256) =====
-        // Сгенерируй свой хеш здесь: https://emn178.github.io/online-tools/sha256.html
-        const ADMIN_PASSWORD_HASH = 'aea49665cb8c0bb7be47740c579a4f63bad95a553e7940d1db3efb0d05c3de38'; // ← ЗАМЕНИ НА СВОЙ ХЕШ
+            // ===== КЛЮЧИ =====
+            const SUPABASE_URL = 'https://fggfkxnjahgrkrewhjzhk.supabase.co';
+            const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnZ2ZreG5qYWhncmtyZXdqaHprIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzExNDkyMSwiZXhwIjoyMDk4NjkwOTIxfQ.14bNs2s3a5PhU_j5Mfsh598_vYzEtuMqm0cZKdMoS9I';
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+            // ===== ХЕШ ПАРОЛЯ (SHA-256) =====
+            // Сгенерируй свой хеш здесь: https://emn178.github.io/online-tools/sha256.html
+            const ADMIN_PASSWORD_HASH = 'aea49665cb8c0bb7be47740c579a4f63bad95a553e7940d1db3efb0d05c3de38'; // ← ЗАМЕНИ НА СВОЙ
 
-        // ===== ФУНКЦИЯ ВХОДА =====
-        function login() {
-            const password = document.getElementById('adminPassword').value;
-            const status = document.getElementById('loginStatus');
+            // ===== ПОДКЛЮЧАЕМ SUPABASE =====
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
-            if (!password) {
-                status.textContent = '❌ Введи пароль';
-                status.className = 'status error';
-                status.style.display = 'block';
-                return;
+            // ===== DOM-ЭЛЕМЕНТЫ =====
+            const loginForm = document.getElementById('loginForm');
+            const publishForm = document.getElementById('publishForm');
+            const loginStatus = document.getElementById('loginStatus');
+            const publishStatus = document.getElementById('publishStatus');
+            const passwordInput = document.getElementById('adminPassword');
+            const loginBtn = document.getElementById('loginBtn');
+            const publishBtn = document.getElementById('publishBtn');
+
+            const titleInput = document.getElementById('newsTitle');
+            const contentInput = document.getElementById('newsContent');
+            const imageInput = document.getElementById('newsImage');
+            const slugInput = document.getElementById('newsSlug');
+
+            // ===== ФУНКЦИЯ ВХОДА =====
+            function login() {
+                const password = passwordInput.value;
+
+                if (!password) {
+                    loginStatus.textContent = '❌ Введи пароль';
+                    loginStatus.className = 'status error';
+                    loginStatus.style.display = 'block';
+                    return;
+                }
+
+                const hashedInput = CryptoJS.SHA256(password).toString();
+
+                if (hashedInput === ADMIN_PASSWORD_HASH) {
+                    loginForm.style.display = 'none';
+                    publishForm.style.display = 'block';
+                    loginStatus.className = 'status';
+                    loginStatus.style.display = 'none';
+                } else {
+                    loginStatus.textContent = '❌ Неверный пароль';
+                    loginStatus.className = 'status error';
+                    loginStatus.style.display = 'block';
+                }
             }
 
-            // Хешируем введённый пароль
-            const hashedInput = CryptoJS.SHA256(password).toString();
+            // ===== ПУБЛИКАЦИЯ НОВОСТИ =====
+            async function publishNews() {
+                const title = titleInput.value.trim();
+                const content = contentInput.value.trim();
+                const imageUrl = imageInput.value.trim();
+                const slug = slugInput.value.trim();
 
-            if (hashedInput === ADMIN_PASSWORD_HASH) {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('publishForm').style.display = 'block';
-                status.className = 'status';
-                status.style.display = 'none';
-            } else {
-                status.textContent = '❌ Неверный пароль';
-                status.className = 'status error';
-                status.style.display = 'block';
+                if (!title || !content || !slug) {
+                    publishStatus.textContent = '❌ Заполни все обязательные поля';
+                    publishStatus.className = 'status error';
+                    publishStatus.style.display = 'block';
+                    return;
+                }
+
+                try {
+                    const { error } = await supabaseClient
+                        .from('news')
+                        .insert([{ title, content, image_url: imageUrl || null, slug }]);
+
+                    if (error) throw error;
+
+                    publishStatus.textContent = '✅ Новость опубликована!';
+                    publishStatus.className = 'status success';
+                    publishStatus.style.display = 'block';
+
+                    titleInput.value = '';
+                    contentInput.value = '';
+                    imageInput.value = '';
+                    slugInput.value = '';
+
+                } catch (err) {
+                    console.error('Ошибка публикации:', err);
+                    publishStatus.textContent = '❌ Ошибка: ' + err.message;
+                    publishStatus.className = 'status error';
+                    publishStatus.style.display = 'block';
+                }
             }
-        }
 
-        // ===== ПУБЛИКАЦИЯ НОВОСТИ =====
-        async function publishNews() {
-            const title = document.getElementById('newsTitle').value.trim();
-            const content = document.getElementById('newsContent').value.trim();
-            const imageUrl = document.getElementById('newsImage').value.trim();
-            const slug = document.getElementById('newsSlug').value.trim();
+            // ===== НАВЕШИВАЕМ СОБЫТИЯ =====
+            loginBtn.addEventListener('click', login);
+            publishBtn.addEventListener('click', publishNews);
 
-            const status = document.getElementById('publishStatus');
+            passwordInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') login();
+            });
 
-            if (!title || !content || !slug) {
-                status.textContent = '❌ Заполни все обязательные поля';
-                status.className = 'status error';
-                status.style.display = 'block';
-                return;
-            }
-
-            try {
-                const { error } = await supabase
-                    .from('news')
-                    .insert([{ title, content, image_url: imageUrl || null, slug }]);
-
-                if (error) throw error;
-
-                status.textContent = '✅ Новость опубликована!';
-                status.className = 'status success';
-                status.style.display = 'block';
-
-                document.getElementById('newsTitle').value = '';
-                document.getElementById('newsContent').value = '';
-                document.getElementById('newsImage').value = '';
-                document.getElementById('newsSlug').value = '';
-
-            } catch (err) {
-                console.error(err);
-                status.textContent = '❌ Ошибка: ' + err.message;
-                status.className = 'status error';
-                status.style.display = 'block';
-            }
-        }
-
-        // ===== ENTER ДЛЯ ВХОДА =====
-        document.getElementById('adminPassword').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') login();
-        });
-
-        // ===== ЛОГ ДЛЯ ОТЛАДКИ =====
-        console.log('✅ Админка загружена. Supabase подключен.');
+            console.log('✅ Админка загружена');
+        })();
     </script>
 </body>
 </html>
