@@ -144,21 +144,36 @@
         </div>
     </div>
 
+    <!-- ===== ПОДКЛЮЧЕНИЯ ===== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script>
         // ===== КЛЮЧИ =====
         const SUPABASE_URL = 'https://fggfkxnjahgrkrewhjzhk.supabase.co';
         const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnZ2ZreG5qYWhncmtyZXdqaHprIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzExNDkyMSwiZXhwIjoyMDk4NjkwOTIxfQ.14bNs2s3a5PhU_j5Mfsh598_vYzEtuMqm0cZKdMoS9I';
-        const ADMIN_PASSWORD = 'fucky0urs3lf'; // 👈 пенис
+
+        // ===== ХЕШ ПАРОЛЯ (SHA-256) =====
+        // Сгенерируй свой хеш здесь: https://emn178.github.io/online-tools/sha256.html
+        const ADMIN_PASSWORD_HASH = 'aea49665cb8c0bb7be47740c579a4f63bad95a553e7940d1db3efb0d05c3de38'; // ← ЗАМЕНИ НА СВОЙ ХЕШ
 
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
-        // ===== ВХОД =====
+        // ===== ФУНКЦИЯ ВХОДА =====
         function login() {
             const password = document.getElementById('adminPassword').value;
             const status = document.getElementById('loginStatus');
-            
-            if (password === ADMIN_PASSWORD) {
+
+            if (!password) {
+                status.textContent = '❌ Введи пароль';
+                status.className = 'status error';
+                status.style.display = 'block';
+                return;
+            }
+
+            // Хешируем введённый пароль
+            const hashedInput = CryptoJS.SHA256(password).toString();
+
+            if (hashedInput === ADMIN_PASSWORD_HASH) {
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('publishForm').style.display = 'block';
                 status.className = 'status';
@@ -170,48 +185,53 @@
             }
         }
 
-        // ===== ПУБЛИКАЦИЯ =====
+        // ===== ПУБЛИКАЦИЯ НОВОСТИ =====
         async function publishNews() {
             const title = document.getElementById('newsTitle').value.trim();
             const content = document.getElementById('newsContent').value.trim();
             const imageUrl = document.getElementById('newsImage').value.trim();
             const slug = document.getElementById('newsSlug').value.trim();
-            
+
             const status = document.getElementById('publishStatus');
-            
+
             if (!title || !content || !slug) {
                 status.textContent = '❌ Заполни все обязательные поля';
                 status.className = 'status error';
                 status.style.display = 'block';
                 return;
             }
-            
+
             try {
                 const { error } = await supabase
                     .from('news')
                     .insert([{ title, content, image_url: imageUrl || null, slug }]);
-                
+
                 if (error) throw error;
-                
+
                 status.textContent = '✅ Новость опубликована!';
                 status.className = 'status success';
                 status.style.display = 'block';
-                
+
                 document.getElementById('newsTitle').value = '';
                 document.getElementById('newsContent').value = '';
                 document.getElementById('newsImage').value = '';
                 document.getElementById('newsSlug').value = '';
-                
+
             } catch (err) {
+                console.error(err);
                 status.textContent = '❌ Ошибка: ' + err.message;
                 status.className = 'status error';
                 status.style.display = 'block';
             }
         }
 
+        // ===== ENTER ДЛЯ ВХОДА =====
         document.getElementById('adminPassword').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') login();
         });
+
+        // ===== ЛОГ ДЛЯ ОТЛАДКИ =====
+        console.log('✅ Админка загружена. Supabase подключен.');
     </script>
 </body>
 </html>
