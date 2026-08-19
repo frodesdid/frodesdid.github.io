@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TheFrodesDiD — БЕЗУМИЕ</title>
 
     <link rel="icon" type="image/png" href="assets/favicon.png" sizes="64x64">
@@ -16,55 +16,43 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- ГЕРОЙ -->
-        <header class="hero">
-            <div class="title-container">
-                <h1 class="main-title" id="mainTitle">???</h1>
-            </div>
-            <p class="tagline" id="dailyPhrase">Свет ещё горит. Но он скоро погаснет.</p>
-        </header>
+    <!-- ВСЁ ВНУТРИ .container — без скролла -->
+    <div class="container" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; overflow: hidden;">
 
-        <!-- ТОЛЬКО СЧЁТЧИК -->
-        <section class="manifesto" style="min-height: 50vh; padding: 50px 0;">
-            <div class="manifesto-grid" style="grid-template-columns: 1fr; text-align: center;">
-                <div class="manifesto-visual">
-                    <div class="cyber-portrait" style="height: 300px; margin-bottom: 40px;">
-                        <div class="portrait-layer base-layer"></div>
-                        <div class="portrait-layer glow-layer"></div>
-                        <div class="portrait-layer scan-line"></div>
-                        <div class="portrait-layer data-stream"></div>
-                    </div>
-                    
-                    <div class="manifesto-stats" style="display: flex; justify-content: center; gap: 30px;">
-                        <div class="stat-item">
-                            <div class="stat-number" id="daysCounter">9</div>
-                            <div class="stat-label">ДНЕЙ</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number" id="hoursCounter">00</div>
-                            <div class="stat-label">ЧАСОВ</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number" id="minutesCounter">00</div>
-                            <div class="stat-label">МИНУТ</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number" id="secondsCounter">00</div>
-                            <div class="stat-label">СЕКУНД</div>
-                        </div>
-                    </div>
-                </div>
+        <!-- ЗАГОЛОВОК — ??? -->
+        <div class="title-container" style="text-align: center;">
+            <h1 class="main-title" id="mainTitle"></h1>
+        </div>
+
+        <!-- ФРАЗА ДНЯ -->
+        <p class="tagline" id="dailyPhrase" style="margin-top: 10px; font-size: clamp(0.9rem, 2.5vw, 1.4rem); letter-spacing: 0.15em; text-align: center; color: #888;">Свет ещё горит. Но он скоро погаснет.</p>
+
+        <!-- ТАЙМЕР — прямо под фразой -->
+        <div class="timer-wrapper" style="margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 10px 20px; border-radius: 8px; border: 1px solid #222; min-width: 70px;">
+                <div class="stat-number" id="daysCounter" style="font-size: clamp(2.5rem, 8vw, 5rem); font-family: 'Orbitron', monospace; color: #ff003c;">9</div>
+                <div class="stat-label" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Дней</div>
             </div>
-            
-            <div class="manifesto-decoration">
-                <div class="decoration-line line-1"></div>
-                <div class="decoration-line line-2"></div>
-                <div class="binary-stream">◊ 28 ◊ 08 ◊ 2026 ◊ ◊ ◊ ◊ ◊ ◊</div>
+            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 10px 20px; border-radius: 8px; border: 1px solid #222; min-width: 70px;">
+                <div class="stat-number" id="hoursCounter" style="font-size: clamp(2.5rem, 8vw, 5rem); font-family: 'Orbitron', monospace; color: #ff003c;">00</div>
+                <div class="stat-label" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Часов</div>
             </div>
-        </section>
+            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 10px 20px; border-radius: 8px; border: 1px solid #222; min-width: 70px;">
+                <div class="stat-number" id="minutesCounter" style="font-size: clamp(2.5rem, 8vw, 5rem); font-family: 'Orbitron', monospace; color: #ff003c;">00</div>
+                <div class="stat-label" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Минут</div>
+            </div>
+            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 10px 20px; border-radius: 8px; border: 1px solid #222; min-width: 70px;">
+                <div class="stat-number" id="secondsCounter" style="font-size: clamp(2.5rem, 8vw, 5rem); font-family: 'Orbitron', monospace; color: #ff003c;">00</div>
+                <div class="stat-label" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Секунд</div>
+            </div>
+        </div>
+
+        <!-- МАЛЕНЬКАЯ ПОДПИСЬ ВНИЗУ -->
+        <p style="position: fixed; bottom: 20px; font-size: 0.6rem; color: #333; letter-spacing: 0.2em; text-transform: uppercase; text-align: center;">28 августа 2026</p>
+
     </div>
 
+    <!-- ПАРАЛЛАКС-ЭЛЕМЕНТЫ (тени) -->
     <div class="visual-elements">
         <div class="chain chain-1" data-depth="0.3">🪢🪢🪢🪢🪢</div>
         <div class="chain chain-2" data-depth="0.5">🪢🪢🪢🪢🪢</div>
@@ -72,61 +60,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-    (function() {
-        const TARGET_DATE = new Date('2026-08-28T00:00:00+03:00');
-        const PHRASES = [
-            { day: 9, text: 'Свет ещё горит. Но он скоро погаснет.' },
-            { day: 8, text: 'Он стоит напротив. У него моё лицо.' },
-            { day: 7, text: 'Ты слышишь дыхание? Это не я.' },
-            { day: 6, text: 'Два конца одной петли.' },
-            { day: 5, text: 'Скелет есть. А где шкаф?' },
-            { day: 4, text: 'Она тебя уже нашла. Ты просто не знаешь.' },
-            { day: 3, text: '28 августа — я перестану быть тенью.' },
-            { day: 2, text: 'Ты ещё можешь закрыть вкладку. Но ты не закроешь.' },
-            { day: 1, text: 'Завтра — безумие. Ты готов?' },
-            { day: 0, text: 'СВЕТ ПОГАС. ОН ЗДЕСЬ.' }
-        ];
-
-        const daysEl = document.getElementById('daysCounter');
-        const hoursEl = document.getElementById('hoursCounter');
-        const minutesEl = document.getElementById('minutesCounter');
-        const secondsEl = document.getElementById('secondsCounter');
-        const phraseEl = document.getElementById('dailyPhrase');
-
-        function update() {
-            const now = new Date();
-            const diff = TARGET_DATE.getTime() - now.getTime();
-
-            if (diff <= 0) {
-                if (daysEl) daysEl.textContent = '0';
-                if (hoursEl) hoursEl.textContent = '00';
-                if (minutesEl) minutesEl.textContent = '00';
-                if (secondsEl) secondsEl.textContent = '00';
-                if (phraseEl) phraseEl.textContent = 'СВЕТ ПОГАС. ОН ЗДЕСЬ.';
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            if (daysEl) daysEl.textContent = days;
-            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-            if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
-            if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
-
-            let phrase = PHRASES.find(p => p.day === days);
-            if (!phrase) {
-                phrase = days > 9 ? PHRASES[0] : PHRASES[PHRASES.length - 1];
-            }
-            if (phraseEl) phraseEl.textContent = phrase.text;
-        }
-
-        update();
-        setInterval(update, 1000);
-    })();
-    </script>
 </body>
 </html>
