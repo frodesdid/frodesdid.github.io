@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TheFrodesDiD - ЛАГЕРЬ КОРОЛЯ</title>
+    <title>TheFrodesDiD — БЕЗУМИЕ</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png" sizes="64x64">
     <link rel="icon" type="image/png" href="assets/favicon32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="assets/favicon16.png" sizes="16x16">
     
-    <!-- Шрифты -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
@@ -19,36 +17,37 @@
 </head>
 <body>
     <div class="container">
+        <!-- ГЕРОЙ -->
         <header class="hero">
             <div class="title-container">
-                <h1 class="main-title" id="mainTitle">TheFrodesDiD</h1>
+                <h1 class="main-title" id="mainTitle">???</h1>
             </div>
-            <p class="tagline">Я не тот, кого все любят, и меня это устраивает. Я доволен тем, кто я есть.</p>
+            <p class="tagline" id="dailyPhrase">Свет ещё горит. Но он скоро погаснет.</p>
         </header>
 
+        <!-- МАНИФЕСТ -->
         <section class="manifesto">
             <div class="manifesto-grid">
                 <div class="manifesto-text">
-                    <h2 class="manifesto-title">НАШ<br>КОДЕКС</h2>
+                    <h2 class="manifesto-title">КТО-ТО<br>ЖДЁТ</h2>
                     
                     <div class="text-scroll">
                         <div class="text-block">
-                            <p class="manifesto-line" data-delay="0">Меня называли "Девиантом"</p>
-                            <p class="manifesto-line" data-delay="200">Они не поняли. Проблема была не во мне.</p>
-                            <p class="manifesto-line" data-delay="400"> Проблема была в том мнимом мире, что слепили из глупых правил.</p>
+                            <p class="manifesto-line" data-delay="0">Он стоит напротив. У него моё лицо.</p>
+                            <p class="manifesto-line" data-delay="200">Но ты его не увидишь — до 28 августа.</p>
+                            <p class="manifesto-line" data-delay="400">Он не говорит. Он просто ждёт.</p>
                         </div>
                         
                         <div class="text-block">
-                            <p class="manifesto-line" data-delay="600">Мы не будем бить стекла.</p>
-                            <p class="manifesto-line" data-delay="800">Это видно по нашим глазам, которые видят правду.</p>
-                            <p class="manifesto-line" data-delay="1000">Наша сила не в громких победах.</p>
+                            <p class="manifesto-line" data-delay="600">Иногда мне кажется, что мы одно целое.</p>
+                            <p class="manifesto-line" data-delay="800">Иногда — что он ждёт, когда я отвернусь.</p>
+                            <p class="manifesto-line" data-delay="1000">Ты тоже это чувствуешь?</p>
                         </div>
                         
                         <div class="text-block">
-                            <p class="manifesto-line" data-delay="1200">Наша сила чтобы встать снова</p>
-                            <p class="manifesto-line" data-delay="1400">Даже когда тело говорит "хватит".</p>
-                            <p class="manifesto-line" data-delay="1600">Ненависть всегда неправильна, но любовь — никогда.</p>
-                            <p class="manifesto-line" data-delay="1800">Никогда не позволяй никому говорить тебе, что ты не можешь быть тем, кто ты есть.</p>
+                            <p class="manifesto-line" data-delay="1200">Осталось <span id="countdownDays">9</span> дней.</p>
+                            <p class="manifesto-line" data-delay="1400">Когда свет погаснет — ты узнаешь, кто я.</p>
+                            <p class="manifesto-line" data-delay="1600">А пока — просто смотри в зеркало.</p>
                         </div>
                     </div>
                 </div>
@@ -63,16 +62,20 @@
                     
                     <div class="manifesto-stats">
                         <div class="stat-item">
-                            <div class="stat-number" data-target="100">0</div>
-                            <div class="stat-label">СИЛА</div>
+                            <div class="stat-number" id="daysCounter">9</div>
+                            <div class="stat-label">ДНЕЙ</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number" data-target="23">0</div>
-                            <div class="stat-label">ГОДА</div>
+                            <div class="stat-number" id="hoursCounter">00</div>
+                            <div class="stat-label">ЧАСОВ</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number" data-target="7">0</div>
-                            <div class="stat-label">ОСКОЛКОВ</div>
+                            <div class="stat-number" id="minutesCounter">00</div>
+                            <div class="stat-label">МИНУТ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="secondsCounter">00</div>
+                            <div class="stat-label">СЕКУНД</div>
                         </div>
                     </div>
                 </div>
@@ -81,214 +84,209 @@
             <div class="manifesto-decoration">
                 <div class="decoration-line line-1"></div>
                 <div class="decoration-line line-2"></div>
-                <div class="binary-stream">◊◊Ø◊ØØØØ Ø◊ØØ◊ØØØ ◊◊Ø◊ØØØØ Ø◊ØØØØØØ ◊◊Ø◊ØØØØ Ø◊ØØ◊◊◊Ø ◊◊Ø◊ØØØØ Ø◊ØØØØØØ</div>
+                <div class="binary-stream">◊ 28 ◊ 08 ◊ 2026 ◊ ◊ ◊ ◊ ◊ ◊</div>
             </div>
         </section>
 
-            <!-- Секция Арсенал -->
-    <section class="arsenal">
-        <div class="arsenal-header">
-            <h2 class="arsenal-title">АРСЕНАЛ</h2>
-            <p class="arsenal-subtitle">Контент массового производства.</p>
-        </div>
-
-        <div class="arsenal-grid">
-            <!-- Проект 1 - Изображение -->
-            <div class="arsenal-item image-item">
-                <div class="item-media">
-                    <img src="assets/images/RF.jpg" alt="Visual Art" class="media-content">
-                    <div class="media-overlay">
-                        <span class="media-badge">ВИЗУАЛ</span>
-                        <h3>КРАСНЫЙ ФЛАГ</h3>
-                        <p>Фотография борьбы с самим собой</p>
-                    </div>
-                </div>
+        <!-- АРСЕНАЛ -->
+        <section class="arsenal">
+            <div class="arsenal-header">
+                <h2 class="arsenal-title">ОСКОЛКИ</h2>
+                <p class="arsenal-subtitle">9 треков. Одна комната. Один монстр. Скоро.</p>
             </div>
 
-            <!-- Проект 2 - Музыка (исправленная версия) -->
-            <div class="arsenal-item music-item">
-                <div class="item-media">
-                    <div class="music-container">
-                        <div class="album-art">
-                            <img src="assets/images/project2.jpg" alt="Album Cover">
-                            <div class="play-pulse"></div>
-                            <button class="play-overlay-btn" onclick="togglePlay(this)">
-                                <span class="play-icon"> ▶</span>
-                            </button>
-                        </div>
-                        <div class="track-details">
-                            <h3>КРУПИЦА ОСКОЛКА</h3>
-                            <p>Dark Synth</p>
-                            <audio class="audio-element">
-                                <source src="assets/music/track1.mp3" type="audio/mpeg">
-                                Your browser doesn't support audio
-                            </audio>
-                            <div class="audio-controls">
-                                <button class="control-btn" onclick="togglePlay(this)">▶</button>
-                                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1" onchange="setVolume(this)">
-                                <span class="current-time">0:00</span>
-                            </div>
+            <div class="arsenal-grid">
+                <div class="arsenal-item image-item">
+                    <div class="item-media">
+                        <img src="assets/images/RF.jpg" alt="Осколок" class="media-content">
+                        <div class="media-overlay">
+                            <span class="media-badge">??</span>
+                            <h3>ОСКОЛОК #1</h3>
+                            <p>—</p>
                         </div>
                     </div>
-                    <div class="media-overlay">
-                        <span class="media-badge">AUDIO</span>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Проект 3 - Видео -->
-            <div class="arsenal-item video-item">
-                <div class="item-media">
-                    <iframe src="https://vkvideo.ru/video_ext.php?oid=-59442791&id=456239192&hash=02056ce793b50413&autoplay=1&loop=1" 
-                            width="100%" height="100%" frameborder="0" 
-                            allowfullscreen="1" 
-                            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-                            style="border: none;">
-                    </iframe>
-                    <div class="media-overlay">
-                        <span class="media-badge">ДВИЖЕНИЕ</span>
-                        <h3>ШОУРУМ</h3>
-                        <p>VII</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Проект 4 - Коллаж -->
-            <div class="arsenal-item collage-item">
-                <div class="item-media">
-                    <div class="collage-grid">
-                        <div class="collage-cell">
-                            <div class="collage-img" style="background-image: url('assets/images/collage1-1.jpg')"></div>
-                        </div>
-                        <div class="collage-cell">
-                            <div class="collage-img" style="background-image: url('assets/images/collage1-2.jpg')"></div>
-                        </div>
-                        <div class="collage-cell">
-                            <div class="collage-img" style="background-image: url('assets/images/RF.jpg')"></div>
-                        </div>
-                        <div class="collage-cell">
-                            <div class="collage-img" style="background-image: url('assets/images/collage1-4.jpg')"></div>
+                <div class="arsenal-item image-item">
+                    <div class="item-media">
+                        <img src="assets/images/project2.jpg" alt="Осколок" class="media-content">
+                        <div class="media-overlay">
+                            <span class="media-badge">??</span>
+                            <h3>ОСКОЛОК #2</h3>
+                            <p>—</p>
                         </div>
                     </div>
-                    <div class="media-overlay">
-                        <span class="media-badge">ОСКОЛКИ</span>
-                        <h3>НОВОЙ ФАЗЫ</h3>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Проект 5 - Интерактив -->
-            <div class="arsenal-item interactive-item">
-                <div class="item-media">
-                    <div class="interactive-container">
-                        <canvas id="particleCanvas"></canvas>
-                        <div class="interactive-ui">
-                            <h3>ЦИФРОВОЙ ПРИЗРАК</h3>
-                            <p>Интерактивный звуковой ландшафт</p>
-                            <div class="control-panel">
-                                <button class="control-btn" onclick="activateParticles()">ПОДЖЕЧЬ</button>
-                                <button class="control-btn" onclick="changeMode()">СДВИГ</button>
-                                <div class="visualizer">
-                                    <div class="viz-bar"></div>
-                                    <div class="viz-bar"></div>
-                                    <div class="viz-bar"></div>
-                                    <div class="viz-bar"></div>
-                                    <div class="viz-bar"></div>
-                                </div>
-                            </div>
+                <div class="arsenal-item image-item">
+                    <div class="item-media">
+                        <img src="assets/images/collage1-1.jpg" alt="Осколок" class="media-content">
+                        <div class="media-overlay">
+                            <span class="media-badge">??</span>
+                            <h3>ОСКОЛОК #3</h3>
+                            <p>—</p>
                         </div>
                     </div>
-                    <div class="media-overlay">
-                        <span class="media-badge">ИНТЕРАКТИВ</span>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Проект 6 - Текст -->
-            <div class="arsenal-item text-item">
-                <div class="item-media">
-                    <div class="text-manifesto">
-                        <h3>MANIFESTO #01</h3>
-                        <div class="text-content">
-                            <p>"Мы — осколки зеркала, хранящие нашу суть. Система хочет нас сравнять, но мы предпочитаем оставаться собой — неровными, острыми, настоящими. "</p>
-                            <blockquote>
-                                "Мы не стремимся к разрушению. Мы создаем новую реальность, столь мощную, что старая неизбежно уступит ей место."
-                            </blockquote>
+                <div class="arsenal-item image-item">
+                    <div class="item-media">
+                        <img src="assets/images/collage1-4.jpg" alt="Осколок" class="media-content">
+                        <div class="media-overlay">
+                            <span class="media-badge">??</span>
+                            <h3>ОСКОЛОК #4</h3>
+                            <p>—</p>
                         </div>
                     </div>
-                    <div class="media-overlay">
-                        <span class="media-badge">ТЕКСТ</span>
+                </div>
+
+                <div class="arsenal-item image-item">
+                    <div class="item-media">
+                        <img src="assets/images/RF.jpg" alt="Осколок" class="media-content">
+                        <div class="media-overlay">
+                            <span class="media-badge">??</span>
+                            <h3>ОСКОЛОК #5</h3>
+                            <p>—</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arsenal-item image-item">
+                    <div class="item-media">
+                        <img src="assets/images/project2.jpg" alt="Осколок" class="media-content">
+                        <div class="media-overlay">
+                            <span class="media-badge">??</span>
+                            <h3>ОСКОЛОК #6</h3>
+                            <p>—</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-            <!-- Секция Контакты/Привал -->
-    <section class="campfire">
-        <div class="campfire-container">
-                        <!-- Анимированный костер -->
-            <div class="fire-animation">
-                <div class="flame flame-1"></div>
-                <div class="flame flame-2"></div>
-                <div class="flame flame-3"></div>
-                <div class="embers"></div>
-            </div>
-            <div class="campfire-header">
-                <h2 class="campfire-title">ПРИВАЛ У КОСТРА</h2>
-                <p class="campfire-subtitle">ЕСЛИ ВАША ЧАСТОТА НАХОДИТСЯ НА ТОЙ ЖЕ ДЛИНЕ ВОЛНЫ.</p>
-            </div>
-
-            <div class="frequency-grid">
-                <!-- Сигнал 1 - Телеграм -->
-                <div class="frequency-item">
-                    <div class="signal-icon">📡</div>
-                    <h3>ЗАШИФРОВАННЫЙ КАНАЛ СВЯЗИ</h3>
-                    <p>Защищенная связь и обновления в режиме реального времени</p>
-                    <a href="https://t.me/frodes" class="signal-btn" target="_blank">
-                        <span class="btn-text">РАСШИФРОВЫВАТЬ ПЕРЕДАЧУ</span>
-                        <span class="btn-pulse"></span>
-                    </a>
+        <!-- ПРИВАЛ -->
+        <section class="campfire">
+            <div class="campfire-container">
+                <div class="fire-animation">
+                    <div class="flame flame-1"></div>
+                    <div class="flame flame-2"></div>
+                    <div class="flame flame-3"></div>
+                    <div class="embers"></div>
+                </div>
+                <div class="campfire-header">
+                    <h2 class="campfire-title">КОМНАТА ОЖИДАНИЯ</h2>
+                    <p class="campfire-subtitle">Никто не знает, что здесь происходит, когда гаснет свет.</p>
                 </div>
 
-                <!-- Сигнал 2 - Яндекс Музыка -->
-                <div class="frequency-item">
-                    <div class="signal-icon">🎵</div>
-                    <h3>ПОДДЕРЖКА СВЯЗИ</h3>
-                    <p>Сбор налогов</p>
-                    <a href="https://tips.yandex.ru/guest/payment/7589420" class="signal-btn" target="_blank">
-                        <span class="btn-text">СТЕРЕТЬ МОНЕТКОЙ</span>
-                        <span class="btn-pulse"></span>
-                    </a>
+                <div class="frequency-grid">
+                    <div class="frequency-item">
+                        <div class="signal-icon">🕯️</div>
+                        <h3>ТИШИНА</h3>
+                        <p>Он ещё не говорит. Но ты уже слышишь дыхание.</p>
+                        <div class="signal-btn" style="cursor: default; opacity: 0.5; border-color: #444; color: #444;">
+                            <span class="btn-text">СКОРО</span>
+                        </div>
+                    </div>
+
+                    <div class="frequency-item">
+                        <div class="signal-icon">🌑</div>
+                        <h3>ТЕНЬ</h3>
+                        <p>Ты не знаешь, кто из нас настоящий.</p>
+                        <div class="signal-btn" style="cursor: default; opacity: 0.5; border-color: #444; color: #444;">
+                            <span class="btn-text">28 АВГУСТА</span>
+                        </div>
+                    </div>
+
+                    <div class="frequency-item">
+                        <div class="signal-icon">🪞</div>
+                        <h3>ЗЕРКАЛО</h3>
+                        <p>Когда зажжётся свет — не знаю, кто окажется перед тобой.</p>
+                        <div class="signal-btn" style="cursor: default; opacity: 0.5; border-color: #444; color: #444;">
+                            <span class="btn-text">ЖДИ</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Сигнал 3 - ВК Группа -->
-                <div class="frequency-item">
-                    <div class="signal-icon">⚡</div>
-                    <h3>ЧАСТОТА РАДИО</h3>
-                    <p>Звуки правды</p>
-                    <a href="https://frodes.ru/contact/" class="signal-btn" target="_blank">
-                        <span class="btn-text">УСЛЫШАТЬ ИСТИНУ</span>
-                        <span class="btn-pulse"></span>
-                    </a>
+                <div class="encryption-note">
+                    <div class="encryption-line"></div>
+                    <p class="note-text" id="bottomPhrase">Осталось 9 дней. Ты успеешь приготовиться?</p>
+                    <div class="encryption-line"></div>
                 </div>
             </div>
-
-            <div class="encryption-note">
-                <div class="encryption-line"></div>
-                <p class="note-text">Все соединения зашифрованы. Соблюдайте осторожность.</p>
-                <div class="encryption-line"></div>
-            </div>
-        </div>
-    </section>
+        </section>
     </div>
 
     <div class="visual-elements">
-        <div class="chain chain-1" data-depth="0.3">⛓️⛓️⛓️⛓️⛓️</div>
-        <div class="chain chain-2" data-depth="0.5">⛓️⛓️⛓️⛓️⛓️</div>
+        <div class="chain chain-1" data-depth="0.3">🪢🪢🪢🪢🪢</div>
+        <div class="chain chain-2" data-depth="0.5">🪢🪢🪢🪢🪢</div>
         <div class="crack crack-1" data-depth="0.2">⌇⌇⌇⌇⌇</div>
     </div>
 
     <script src="script.js"></script>
+    <script>
+    (function() {
+        // === НАСТРОЙКИ ===
+        const TARGET_DATE = new Date('2026-08-28T00:00:00+03:00');
+        const PHRASES = [
+            { day: 9, text: 'Свет ещё горит. Но он скоро погаснет.' },
+            { day: 8, text: 'Он стоит напротив. У него моё лицо.' },
+            { day: 7, text: 'Ты слышишь дыхание? Это не я.' },
+            { day: 6, text: 'Два конца одной петли.' },
+            { day: 5, text: 'Скелет есть. А где шкаф?' },
+            { day: 4, text: 'Она тебя уже нашла. Ты просто не знаешь.' },
+            { day: 3, text: '28 августа — я перестану быть тенью.' },
+            { day: 2, text: 'Ты ещё можешь закрыть вкладку. Но ты не закроешь.' },
+            { day: 1, text: 'Завтра — безумие. Ты готов?' },
+            { day: 0, text: 'СВЕТ ПОГАС. ОН ЗДЕСЬ.' }
+        ];
+
+        // === ЭЛЕМЕНТЫ ===
+        const daysEl = document.getElementById('daysCounter');
+        const hoursEl = document.getElementById('hoursCounter');
+        const minutesEl = document.getElementById('minutesCounter');
+        const secondsEl = document.getElementById('secondsCounter');
+        const countdownDaysEl = document.getElementById('countdownDays');
+        const phraseEl = document.getElementById('dailyPhrase');
+        const bottomPhraseEl = document.getElementById('bottomPhrase');
+
+        // === ОСНОВНАЯ ФУНКЦИЯ ===
+        function update() {
+            const now = new Date();
+            const diff = TARGET_DATE.getTime() - now.getTime();
+
+            if (diff <= 0) {
+                if (daysEl) daysEl.textContent = '0';
+                if (hoursEl) hoursEl.textContent = '00';
+                if (minutesEl) minutesEl.textContent = '00';
+                if (secondsEl) secondsEl.textContent = '00';
+                if (countdownDaysEl) countdownDaysEl.textContent = '0';
+                if (phraseEl) phraseEl.textContent = 'СВЕТ ПОГАС. ОН ЗДЕСЬ.';
+                if (bottomPhraseEl) bottomPhraseEl.textContent = 'Слушай. Пока не поздно.';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            if (daysEl) daysEl.textContent = days;
+            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+            if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+            if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+            if (countdownDaysEl) countdownDaysEl.textContent = days;
+
+            let phrase = PHRASES.find(p => p.day === days);
+            if (!phrase) {
+                phrase = days > 9 ? PHRASES[0] : PHRASES[PHRASES.length - 1];
+            }
+            if (phraseEl) phraseEl.textContent = phrase.text;
+            if (bottomPhraseEl) bottomPhraseEl.textContent = `Осталось ${days} дней. Ты успеешь приготовиться?`;
+        }
+
+        update();
+        setInterval(update, 1000);
+    })();
+    </script>
 </body>
 </html>
