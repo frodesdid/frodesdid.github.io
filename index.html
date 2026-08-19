@@ -25,42 +25,18 @@
             <p class="tagline" id="dailyPhrase">Свет ещё горит. Но он скоро погаснет.</p>
         </header>
 
-        <!-- МАНИФЕСТ -->
-        <section class="manifesto">
-            <div class="manifesto-grid">
-                <div class="manifesto-text">
-                    <h2 class="manifesto-title">КТО-ТО<br>ЖДЁТ</h2>
-                    
-                    <div class="text-scroll">
-                        <div class="text-block">
-                            <p class="manifesto-line" data-delay="0">Он стоит напротив. У него моё лицо.</p>
-                            <p class="manifesto-line" data-delay="200">Но ты его не увидишь — до 28 августа.</p>
-                            <p class="manifesto-line" data-delay="400">Он не говорит. Он просто ждёт.</p>
-                        </div>
-                        
-                        <div class="text-block">
-                            <p class="manifesto-line" data-delay="600">Иногда мне кажется, что мы одно целое.</p>
-                            <p class="manifesto-line" data-delay="800">Иногда — что он ждёт, когда я отвернусь.</p>
-                            <p class="manifesto-line" data-delay="1000">Ты тоже это чувствуешь?</p>
-                        </div>
-                        
-                        <div class="text-block">
-                            <p class="manifesto-line" data-delay="1200">Осталось <span id="countdownDays">9</span> дней.</p>
-                            <p class="manifesto-line" data-delay="1400">Когда свет погаснет — ты узнаешь, кто я.</p>
-                            <p class="manifesto-line" data-delay="1600">А пока — просто смотри в зеркало.</p>
-                        </div>
-                    </div>
-                </div>
-                
+        <!-- ТОЛЬКО СЧЁТЧИК -->
+        <section class="manifesto" style="min-height: 50vh; padding: 50px 0;">
+            <div class="manifesto-grid" style="grid-template-columns: 1fr; text-align: center;">
                 <div class="manifesto-visual">
-                    <div class="cyber-portrait">
+                    <div class="cyber-portrait" style="height: 300px; margin-bottom: 40px;">
                         <div class="portrait-layer base-layer"></div>
                         <div class="portrait-layer glow-layer"></div>
                         <div class="portrait-layer scan-line"></div>
                         <div class="portrait-layer data-stream"></div>
                     </div>
                     
-                    <div class="manifesto-stats">
+                    <div class="manifesto-stats" style="display: flex; justify-content: center; gap: 30px;">
                         <div class="stat-item">
                             <div class="stat-number" id="daysCounter">9</div>
                             <div class="stat-label">ДНЕЙ</div>
@@ -87,133 +63,6 @@
                 <div class="binary-stream">◊ 28 ◊ 08 ◊ 2026 ◊ ◊ ◊ ◊ ◊ ◊</div>
             </div>
         </section>
-
-        <!-- АРСЕНАЛ -->
-        <section class="arsenal">
-            <div class="arsenal-header">
-                <h2 class="arsenal-title">ОСКОЛКИ</h2>
-                <p class="arsenal-subtitle">9 треков. Одна комната. Один монстр. Скоро.</p>
-            </div>
-
-            <div class="arsenal-grid">
-                <div class="arsenal-item image-item">
-                    <div class="item-media">
-                        <img src="assets/images/RF.jpg" alt="Осколок" class="media-content">
-                        <div class="media-overlay">
-                            <span class="media-badge">??</span>
-                            <h3>ОСКОЛОК #1</h3>
-                            <p>—</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arsenal-item image-item">
-                    <div class="item-media">
-                        <img src="assets/images/project2.jpg" alt="Осколок" class="media-content">
-                        <div class="media-overlay">
-                            <span class="media-badge">??</span>
-                            <h3>ОСКОЛОК #2</h3>
-                            <p>—</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arsenal-item image-item">
-                    <div class="item-media">
-                        <img src="assets/images/collage1-1.jpg" alt="Осколок" class="media-content">
-                        <div class="media-overlay">
-                            <span class="media-badge">??</span>
-                            <h3>ОСКОЛОК #3</h3>
-                            <p>—</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arsenal-item image-item">
-                    <div class="item-media">
-                        <img src="assets/images/collage1-4.jpg" alt="Осколок" class="media-content">
-                        <div class="media-overlay">
-                            <span class="media-badge">??</span>
-                            <h3>ОСКОЛОК #4</h3>
-                            <p>—</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arsenal-item image-item">
-                    <div class="item-media">
-                        <img src="assets/images/RF.jpg" alt="Осколок" class="media-content">
-                        <div class="media-overlay">
-                            <span class="media-badge">??</span>
-                            <h3>ОСКОЛОК #5</h3>
-                            <p>—</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arsenal-item image-item">
-                    <div class="item-media">
-                        <img src="assets/images/project2.jpg" alt="Осколок" class="media-content">
-                        <div class="media-overlay">
-                            <span class="media-badge">??</span>
-                            <h3>ОСКОЛОК #6</h3>
-                            <p>—</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ПРИВАЛ -->
-        <section class="campfire">
-            <div class="campfire-container">
-                <div class="fire-animation">
-                    <div class="flame flame-1"></div>
-                    <div class="flame flame-2"></div>
-                    <div class="flame flame-3"></div>
-                    <div class="embers"></div>
-                </div>
-                <div class="campfire-header">
-                    <h2 class="campfire-title">КОМНАТА ОЖИДАНИЯ</h2>
-                    <p class="campfire-subtitle">Никто не знает, что здесь происходит, когда гаснет свет.</p>
-                </div>
-
-                <div class="frequency-grid">
-                    <div class="frequency-item">
-                        <div class="signal-icon">🕯️</div>
-                        <h3>ТИШИНА</h3>
-                        <p>Он ещё не говорит. Но ты уже слышишь дыхание.</p>
-                        <div class="signal-btn" style="cursor: default; opacity: 0.5; border-color: #444; color: #444;">
-                            <span class="btn-text">СКОРО</span>
-                        </div>
-                    </div>
-
-                    <div class="frequency-item">
-                        <div class="signal-icon">🌑</div>
-                        <h3>ТЕНЬ</h3>
-                        <p>Ты не знаешь, кто из нас настоящий.</p>
-                        <div class="signal-btn" style="cursor: default; opacity: 0.5; border-color: #444; color: #444;">
-                            <span class="btn-text">28 АВГУСТА</span>
-                        </div>
-                    </div>
-
-                    <div class="frequency-item">
-                        <div class="signal-icon">🪞</div>
-                        <h3>ЗЕРКАЛО</h3>
-                        <p>Когда зажжётся свет — не знаю, кто окажется перед тобой.</p>
-                        <div class="signal-btn" style="cursor: default; opacity: 0.5; border-color: #444; color: #444;">
-                            <span class="btn-text">ЖДИ</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="encryption-note">
-                    <div class="encryption-line"></div>
-                    <p class="note-text" id="bottomPhrase">Осталось 9 дней. Ты успеешь приготовиться?</p>
-                    <div class="encryption-line"></div>
-                </div>
-            </div>
-        </section>
     </div>
 
     <div class="visual-elements">
@@ -225,7 +74,6 @@
     <script src="script.js"></script>
     <script>
     (function() {
-        // === НАСТРОЙКИ ===
         const TARGET_DATE = new Date('2026-08-28T00:00:00+03:00');
         const PHRASES = [
             { day: 9, text: 'Свет ещё горит. Но он скоро погаснет.' },
@@ -240,16 +88,12 @@
             { day: 0, text: 'СВЕТ ПОГАС. ОН ЗДЕСЬ.' }
         ];
 
-        // === ЭЛЕМЕНТЫ ===
         const daysEl = document.getElementById('daysCounter');
         const hoursEl = document.getElementById('hoursCounter');
         const minutesEl = document.getElementById('minutesCounter');
         const secondsEl = document.getElementById('secondsCounter');
-        const countdownDaysEl = document.getElementById('countdownDays');
         const phraseEl = document.getElementById('dailyPhrase');
-        const bottomPhraseEl = document.getElementById('bottomPhrase');
 
-        // === ОСНОВНАЯ ФУНКЦИЯ ===
         function update() {
             const now = new Date();
             const diff = TARGET_DATE.getTime() - now.getTime();
@@ -259,9 +103,7 @@
                 if (hoursEl) hoursEl.textContent = '00';
                 if (minutesEl) minutesEl.textContent = '00';
                 if (secondsEl) secondsEl.textContent = '00';
-                if (countdownDaysEl) countdownDaysEl.textContent = '0';
                 if (phraseEl) phraseEl.textContent = 'СВЕТ ПОГАС. ОН ЗДЕСЬ.';
-                if (bottomPhraseEl) bottomPhraseEl.textContent = 'Слушай. Пока не поздно.';
                 return;
             }
 
@@ -274,14 +116,12 @@
             if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
             if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
             if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
-            if (countdownDaysEl) countdownDaysEl.textContent = days;
 
             let phrase = PHRASES.find(p => p.day === days);
             if (!phrase) {
                 phrase = days > 9 ? PHRASES[0] : PHRASES[PHRASES.length - 1];
             }
             if (phraseEl) phraseEl.textContent = phrase.text;
-            if (bottomPhraseEl) bottomPhraseEl.textContent = `Осталось ${days} дней. Ты успеешь приготовиться?`;
         }
 
         update();
