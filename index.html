@@ -16,18 +16,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; overflow: hidden; text-align: center;">
 
-        <!-- ЗАГОЛОВОК С ??? -->
-        <div class="title-container" style="display: inline-block; margin-bottom: 15px;">
+    <div class="container" id="mainContainer" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; overflow: hidden; text-align: center; transition: all 0.5s ease;">
+
+
+        <div class="title-container" style="display: inline-block; margin-bottom: 5px;">
             <h1 class="main-title" id="mainTitle">???</h1>
         </div>
 
-        <!-- ФРАЗА -->
+
         <p class="tagline" id="dailyPhrase" style="margin: 5px 0 20px 0; font-size: clamp(0.8rem, 2.5vw, 1.3rem); letter-spacing: 0.15em; color: #888;">Свет ещё горит. Но он скоро погаснет.</p>
 
-        <!-- ТАЙМЕР -->
-        <div class="timer-wrapper" style="display: flex; gap: clamp(8px, 2vw, 20px); flex-wrap: wrap; justify-content: center;">
+
+        <div id="timerBlock" style="display: flex; gap: clamp(8px, 2vw, 20px); flex-wrap: wrap; justify-content: center; transition: opacity 0.8s ease;">
             <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 8px; border: 1px solid #222; min-width: 60px;">
                 <div class="stat-number" id="daysCounter" style="font-size: clamp(2rem, 7vw, 4.5rem); font-family: 'Orbitron', monospace; color: #ff003c; line-height: 1;">9</div>
                 <div class="stat-label" style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Дней</div>
@@ -46,12 +47,38 @@
             </div>
         </div>
 
-        <!-- ПОДПИСЬ ВНИЗУ -->
-        <p style="position: fixed; bottom: 20px; font-size: 0.6rem; color: #333; letter-spacing: 0.2em; text-transform: uppercase; text-align: center; left: 0; right: 0; margin: 0;">28 августа 2026</p>
+
+        <div id="releaseBlock" style="display: none; flex-direction: column; gap: 15px; margin-top: 20px; width: 100%; max-width: 400px; animation: fadeInUp 1s ease;">
+            
+            <p style="color: #ff003c; font-family: 'Orbitron', monospace; font-size: 1.4rem; letter-spacing: 0.2em; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,0,60,0.5);">
+                ➜ СЛУШАЙ
+            </p>
+
+            <!-- === ЯНДЕКС МУЗЫКА === -->
+            <a href="https://music.yandex.ru/artist/5437814" target="_blank" class="release-link" style="display: block; padding: 14px; background: rgba(255,0,60,0.1); border: 1px solid #ff003c; border-radius: 8px; color: #fff; text-decoration: none; font-family: 'Orbitron', monospace; letter-spacing: 0.1em; transition: all 0.3s ease; backdrop-filter: blur(10px);">
+                🎧 ЯНДЕКС МУЗЫКА
+            </a>
+
+            <!-- === BANDLINK (ВСЕ ПЛАТФОРМЫ) === -->
+            <a href="https://bnd.lc/bezym1e" target="_blank" class="release-link" style="display: block; padding: 14px; background: rgba(0,102,255,0.1); border: 1px solid #0066ff; border-radius: 8px; color: #fff; text-decoration: none; font-family: 'Orbitron', monospace; letter-spacing: 0.1em; transition: all 0.3s ease; backdrop-filter: blur(10px);">
+                🔗 ВСЕ ПЛАТФОРМЫ (BandLink)
+            </a>
+
+            <!-- === TELEGRAM === -->
+            <a href="https://t.me/frodes" target="_blank" class="release-link" style="display: block; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid #444; border-radius: 8px; color: #888; text-decoration: none; font-family: 'Orbitron', monospace; letter-spacing: 0.1em; transition: all 0.3s ease;">
+                💬 ПРИВАТНЫЙ КАНАЛ
+            </a>
+
+
+            <p style="color: #333; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 20px; border-top: 1px solid #222; padding-top: 20px;">
+                TheFrodesDiD — БЕЗУМИЕ · 9 треков
+            </p>
+        </div>
+
+        <p id="footerDate" style="position: fixed; bottom: 20px; font-size: 0.6rem; color: #333; letter-spacing: 0.2em; text-transform: uppercase; text-align: center; left: 0; right: 0; margin: 0;">28 августа 2026</p>
 
     </div>
 
-    <!-- ПАРАЛЛАКС -->
     <div class="visual-elements">
         <div class="chain chain-1" data-depth="0.3">🪢🪢🪢🪢🪢</div>
         <div class="chain chain-2" data-depth="0.5">🪢🪢🪢🪢🪢</div>
@@ -59,19 +86,25 @@
     </div>
 
     <script src="script.js"></script>
-    <!-- СКРИПТ ТАЙМЕРА -->
+    
     <script>
     (function() {
+
         var target = new Date('2026-08-28T00:00:00+03:00');
         if (isNaN(target.getTime())) {
             target = new Date(2026, 7, 28, 0, 0, 0);
         }
+
 
         var daysEl = document.getElementById('daysCounter');
         var hoursEl = document.getElementById('hoursCounter');
         var minutesEl = document.getElementById('minutesCounter');
         var secondsEl = document.getElementById('secondsCounter');
         var phraseEl = document.getElementById('dailyPhrase');
+        var timerBlock = document.getElementById('timerBlock');
+        var releaseBlock = document.getElementById('releaseBlock');
+        var footerDate = document.getElementById('footerDate');
+
 
         var phrases = [
             { day: 9, text: 'Свет ещё горит. Но он скоро погаснет.' },
@@ -92,12 +125,13 @@
             var now = new Date();
             var diff = target.getTime() - now.getTime();
 
+
             if (diff <= 0) {
-                if (daysEl) daysEl.textContent = '0';
-                if (hoursEl) hoursEl.textContent = '00';
-                if (minutesEl) minutesEl.textContent = '00';
-                if (secondsEl) secondsEl.textContent = '00';
+
+                if (timerBlock) timerBlock.style.display = 'none';
+                if (releaseBlock) releaseBlock.style.display = 'flex';
                 if (phraseEl) phraseEl.textContent = 'СВЕТ ПОГАС. ОН ЗДЕСЬ.';
+                if (footerDate) footerDate.textContent = 'TheFrodesDiD · БЕЗУМИЕ';
                 return;
             }
 
@@ -111,17 +145,53 @@
             if (minutesEl) minutesEl.textContent = pad(minutes);
             if (secondsEl) secondsEl.textContent = pad(seconds);
 
+
             var phrase = null;
             for (var i = 0; i < phrases.length; i++) {
                 if (phrases[i].day === days) { phrase = phrases[i]; break; }
             }
             if (!phrase) phrase = days > 9 ? phrases[0] : phrases[phrases.length - 1];
             if (phraseEl) phraseEl.textContent = phrase.text;
+
+
+            if (days === 1 && footerDate) {
+                footerDate.textContent = 'ЗАВТРА · БЕЗУМИЕ';
+            }
         }
+
 
         update();
         setInterval(update, 1000);
+
+
+        document.querySelectorAll('.release-link').forEach(function(link) {
+            link.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.boxShadow = '0 0 30px rgba(255,0,60,0.3)';
+            });
+            link.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
     })();
     </script>
+
+    <style>
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .release-link:hover {
+            background: rgba(255,0,60,0.2) !important;
+            border-color: #ff3366 !important;
+            color: #fff !important;
+            text-shadow: 0 0 20px rgba(255,0,60,0.5);
+        }
+    </style>
+
 </body>
 </html>
