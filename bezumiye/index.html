@@ -212,172 +212,6 @@
             font-size: 0.45rem;
         }
 
-        .nav-chapter .playing-indicator {
-            display: none;
-            font-size: 0.5rem;
-            color: var(--color-gold);
-            animation: pulseText 1s ease-in-out infinite;
-        }
-
-        .nav-chapter.playing .playing-indicator {
-            display: inline;
-        }
-
-        @keyframes pulseText {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
-        }
-
-        /* ═══════════════════════════════════════════════
-           КАСТОМНЫЙ ПЛЕЕР (показываем пользователю)
-           ═══════════════════════════════════════════════ */
-        .custom-player {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1001;
-            width: 92%;
-            max-width: 650px;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 15px;
-            padding: 15px 20px;
-            display: none;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.9);
-            transition: all var(--transition);
-        }
-
-        .custom-player.active {
-            display: flex;
-        }
-
-        .cp-cover {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            background: var(--bg-secondary);
-            flex-shrink: 0;
-            overflow: hidden;
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .cp-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .cp-track {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            color: var(--text-primary);
-            letter-spacing: 0.05em;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .cp-artist {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.55rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.1em;
-        }
-
-        .cp-progress {
-            width: 100%;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-top: 5px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .cp-progress-bar {
-            height: 100%;
-            background: var(--color-gold);
-            width: 0%;
-            border-radius: 2px;
-            transition: width 0.3s linear;
-        }
-
-        .cp-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        .cp-controls button {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all var(--transition);
-            padding: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cp-controls button:hover {
-            color: var(--color-gold);
-            transform: scale(1.1);
-        }
-
-        .cp-controls .cp-play-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--color-gold);
-            color: var(--bg-primary);
-            font-size: 0.85rem;
-            border: none;
-        }
-
-        .cp-controls .cp-play-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-        }
-
-        .cp-time {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.5rem;
-            color: var(--text-secondary);
-            min-width: 65px;
-            text-align: right;
-            letter-spacing: 0.05em;
-        }
-
-        .cp-close {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all var(--transition);
-            padding: 0 5px;
-        }
-
-        .cp-close:hover {
-            color: var(--color-gold);
-            transform: scale(1.1);
-        }
-
         /* ═══════════════════════════════════════════════
            ПРОЛОГ
            ═══════════════════════════════════════════════ */
@@ -583,6 +417,9 @@
             letter-spacing: 0.1em;
         }
 
+        /* ═══════════════════════════════════════════════
+           КНОПКА СЛУШАТЬ НА ЯНДЕКС
+           ═══════════════════════════════════════════════ */
         .chapter-player {
             margin-top: 30px;
             display: flex;
@@ -594,30 +431,34 @@
             border: 1px solid rgba(255, 215, 0, 0.1);
         }
 
-        .chapter-player .play-btn {
-            background: var(--chapter-color);
-            border: none;
-            color: var(--bg-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all var(--transition);
-            display: flex;
+        .listen-btn {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: var(--color-gold);
+            color: var(--bg-primary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: 8px;
+            transition: all var(--transition);
+            border: none;
+            cursor: pointer;
             flex-shrink: 0;
         }
 
-        .chapter-player .play-btn:hover {
-            transform: scale(1.1);
+        .listen-btn:hover {
+            transform: scale(1.05);
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            background: #ffe44d;
         }
 
-        .chapter-player .play-btn.playing {
-            background: var(--color-gold);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        .listen-btn .icon {
+            font-size: 1rem;
         }
 
         .chapter-player .track-name {
@@ -626,19 +467,6 @@
             color: var(--text-secondary);
             letter-spacing: 0.1em;
             flex: 1;
-        }
-
-        .chapter-player .track-status {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.6rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.1em;
-            opacity: 0.5;
-        }
-
-        .chapter-player .track-status.active {
-            color: var(--color-gold);
-            opacity: 1;
         }
 
         /* ═══════════════════════════════════════════════
@@ -712,31 +540,12 @@
             .chapter-text {
                 max-height: 250px;
             }
-            .custom-player {
-                bottom: 20px;
-                padding: 12px 15px;
-                width: 95%;
-                border-radius: 12px;
-                gap: 10px;
+            .chapter-player {
+                flex-wrap: wrap;
             }
-            .cp-cover {
-                width: 40px;
-                height: 40px;
-            }
-            .cp-track {
-                font-size: 0.6rem;
-            }
-            .cp-controls button {
-                font-size: 0.9rem;
-            }
-            .cp-controls .cp-play-btn {
-                width: 30px;
-                height: 30px;
-                font-size: 0.7rem;
-            }
-            .cp-time {
-                font-size: 0.45rem;
-                min-width: 50px;
+            .listen-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
 
@@ -766,153 +575,88 @@
             .chapter-content {
                 padding: 15px;
             }
-            .chapter-player {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            .chapter-player .track-name {
-                width: 100%;
-                text-align: center;
-            }
-            .custom-player {
-                bottom: 15px;
-                padding: 10px 12px;
-                border-radius: 10px;
-                gap: 8px;
-            }
-            .cp-cover {
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
-            }
-            .cp-track {
-                font-size: 0.5rem;
-            }
-            .cp-artist {
-                font-size: 0.45rem;
-            }
         }
     </style>
 </head>
 <body>
 
     <!-- ═══════════════════════════════════════════════
-    НЕЙРОННЫЙ ФОН
+    НЕЙРОННЫЙ ФОН (ТОЧКИ С СВЯЗЯМИ)
     ═══════════════════════════════════════════════ -->
     <canvas id="neuronCanvas"></canvas>
 
     <!-- ═══════════════════════════════════════════════
-    СКРЫТЫЙ IFRAME (яндекс, невидимый)
-    ═══════════════════════════════════════════════ -->
-    <iframe id="hiddenYandexIframe" 
-            style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:none;"
-            allow="clipboard-write">
-    </iframe>
-
-    <!-- ═══════════════════════════════════════════════
-    КАСТОМНЫЙ ПЛЕЕР (показываем пользователю)
-    ═══════════════════════════════════════════════ -->
-    <div class="custom-player" id="customPlayer">
-        <div class="cp-cover" id="cpCover">♫</div>
-        <div class="cp-info">
-            <div class="cp-track" id="cpTrack">ХРОНИКИ БЕЗУМИЯ</div>
-            <div class="cp-artist" id="cpArtist">TheFrodesDiD</div>
-            <div class="cp-progress" id="cpProgress">
-                <div class="cp-progress-bar" id="cpProgressBar"></div>
-            </div>
-        </div>
-        <div class="cp-controls">
-            <button onclick="prevTrack()" title="Предыдущий">⏮</button>
-            <button class="cp-play-btn" id="cpPlayBtn" onclick="togglePlay()">▶</button>
-            <button onclick="nextTrack()" title="Следующий">⏭</button>
-        </div>
-        <div class="cp-time" id="cpTime">0:00</div>
-        <button class="cp-close" onclick="closePlayer()" title="Закрыть">✕</button>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════
-    НАВИГАЦИЯ
+    НАВИГАЦИЯ-КНИГА
     ═══════════════════════════════════════════════ -->
     <nav class="book-nav" id="bookNav">
         <a href="#prologue" class="nav-logo">⌇ БЕЗУМИЕ</a>
 
         <div class="nav-chapters">
-            <a href="#prologue" class="nav-chapter active" data-chapter="prologue" data-index="-1">
+            <a href="#prologue" class="nav-chapter active" data-chapter="prologue">
                 <span class="dot"></span>
                 <span class="num">00</span>
                 <span class="title">ПРОЛОГ</span>
                 <span class="quote">вход</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-1" class="nav-chapter" data-chapter="1" data-index="0">
+            <a href="#chapter-1" class="nav-chapter" data-chapter="1">
                 <span class="dot" style="--chapter-color:#ff003c;"></span>
                 <span class="num">01</span>
                 <span class="title">БЕЗУМИЕ</span>
                 <span class="quote">две половины</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-2" class="nav-chapter" data-chapter="2" data-index="1">
+            <a href="#chapter-2" class="nav-chapter" data-chapter="2">
                 <span class="dot" style="--chapter-color:#0066ff;"></span>
                 <span class="num">02</span>
                 <span class="title">ПОКОНЧИТЬ</span>
                 <span class="quote">без ножа</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-3" class="nav-chapter" data-chapter="3" data-index="2">
+            <a href="#chapter-3" class="nav-chapter" data-chapter="3">
                 <span class="dot" style="--chapter-color:#ff6600;"></span>
                 <span class="num">03</span>
                 <span class="title">28 ТАБЛОВ</span>
                 <span class="quote">батискаф</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-4" class="nav-chapter" data-chapter="4" data-index="3">
+            <a href="#chapter-4" class="nav-chapter" data-chapter="4">
                 <span class="dot" style="--chapter-color:#00ff88;"></span>
                 <span class="num">04</span>
                 <span class="title">ФАЗА</span>
                 <span class="quote">заходит солнце</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-5" class="nav-chapter" data-chapter="5" data-index="4">
+            <a href="#chapter-5" class="nav-chapter" data-chapter="5">
                 <span class="dot" style="--chapter-color:#ff00ff;"></span>
                 <span class="num">05</span>
                 <span class="title">ИДЕАЛЬНАЯ ЗНАМЕНИТОСТЬ</span>
                 <span class="quote">цифровой бог</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-6" class="nav-chapter" data-chapter="6" data-index="5">
+            <a href="#chapter-6" class="nav-chapter" data-chapter="6">
                 <span class="dot" style="--chapter-color:#ff0033;"></span>
                 <span class="num">06</span>
                 <span class="title">РЭД ФЛАГ</span>
                 <span class="quote">ходячий флаг</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-7" class="nav-chapter" data-chapter="7" data-index="6">
+            <a href="#chapter-7" class="nav-chapter" data-chapter="7">
                 <span class="dot" style="--chapter-color:#6600ff;"></span>
                 <span class="num">07</span>
                 <span class="title">БЕЗ КОЖИ</span>
                 <span class="quote">комната без стен</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-8" class="nav-chapter" data-chapter="8" data-index="7">
+            <a href="#chapter-8" class="nav-chapter" data-chapter="8">
                 <span class="dot" style="--chapter-color:#c0c0c0;"></span>
                 <span class="num">08</span>
                 <span class="title">СКАЗКА НА НОЧЬ</span>
                 <span class="quote">я просто монстр</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#chapter-9" class="nav-chapter" data-chapter="9" data-index="8">
+            <a href="#chapter-9" class="nav-chapter" data-chapter="9">
                 <span class="dot" style="--chapter-color:#00ccff;"></span>
                 <span class="num">09</span>
                 <span class="title">ЭТО ВСЕ БЫЛ СОН</span>
                 <span class="quote">пропал он</span>
-                <span class="playing-indicator">◉</span>
             </a>
-            <a href="#epilogue" class="nav-chapter" data-chapter="epilogue" data-index="-2">
+            <a href="#epilogue" class="nav-chapter" data-chapter="epilogue">
                 <span class="dot" style="--chapter-color:#ffd700;"></span>
                 <span class="num">—</span>
                 <span class="title">ЭПИЛОГ</span>
                 <span class="quote">выход</span>
-                <span class="playing-indicator">◉</span>
             </a>
         </div>
     </nav>
@@ -980,9 +724,11 @@
 Когда зажжётся — не знаю, кто из нас окажется перед вами.
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(0)">▶</button>
-                <span class="track-name">БЕЗУМИЕ</span>
-                <span class="track-status" id="status-0">● готов</span>
+                <a href="https://music.yandex.ru/album/43408163/track/154468549" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
+                <span class="track-name">БЕЗУМИЕ (Skit)</span>
             </div>
         </div>
     </section>
@@ -1020,9 +766,11 @@
 Не смотреть назад, зеркала все про-очь
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(1)">▶</button>
+                <a href="https://music.yandex.ru/album/43408163/track/154468550" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
                 <span class="track-name">ПОКОНЧИТЬ</span>
-                <span class="track-status" id="status-1">● готов</span>
             </div>
         </div>
     </section>
@@ -1057,9 +805,11 @@
 Взрываю динамики, свое чтобы забрать вдвойне
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(2)">▶</button>
+                <a href="https://music.yandex.ru/album/43408163/track/154468551" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
                 <span class="track-name">28 ТАБЛОВ</span>
-                <span class="track-status" id="status-2">● готов</span>
             </div>
         </div>
     </section>
@@ -1102,9 +852,11 @@
 Я возьму этот балласт
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(3)">▶</button>
+                <a href="https://music.yandex.ru/album/43408163/track/154468552" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
                 <span class="track-name">ФАЗА</span>
-                <span class="track-status" id="status-3">● готов</span>
             </div>
         </div>
     </section>
@@ -1139,9 +891,11 @@
 Ты принимаешь правила, и тыкаешь по кнопкам
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(4)">▶</button>
+                <a href="https://music.yandex.ru/album/43408163/track/154468553" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
                 <span class="track-name">ИДЕАЛЬНАЯ ЗНАМЕНИТОСТЬ</span>
-                <span class="track-status" id="status-4">● готов</span>
             </div>
         </div>
     </section>
@@ -1171,9 +925,11 @@
 Не знаю, как ярость сдержать. Стараюсь как лучше, как будто, подручный. Но, знаешь, забыл те сказать —
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(5)">▶</button>
+                <a href="https://music.yandex.ru/album/43408163/track/154468554" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
                 <span class="track-name">РЭД ФЛАГ</span>
-                <span class="track-status" id="status-5">● готов</span>
             </div>
         </div>
     </section>
@@ -1217,9 +973,11 @@
 Безумие, безумие, безумие, безумие
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(6)">▶</button>
+                <a href="https://music.yandex.ru/album/43408163/track/154468555" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
                 <span class="track-name">БЕЗ КОЖИ</span>
-                <span class="track-status" id="status-6">● готов</span>
             </div>
         </div>
     </section>
@@ -1252,9 +1010,11 @@
 <span class="speaker">—</span> <span class="highlight">И не умирают, никогда.</span>
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(7)">▶</button>
-                <span class="track-name">СКАЗКА НА НОЧЬ</span>
-                <span class="track-status" id="status-7">● готов</span>
+                <a href="https://music.yandex.ru/album/43408163/track/154468556" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
+                <span class="track-name">СКАЗКА НА НОЧЬ (Skit)</span>
             </div>
         </div>
     </section>
@@ -1293,9 +1053,11 @@
 Это все был сон
             </div>
             <div class="chapter-player">
-                <button class="play-btn" onclick="playChapter(8)">▶</button>
+                <a href="https://music.yandex.ru/album/43408163/track/154468557" target="_blank" class="listen-btn">
+                    <span class="icon">▶</span>
+                    Слушать на Яндекс Музыке
+                </a>
                 <span class="track-name">ЭТО ВСЕ БЫЛ СОН</span>
-                <span class="track-status" id="status-8">● готов</span>
             </div>
         </div>
     </section>
@@ -1317,48 +1079,10 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════
-    JAVASCRIPT
+    JAVASCRIPT (ТОЛЬКО НЕЙРОНЫ)
     ═══════════════════════════════════════════════ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            // ═══════════════════════════════════════════
-            // ТРЕКИ С ID
-            // ═══════════════════════════════════════════
-            const ALBUM_ID = '43408163';
-            const TRACKS = [
-                { id: '154468549', title: 'БЕЗУМИЕ (Skit)', chapter: 'chapter-1' },
-                { id: '154468550', title: 'ПОКОНЧИТЬ', chapter: 'chapter-2' },
-                { id: '154468551', title: '28 ТАБЛОВ', chapter: 'chapter-3' },
-                { id: '154468552', title: 'ФАЗА', chapter: 'chapter-4' },
-                { id: '154468553', title: 'ИДЕАЛЬНАЯ ЗНАМЕНИТОСТЬ', chapter: 'chapter-5' },
-                { id: '154468554', title: 'РЭД ФЛАГ', chapter: 'chapter-6' },
-                { id: '154468555', title: 'БЕЗ КОЖИ', chapter: 'chapter-7' },
-                { id: '154468556', title: 'СКАЗКА НА НОЧЬ (Skit)', chapter: 'chapter-8' },
-                { id: '154468557', title: 'ЭТО ВСЕ БЫЛ СОН', chapter: 'chapter-9' }
-            ];
-
-            // ═══════════════════════════════════════════
-            // СОСТОЯНИЕ
-            // ═══════════════════════════════════════════
-            let currentTrackIndex = -1;
-            let isPlayerVisible = false;
-            let isPlaying = false;
-            let progressInterval = null;
-            let currentProgress = 0;
-
-            // ═══════════════════════════════════════════
-            // DOM
-            // ═══════════════════════════════════════════
-            const hiddenIframe = document.getElementById('hiddenYandexIframe');
-            const customPlayer = document.getElementById('customPlayer');
-            const playBtn = document.getElementById('cpPlayBtn');
-            const trackName = document.getElementById('cpTrack');
-            const artistName = document.getElementById('cpArtist');
-            const progressBar = document.getElementById('cpProgressBar');
-            const timeDisplay = document.getElementById('cpTime');
-            const cover = document.getElementById('cpCover');
-            const statuses = document.querySelectorAll('.track-status');
 
             // ═══════════════════════════════════════════
             // НЕЙРОННЫЙ ФОН
@@ -1481,6 +1205,7 @@
                     neurons.forEach(function(n) { n.update(chapterColorCache);
                         n.draw(); });
 
+                    // Связи между нейронами
                     for (let i = 0; i < neurons.length; i++) {
                         for (let j = i + 1; j < neurons.length; j++) {
                             const a = neurons[i];
@@ -1528,207 +1253,9 @@
             window.addEventListener('scroll', updateActiveChapter);
             setTimeout(updateActiveChapter, 100);
 
-            // ═══════════════════════════════════════════
-            // КАСТОМНЫЙ ПЛЕЕР
-            // ═══════════════════════════════════════════
-            function updateUI() {
-                statuses.forEach(function(el, i) {
-                    el.textContent = i === currentTrackIndex ?
-                        (isPlaying ? '▶ играет' : '⏸ пауза') :
-                        '● готов';
-                    el.className = 'track-status' + (i === currentTrackIndex && isPlaying ? ' active' : '');
-                });
-
-                document.querySelectorAll('.play-btn').forEach(function(btn, i) {
-                    btn.textContent = (i === currentTrackIndex && isPlaying) ? '❚❚' : '▶';
-                    btn.className = 'play-btn' + (i === currentTrackIndex && isPlaying ? ' playing' : '');
-                });
-
-                navLinks.forEach(function(link) {
-                    link.classList.remove('playing');
-                    const idx = parseInt(link.dataset.index);
-                    if (idx === currentTrackIndex && isPlaying) {
-                        link.classList.add('playing');
-                    }
-                });
-
-                playBtn.textContent = isPlaying ? '❚❚' : '▶';
-            }
-
-            function startProgressSimulation() {
-                if (progressInterval) clearInterval(progressInterval);
-                currentProgress = 0;
-
-                progressInterval = setInterval(function() {
-                    currentProgress += 0.5;
-                    if (currentProgress >= 100) {
-                        currentProgress = 100;
-                        clearInterval(progressInterval);
-                        progressInterval = null;
-                        // Трек закончился — переключаем на следующий
-                        setTimeout(function() {
-                            if (currentTrackIndex < TRACKS.length - 1) {
-                                playChapter(currentTrackIndex + 1);
-                            } else {
-                                closePlayer();
-                                document.getElementById('epilogue').scrollIntoView({ behavior: 'smooth' });
-                            }
-                        }, 1000);
-                    }
-                    progressBar.style.width = currentProgress + '%';
-                    const totalSeconds = 180; // 3 минуты
-                    const currentSeconds = Math.floor((currentProgress / 100) * totalSeconds);
-                    const mins = Math.floor(currentSeconds / 60);
-                    const secs = Math.floor(currentSeconds % 60);
-                    timeDisplay.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
-                }, 500);
-            }
-
-            function stopProgressSimulation() {
-                if (progressInterval) {
-                    clearInterval(progressInterval);
-                    progressInterval = null;
-                }
-            }
-
-            // Открыть плеер с треком
-            function openPlayer(trackIndex) {
-                const track = TRACKS[trackIndex];
-                if (!track) return;
-
-                currentTrackIndex = trackIndex;
-                isPlaying = true;
-
-                // Обновляем кастомный плеер
-                trackName.textContent = track.title;
-                artistName.textContent = 'TheFrodesDiD';
-                cover.textContent = '♫';
-                customPlayer.classList.add('active');
-                isPlayerVisible = true;
-
-                // Загружаем скрытый iframe
-                const trackId = track.id;
-                hiddenIframe.src = `https://music.yandex.ru/iframe/album/${ALBUM_ID}/track/${trackId}`;
-
-                // Запускаем симуляцию прогресса
-                currentProgress = 0;
-                progressBar.style.width = '0%';
-                startProgressSimulation();
-
-                // Обновляем UI
-                updateUI();
-
-                // Скроллим к главе
-                const chapterEl = document.getElementById(track.chapter);
-                if (chapterEl) {
-                    setTimeout(function() { chapterEl.scrollIntoView({ behavior: 'smooth' }); }, 200);
-                }
-
-                console.log(`🎵 Играет: ${track.title} (скрытый iframe)`);
-            }
-
-            // Закрыть плеер
-            window.closePlayer = function() {
-                customPlayer.classList.remove('active');
-                isPlayerVisible = false;
-                isPlaying = false;
-                stopProgressSimulation();
-                hiddenIframe.src = '';
-                currentProgress = 0;
-                progressBar.style.width = '0%';
-                timeDisplay.textContent = '0:00';
-                updateUI();
-            };
-
-            // Воспроизвести главу
-            window.playChapter = function(index) {
-                if (index >= 0 && index < TRACKS.length) {
-                    // Если уже играет этот же трек — просто включаем/выключаем
-                    if (currentTrackIndex === index && isPlayerVisible) {
-                        togglePlay();
-                        return;
-                    }
-                    openPlayer(index);
-                }
-            };
-
-            // Toggle Play/Pause
-            window.togglePlay = function() {
-                if (currentTrackIndex === -1) {
-                    openPlayer(0);
-                    return;
-                }
-
-                if (isPlaying) {
-                    // Пауза
-                    isPlaying = false;
-                    stopProgressSimulation();
-                    // Ставим iframe на паузу (перезагружаем без автоплея)
-                    const track = TRACKS[currentTrackIndex];
-                    hiddenIframe.src = `https://music.yandex.ru/iframe/album/${ALBUM_ID}/track/${track.id}?autoplay=0`;
-                    playBtn.textContent = '▶';
-                    statuses.forEach(function(el, i) {
-                        if (i === currentTrackIndex) {
-                            el.textContent = '⏸ пауза';
-                        }
-                    });
-                } else {
-                    // Воспроизведение
-                    isPlaying = true;
-                    const track = TRACKS[currentTrackIndex];
-                    hiddenIframe.src = `https://music.yandex.ru/iframe/album/${ALBUM_ID}/track/${track.id}?autoplay=1`;
-                    startProgressSimulation();
-                    playBtn.textContent = '❚❚';
-                    statuses.forEach(function(el, i) {
-                        if (i === currentTrackIndex) {
-                            el.textContent = '▶ играет';
-                            el.className = 'track-status active';
-                        }
-                    });
-                }
-                updateUI();
-            };
-
-            // Следующий трек
-            window.nextTrack = function() {
-                if (currentTrackIndex < TRACKS.length - 1) {
-                    openPlayer(currentTrackIndex + 1);
-                } else {
-                    document.getElementById('epilogue').scrollIntoView({ behavior: 'smooth' });
-                    closePlayer();
-                }
-            };
-
-            // Предыдущий трек
-            window.prevTrack = function() {
-                if (currentTrackIndex > 0) {
-                    openPlayer(currentTrackIndex - 1);
-                }
-            };
-
-            // Горячие клавиши
-            document.addEventListener('keydown', function(e) {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-                if (e.key === ' ' || e.key === 'Space') {
-                    e.preventDefault();
-                    window.togglePlay();
-                }
-                if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    window.nextTrack();
-                }
-                if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    window.prevTrack();
-                }
-            });
-
-            // Инициализация
-            updateUI();
             console.log('🔥 ХРОНИКИ БЕЗУМИЯ');
-            console.log('🎵 Скрытый плеер с Яндекс Музыки');
-            console.log('⌨️  Пробел — Play/Pause, ← → — треки');
+            console.log('🧠 Нейронный фон активен');
+            console.log('🎵 Слушай альбом на Яндекс Музыке');
 
         });
     </script>
