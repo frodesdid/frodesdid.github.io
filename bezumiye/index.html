@@ -234,9 +234,9 @@
         }
 
         /* ═══════════════════════════════════════════════
-           ЯНДЕКС ПЛЕЕР (плавающий)
+           КАСТОМНЫЙ ПЛЕЕР (показываем пользователю)
            ═══════════════════════════════════════════════ */
-        .yandex-player-container {
+        .custom-player {
             position: fixed;
             bottom: 30px;
             left: 50%;
@@ -256,11 +256,11 @@
             transition: all var(--transition);
         }
 
-        .yandex-player-container.active {
+        .custom-player.active {
             display: flex;
         }
 
-        .yp-cover {
+        .cp-cover {
             width: 50px;
             height: 50px;
             border-radius: 8px;
@@ -268,20 +268,18 @@
             flex-shrink: 0;
             overflow: hidden;
             border: 1px solid rgba(255, 215, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
         }
 
-        .yp-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .yp-info {
+        .cp-info {
             flex: 1;
             min-width: 0;
         }
 
-        .yp-track {
+        .cp-track {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.7rem;
             color: var(--text-primary);
@@ -291,14 +289,14 @@
             text-overflow: ellipsis;
         }
 
-        .yp-artist {
+        .cp-artist {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.55rem;
             color: var(--text-secondary);
             letter-spacing: 0.1em;
         }
 
-        .yp-progress {
+        .cp-progress {
             width: 100%;
             height: 3px;
             background: rgba(255, 255, 255, 0.1);
@@ -308,7 +306,7 @@
             cursor: pointer;
         }
 
-        .yp-progress-bar {
+        .cp-progress-bar {
             height: 100%;
             background: var(--color-gold);
             width: 0%;
@@ -316,14 +314,14 @@
             transition: width 0.3s linear;
         }
 
-        .yp-controls {
+        .cp-controls {
             display: flex;
             align-items: center;
             gap: 8px;
             flex-shrink: 0;
         }
 
-        .yp-controls button {
+        .cp-controls button {
             background: none;
             border: none;
             color: var(--text-secondary);
@@ -336,12 +334,12 @@
             justify-content: center;
         }
 
-        .yp-controls button:hover {
+        .cp-controls button:hover {
             color: var(--color-gold);
             transform: scale(1.1);
         }
 
-        .yp-controls .yp-play-btn {
+        .cp-controls .cp-play-btn {
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -351,18 +349,33 @@
             border: none;
         }
 
-        .yp-controls .yp-play-btn:hover {
+        .cp-controls .cp-play-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
         }
 
-        .yp-time {
+        .cp-time {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.5rem;
             color: var(--text-secondary);
             min-width: 65px;
             text-align: right;
             letter-spacing: 0.05em;
+        }
+
+        .cp-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all var(--transition);
+            padding: 0 5px;
+        }
+
+        .cp-close:hover {
+            color: var(--color-gold);
+            transform: scale(1.1);
         }
 
         /* ═══════════════════════════════════════════════
@@ -699,29 +712,29 @@
             .chapter-text {
                 max-height: 250px;
             }
-            .yandex-player-container {
+            .custom-player {
                 bottom: 20px;
                 padding: 12px 15px;
                 width: 95%;
                 border-radius: 12px;
                 gap: 10px;
             }
-            .yp-cover {
+            .cp-cover {
                 width: 40px;
                 height: 40px;
             }
-            .yp-track {
+            .cp-track {
                 font-size: 0.6rem;
             }
-            .yp-controls button {
+            .cp-controls button {
                 font-size: 0.9rem;
             }
-            .yp-controls .yp-play-btn {
+            .cp-controls .cp-play-btn {
                 width: 30px;
                 height: 30px;
                 font-size: 0.7rem;
             }
-            .yp-time {
+            .cp-time {
                 font-size: 0.45rem;
                 min-width: 50px;
             }
@@ -761,20 +774,21 @@
                 width: 100%;
                 text-align: center;
             }
-            .yandex-player-container {
+            .custom-player {
                 bottom: 15px;
                 padding: 10px 12px;
                 border-radius: 10px;
                 gap: 8px;
             }
-            .yp-cover {
+            .cp-cover {
                 width: 35px;
                 height: 35px;
+                font-size: 1rem;
             }
-            .yp-track {
+            .cp-track {
                 font-size: 0.5rem;
             }
-            .yp-artist {
+            .cp-artist {
                 font-size: 0.45rem;
             }
         }
@@ -788,25 +802,32 @@
     <canvas id="neuronCanvas"></canvas>
 
     <!-- ═══════════════════════════════════════════════
-    ЯНДЕКС ПЛЕЕР
+    СКРЫТЫЙ IFRAME (яндекс, невидимый)
     ═══════════════════════════════════════════════ -->
-    <div class="yandex-player-container" id="yandexPlayer">
-        <div class="yp-cover" id="ypCover">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Crect fill='%23111' width='50' height='50'/%3E%3Ctext x='25' y='25' font-family='monospace' font-size='12' fill='%23ffd700' text-anchor='middle' dominant-baseline='central'%3E♫%3C/text%3E%3C/svg%3E" alt="cover">
-        </div>
-        <div class="yp-info">
-            <div class="yp-track" id="ypTrack">ХРОНИКИ БЕЗУМИЯ</div>
-            <div class="yp-artist" id="ypArtist">TheFrodesDiD</div>
-            <div class="yp-progress" id="ypProgress">
-                <div class="yp-progress-bar" id="ypProgressBar"></div>
+    <iframe id="hiddenYandexIframe" 
+            style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:none;"
+            allow="clipboard-write">
+    </iframe>
+
+    <!-- ═══════════════════════════════════════════════
+    КАСТОМНЫЙ ПЛЕЕР (показываем пользователю)
+    ═══════════════════════════════════════════════ -->
+    <div class="custom-player" id="customPlayer">
+        <div class="cp-cover" id="cpCover">♫</div>
+        <div class="cp-info">
+            <div class="cp-track" id="cpTrack">ХРОНИКИ БЕЗУМИЯ</div>
+            <div class="cp-artist" id="cpArtist">TheFrodesDiD</div>
+            <div class="cp-progress" id="cpProgress">
+                <div class="cp-progress-bar" id="cpProgressBar"></div>
             </div>
         </div>
-        <div class="yp-controls">
+        <div class="cp-controls">
             <button onclick="prevTrack()" title="Предыдущий">⏮</button>
-            <button class="yp-play-btn" id="ypPlayBtn" onclick="toggleYandexPlay()">▶</button>
+            <button class="cp-play-btn" id="cpPlayBtn" onclick="togglePlay()">▶</button>
             <button onclick="nextTrack()" title="Следующий">⏭</button>
         </div>
-        <div class="yp-time" id="ypTime">0:00</div>
+        <div class="cp-time" id="cpTime">0:00</div>
+        <button class="cp-close" onclick="closePlayer()" title="Закрыть">✕</button>
     </div>
 
     <!-- ═══════════════════════════════════════════════
@@ -1302,31 +1323,42 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             // ═══════════════════════════════════════════
-            // АЛЬБОМ
+            // ТРЕКИ С ID
             // ═══════════════════════════════════════════
-            const ALBUM = {
-                id: '43408163', // ← ТВОЙ АЛЬБОМ НА ЯНДЕКС МУЗЫКЕ
-                tracks: [
-                    { id: 'track1', title: 'БЕЗУМИЕ', chapter: 'chapter-1' },
-                    { id: 'track2', title: 'ПОКОНЧИТЬ', chapter: 'chapter-2' },
-                    { id: 'track3', title: '28 ТАБЛОВ', chapter: 'chapter-3' },
-                    { id: 'track4', title: 'ФАЗА', chapter: 'chapter-4' },
-                    { id: 'track5', title: 'ИДЕАЛЬНАЯ ЗНАМЕНИТОСТЬ', chapter: 'chapter-5' },
-                    { id: 'track6', title: 'РЭД ФЛАГ', chapter: 'chapter-6' },
-                    { id: 'track7', title: 'БЕЗ КОЖИ', chapter: 'chapter-7' },
-                    { id: 'track8', title: 'СКАЗКА НА НОЧЬ', chapter: 'chapter-8' },
-                    { id: 'track9', title: 'ЭТО ВСЕ БЫЛ СОН', chapter: 'chapter-9' }
-                ]
-            };
+            const ALBUM_ID = '43408163';
+            const TRACKS = [
+                { id: '154468549', title: 'БЕЗУМИЕ (Skit)', chapter: 'chapter-1' },
+                { id: '154468550', title: 'ПОКОНЧИТЬ', chapter: 'chapter-2' },
+                { id: '154468551', title: '28 ТАБЛОВ', chapter: 'chapter-3' },
+                { id: '154468552', title: 'ФАЗА', chapter: 'chapter-4' },
+                { id: '154468553', title: 'ИДЕАЛЬНАЯ ЗНАМЕНИТОСТЬ', chapter: 'chapter-5' },
+                { id: '154468554', title: 'РЭД ФЛАГ', chapter: 'chapter-6' },
+                { id: '154468555', title: 'БЕЗ КОЖИ', chapter: 'chapter-7' },
+                { id: '154468556', title: 'СКАЗКА НА НОЧЬ (Skit)', chapter: 'chapter-8' },
+                { id: '154468557', title: 'ЭТО ВСЕ БЫЛ СОН', chapter: 'chapter-9' }
+            ];
 
             // ═══════════════════════════════════════════
             // СОСТОЯНИЕ
             // ═══════════════════════════════════════════
             let currentTrackIndex = -1;
+            let isPlayerVisible = false;
             let isPlaying = false;
-            let demoInterval = null;
-            let demoProgress = 0;
-            let demoTrackDuration = 180;
+            let progressInterval = null;
+            let currentProgress = 0;
+
+            // ═══════════════════════════════════════════
+            // DOM
+            // ═══════════════════════════════════════════
+            const hiddenIframe = document.getElementById('hiddenYandexIframe');
+            const customPlayer = document.getElementById('customPlayer');
+            const playBtn = document.getElementById('cpPlayBtn');
+            const trackName = document.getElementById('cpTrack');
+            const artistName = document.getElementById('cpArtist');
+            const progressBar = document.getElementById('cpProgressBar');
+            const timeDisplay = document.getElementById('cpTime');
+            const cover = document.getElementById('cpCover');
+            const statuses = document.querySelectorAll('.track-status');
 
             // ═══════════════════════════════════════════
             // НЕЙРОННЫЙ ФОН
@@ -1497,176 +1529,205 @@
             setTimeout(updateActiveChapter, 100);
 
             // ═══════════════════════════════════════════
-            // ПЛЕЕР
+            // КАСТОМНЫЙ ПЛЕЕР
             // ═══════════════════════════════════════════
-            const player = document.getElementById('yandexPlayer');
-            const playBtn = document.getElementById('ypPlayBtn');
-            const progressBar = document.getElementById('ypProgressBar');
-            const timeDisplay = document.getElementById('ypTime');
-            const trackName = document.getElementById('ypTrack');
-            const statuses = document.querySelectorAll('.track-status');
-
             function updateUI() {
-                if (currentTrackIndex >= 0 && currentTrackIndex < ALBUM.tracks.length) {
-                    const track = ALBUM.tracks[currentTrackIndex];
-                    trackName.textContent = track.title;
+                statuses.forEach(function(el, i) {
+                    el.textContent = i === currentTrackIndex ?
+                        (isPlaying ? '▶ играет' : '⏸ пауза') :
+                        '● готов';
+                    el.className = 'track-status' + (i === currentTrackIndex && isPlaying ? ' active' : '');
+                });
 
-                    statuses.forEach(function(el, i) {
-                        el.textContent = i === currentTrackIndex ?
-                            (isPlaying ? '▶ играет' : '● готов') :
-                            '● готов';
-                        el.className = 'track-status' + (i === currentTrackIndex && isPlaying ? ' active' : '');
-                    });
+                document.querySelectorAll('.play-btn').forEach(function(btn, i) {
+                    btn.textContent = (i === currentTrackIndex && isPlaying) ? '❚❚' : '▶';
+                    btn.className = 'play-btn' + (i === currentTrackIndex && isPlaying ? ' playing' : '');
+                });
 
-                    document.querySelectorAll('.play-btn').forEach(function(btn, i) {
-                        btn.textContent = (i === currentTrackIndex && isPlaying) ? '❚❚' : '▶';
-                        btn.className = 'play-btn' + (i === currentTrackIndex && isPlaying ? ' playing' : '');
-                    });
-
-                    navLinks.forEach(function(link) {
-                        link.classList.remove('playing');
-                        const idx = parseInt(link.dataset.index);
-                        if (idx === currentTrackIndex && isPlaying) {
-                            link.classList.add('playing');
-                        }
-                    });
-
-                    if (isPlaying) {
-                        player.classList.add('active');
-                    } else {
-                        // Не скрываем, если есть прогресс
+                navLinks.forEach(function(link) {
+                    link.classList.remove('playing');
+                    const idx = parseInt(link.dataset.index);
+                    if (idx === currentTrackIndex && isPlaying) {
+                        link.classList.add('playing');
                     }
-                }
+                });
+
+                playBtn.textContent = isPlaying ? '❚❚' : '▶';
             }
 
-            function startPlayback() {
-                if (demoInterval) clearInterval(demoInterval);
+            function startProgressSimulation() {
+                if (progressInterval) clearInterval(progressInterval);
+                currentProgress = 0;
 
-                demoInterval = setInterval(function() {
-                    demoProgress += 0.5;
-                    const percent = (demoProgress / demoTrackDuration) * 100;
-                    progressBar.style.width = Math.min(percent, 100) + '%';
-
-                    const current = Math.floor(demoProgress);
-                    const mins = Math.floor(current / 60);
-                    const secs = Math.floor(current % 60);
-                    timeDisplay.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-
-                    if (demoProgress >= demoTrackDuration) {
-                        clearInterval(demoInterval);
-                        demoInterval = null;
-                        demoProgress = 0;
-                        progressBar.style.width = '0%';
-
-                        const nextIndex = currentTrackIndex + 1;
-                        if (nextIndex < ALBUM.tracks.length) {
-                            playChapter(nextIndex);
-                        } else {
-                            isPlaying = false;
-                            playBtn.textContent = '▶';
-                            document.getElementById('prologue').scrollIntoView({ behavior: 'smooth' });
-                            updateUI();
-                        }
+                progressInterval = setInterval(function() {
+                    currentProgress += 0.5;
+                    if (currentProgress >= 100) {
+                        currentProgress = 100;
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                        // Трек закончился — переключаем на следующий
+                        setTimeout(function() {
+                            if (currentTrackIndex < TRACKS.length - 1) {
+                                playChapter(currentTrackIndex + 1);
+                            } else {
+                                closePlayer();
+                                document.getElementById('epilogue').scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }, 1000);
                     }
+                    progressBar.style.width = currentProgress + '%';
+                    const totalSeconds = 180; // 3 минуты
+                    const currentSeconds = Math.floor((currentProgress / 100) * totalSeconds);
+                    const mins = Math.floor(currentSeconds / 60);
+                    const secs = Math.floor(currentSeconds % 60);
+                    timeDisplay.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
                 }, 500);
             }
 
-            function pausePlayback() {
-                if (demoInterval) {
-                    clearInterval(demoInterval);
-                    demoInterval = null;
+            function stopProgressSimulation() {
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
                 }
-                playBtn.textContent = '▶';
             }
 
-            // ГЛОБАЛЬНЫЕ ФУНКЦИИ
-            window.playChapter = function(index) {
-                if (demoInterval) { clearInterval(demoInterval);
-                    demoInterval = null; }
+            // Открыть плеер с треком
+            function openPlayer(trackIndex) {
+                const track = TRACKS[trackIndex];
+                if (!track) return;
 
-                currentTrackIndex = index;
-                demoProgress = 0;
+                currentTrackIndex = trackIndex;
                 isPlaying = true;
 
-                const track = ALBUM.tracks[index];
+                // Обновляем кастомный плеер
                 trackName.textContent = track.title;
+                artistName.textContent = 'TheFrodesDiD';
+                cover.textContent = '♫';
+                customPlayer.classList.add('active');
+                isPlayerVisible = true;
 
+                // Загружаем скрытый iframe
+                const trackId = track.id;
+                hiddenIframe.src = `https://music.yandex.ru/iframe/album/${ALBUM_ID}/track/${trackId}`;
+
+                // Запускаем симуляцию прогресса
+                currentProgress = 0;
+                progressBar.style.width = '0%';
+                startProgressSimulation();
+
+                // Обновляем UI
+                updateUI();
+
+                // Скроллим к главе
                 const chapterEl = document.getElementById(track.chapter);
                 if (chapterEl) {
-                    setTimeout(function() { chapterEl.scrollIntoView({ behavior: 'smooth' }); }, 100);
+                    setTimeout(function() { chapterEl.scrollIntoView({ behavior: 'smooth' }); }, 200);
                 }
 
-                updateUI();
-                player.classList.add('active');
-                playBtn.textContent = '❚❚';
-                startPlayback();
+                console.log(`🎵 Играет: ${track.title} (скрытый iframe)`);
+            }
 
-                // Открываем альбом в Яндекс Музыке в фоне
-                // Это обеспечит монетизацию
-                const yandexLink = document.createElement('a');
-                yandexLink.href = `https://music.yandex.ru/album/${ALBUM.id}`;
-                yandexLink.target = '_blank';
-                yandexLink.rel = 'noopener';
-                // Не открываем автоматически, чтобы не раздражать
-                console.log(`🎵 Сейчас играет: ${track.title} (альбом ${ALBUM.id})`);
+            // Закрыть плеер
+            window.closePlayer = function() {
+                customPlayer.classList.remove('active');
+                isPlayerVisible = false;
+                isPlaying = false;
+                stopProgressSimulation();
+                hiddenIframe.src = '';
+                currentProgress = 0;
+                progressBar.style.width = '0%';
+                timeDisplay.textContent = '0:00';
+                updateUI();
             };
 
-            window.toggleYandexPlay = function() {
+            // Воспроизвести главу
+            window.playChapter = function(index) {
+                if (index >= 0 && index < TRACKS.length) {
+                    // Если уже играет этот же трек — просто включаем/выключаем
+                    if (currentTrackIndex === index && isPlayerVisible) {
+                        togglePlay();
+                        return;
+                    }
+                    openPlayer(index);
+                }
+            };
+
+            // Toggle Play/Pause
+            window.togglePlay = function() {
                 if (currentTrackIndex === -1) {
-                    playChapter(0);
+                    openPlayer(0);
                     return;
                 }
 
-                isPlaying = !isPlaying;
                 if (isPlaying) {
-                    playBtn.textContent = '❚❚';
-                    startPlayback();
-                } else {
+                    // Пауза
+                    isPlaying = false;
+                    stopProgressSimulation();
+                    // Ставим iframe на паузу (перезагружаем без автоплея)
+                    const track = TRACKS[currentTrackIndex];
+                    hiddenIframe.src = `https://music.yandex.ru/iframe/album/${ALBUM_ID}/track/${track.id}?autoplay=0`;
                     playBtn.textContent = '▶';
-                    pausePlayback();
+                    statuses.forEach(function(el, i) {
+                        if (i === currentTrackIndex) {
+                            el.textContent = '⏸ пауза';
+                        }
+                    });
+                } else {
+                    // Воспроизведение
+                    isPlaying = true;
+                    const track = TRACKS[currentTrackIndex];
+                    hiddenIframe.src = `https://music.yandex.ru/iframe/album/${ALBUM_ID}/track/${track.id}?autoplay=1`;
+                    startProgressSimulation();
+                    playBtn.textContent = '❚❚';
+                    statuses.forEach(function(el, i) {
+                        if (i === currentTrackIndex) {
+                            el.textContent = '▶ играет';
+                            el.className = 'track-status active';
+                        }
+                    });
                 }
                 updateUI();
             };
 
+            // Следующий трек
+            window.nextTrack = function() {
+                if (currentTrackIndex < TRACKS.length - 1) {
+                    openPlayer(currentTrackIndex + 1);
+                } else {
+                    document.getElementById('epilogue').scrollIntoView({ behavior: 'smooth' });
+                    closePlayer();
+                }
+            };
+
+            // Предыдущий трек
             window.prevTrack = function() {
                 if (currentTrackIndex > 0) {
-                    playChapter(currentTrackIndex - 1);
+                    openPlayer(currentTrackIndex - 1);
                 }
             };
-
-            window.nextTrack = function() {
-                if (currentTrackIndex < ALBUM.tracks.length - 1) {
-                    playChapter(currentTrackIndex + 1);
-                }
-            };
-
-            // Прогресс по клику
-            document.getElementById('ypProgress').addEventListener('click', function(e) {
-                const rect = this.getBoundingClientRect();
-                const percent = (e.clientX - rect.left) / rect.width;
-                if (isPlaying) {
-                    demoProgress = percent * demoTrackDuration;
-                    progressBar.style.width = (percent * 100) + '%';
-                }
-            });
 
             // Горячие клавиши
             document.addEventListener('keydown', function(e) {
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
                 if (e.key === ' ' || e.key === 'Space') {
                     e.preventDefault();
-                    window.toggleYandexPlay();
+                    window.togglePlay();
                 }
-                if (e.key === 'ArrowRight') { e.preventDefault();
-                    window.nextTrack(); }
-                if (e.key === 'ArrowLeft') { e.preventDefault();
-                    window.prevTrack(); }
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    window.nextTrack();
+                }
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    window.prevTrack();
+                }
             });
 
+            // Инициализация
             updateUI();
             console.log('🔥 ХРОНИКИ БЕЗУМИЯ');
-            console.log(`📀 Альбом: https://music.yandex.ru/album/${ALBUM.id}`);
-            console.log('🎵 Нажми Play на любом треке');
+            console.log('🎵 Скрытый плеер с Яндекс Музыки');
             console.log('⌨️  Пробел — Play/Pause, ← → — треки');
 
         });
