@@ -8,7 +8,8 @@
     <meta property="og:title" content="ХРОНИКИ БЕЗУМИЯ">
     <meta name="theme-color" content="#0a0a0a">
 
-    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmln…nt-size='90'>⌇⌇⌇</text></svg>">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,6 +83,13 @@
             padding: 40px 60px 40px 40px;
         }
 
+        .slide-prologue .slide-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .slide-content {
             max-width: 820px;
             width: 100%;
@@ -148,6 +156,7 @@
             line-height: 2;
             opacity: 0.9;
             margin-bottom: 32px;
+            text-align: center;
         }
 
         .prologue-quote .highlight {
@@ -167,12 +176,12 @@
             display: inline-flex;
             align-items: center;
             gap: 14px;
-            padding: 16px 36px;
+            padding: 18px 48px;
             background: linear-gradient(135deg, var(--color-gold), #e6b800);
             color: #0a0a0a;
             text-decoration: none;
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+            font-size: clamp(0.8rem, 1.4vw, 1rem);
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.2em;
@@ -229,7 +238,7 @@
 
         .listen-album-hint {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.5rem;
+            font-size: clamp(0.5rem, 0.8vw, 0.65rem);
             color: var(--text-muted);
             letter-spacing: 0.3em;
             text-transform: uppercase;
@@ -239,30 +248,35 @@
         .track-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px 14px;
+            gap: 8px 20px;
             justify-content: center;
-            margin-top: 6px;
+            margin-top: 12px;
             padding: 0;
             list-style: none;
         }
 
         .track-list li {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.45rem;
-            color: var(--text-muted);
+            font-size: clamp(0.55rem, 1vw, 0.75rem);
+            color: var(--text-secondary);
             letter-spacing: 0.05em;
-            opacity: 0.4;
+            opacity: 0.5;
             transition: all 0.4s ease;
         }
 
         .track-list li .num {
             color: var(--color-gold);
-            opacity: 0.3;
+            opacity: 0.4;
+            font-weight: 700;
         }
 
         .track-list li:hover {
-            opacity: 0.8;
+            opacity: 0.9;
             color: var(--color-gold);
+        }
+
+        .slide-chapter .slide-content {
+            text-align: left;
         }
 
         .chapter-number {
@@ -341,7 +355,6 @@
             color: #d0d0d0;
             line-height: 2.2;
             font-size: clamp(0.9rem, 1.3vw, 1.05rem);
-            white-space: pre-wrap;
             padding: 20px;
         }
 
@@ -357,7 +370,7 @@
         }
 
         .track-links {
-            margin-top: 20px;
+            margin-top: 24px;
             display: flex;
             align-items: center;
             gap: 16px;
@@ -368,31 +381,31 @@
         .track-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             color: var(--text-muted);
             text-decoration: none;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.5rem;
+            font-size: clamp(0.6rem, 1vw, 0.75rem);
             letter-spacing: 0.1em;
             text-transform: uppercase;
             transition: all 0.4s ease;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            background: rgba(255, 255, 255, 0.02);
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .track-link:hover {
             color: var(--chapter-color, #ffd700);
-            border-color: rgba(255, 215, 0, 0.15);
-            background: rgba(255, 215, 0, 0.04);
+            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.06);
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.04);
+            box-shadow: 0 4px 30px rgba(255, 215, 0, 0.06);
         }
 
         .track-link .icon {
-            font-size: 0.6rem;
-            opacity: 0.5;
+            font-size: 0.8rem;
+            opacity: 0.6;
             transition: all 0.3s ease;
         }
 
@@ -403,8 +416,8 @@
 
         .track-link .num {
             color: var(--chapter-color, #ffd700);
-            opacity: 0.4;
-            font-size: 0.45rem;
+            opacity: 0.5;
+            font-size: 0.55rem;
         }
 
         .epilogue-title {
@@ -609,234 +622,204 @@
         }
 
         .scroll-indicator {
-            margin-top: 8px;
+            margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            animation: bounceDown 2.5s ease-in-out infinite;
         }
 
         .scroll-indicator span {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.55rem;
+            font-size: clamp(0.5rem, 0.8vw, 0.65rem);
             color: var(--text-secondary);
             letter-spacing: 0.4em;
             text-transform: uppercase;
             opacity: 0.6;
         }
 
-        .scroll-line {
-            width: 2px;
-            height: 36px;
+        .scroll-line-horizontal {
+            width: 120px;
+            height: 2px;
             background: rgba(255, 215, 0, 0.15);
             position: relative;
             overflow: hidden;
             border-radius: 2px;
         }
 
-        .scroll-progress {
+        .scroll-progress-horizontal {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: var(--color-gold);
-            animation: scrollProgress 2.5s ease-in-out infinite;
+            animation: scrollProgressHorizontal 2.5s ease-in-out infinite;
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
 
-        @keyframes scrollProgress {
+        @keyframes scrollProgressHorizontal {
             0% {
-                transform: translateY(-100%);
+                transform: translateX(-100%);
             }
             50% {
-                transform: translateY(0);
+                transform: translateX(0);
             }
             100% {
-                transform: translateY(100%);
-            }
-        }
-
-        @keyframes bounceDown {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(8px);
+                transform: translateX(100%);
             }
         }
 
         @media (max-width: 768px) {
-            :root {
-                --nav-width: 56px;
-            }
             .book-nav {
-                width: var(--nav-width);
-                padding: 14px 0;
+                display: none;
             }
-            .book-nav:hover {
-                width: 180px;
+
+            .scroll-container {
+                padding-left: 0;
             }
-            .nav-logo {
-                font-size: 0.7rem;
-            }
-            .book-nav:hover .nav-logo {
-                font-size: 0.65rem;
-            }
-            .nav-chapter {
-                padding: 4px 8px;
-                font-size: 0.4rem;
-                width: 40px;
-                gap: 6px;
-            }
-            .book-nav:hover .nav-chapter {
-                width: auto;
-            }
-            .nav-chapter .num {
-                font-size: 0.55rem;
-                min-width: 22px;
-            }
-            .nav-chapter .title {
-                font-size: 0.4rem;
-            }
-            .nav-chapter .dot {
-                width: 4px;
-                height: 4px;
-            }
+
             .slide {
-                flex: 0 0 calc(100vw - var(--nav-width));
-                padding: 20px 24px 20px 16px;
+                flex: 0 0 100vw;
+                padding: 30px 30px 30px 30px;
             }
+
             .slide-content {
                 max-width: 100%;
                 padding: 0;
             }
+
             .text-wrapper {
                 max-height: 220px;
             }
+
             .chapter-text {
                 font-size: 0.8rem;
                 padding: 14px 16px;
                 line-height: 2;
             }
+
             .progress-bar {
-                left: var(--nav-width);
+                left: 0;
             }
+
             .slide-counter {
                 bottom: 16px;
                 right: 16px;
                 font-size: 0.55rem;
                 padding: 6px 14px;
             }
+
             .prologue-title {
                 font-size: clamp(2.5rem, 10vw, 4rem);
             }
+
             .chapter-title {
                 font-size: clamp(1.8rem, 6vw, 2.8rem);
             }
+
             .listen-album-btn {
-                padding: 12px 24px;
-                font-size: 0.6rem;
+                padding: 14px 32px;
+                font-size: 0.7rem;
                 gap: 10px;
             }
+
             .listen-album-btn .icon {
                 font-size: 1rem;
             }
+
             .track-links {
-                gap: 8px;
+                gap: 10px;
+                justify-content: flex-start;
             }
+
             .track-link {
-                font-size: 0.4rem;
-                padding: 4px 10px;
+                font-size: 0.5rem;
+                padding: 8px 16px;
+            }
+
+            .track-list {
+                display: none;
+            }
+
+            .prologue-quote {
+                font-size: 0.85rem;
+                margin-bottom: 24px;
+            }
+
+            .scroll-line-horizontal {
+                width: 80px;
+            }
+
+            .scroll-indicator span {
+                font-size: 0.45rem;
             }
         }
 
         @media (max-width: 480px) {
-            :root {
-                --nav-width: 48px;
-            }
-            .book-nav {
-                width: var(--nav-width);
-                padding: 10px 0;
-            }
-            .book-nav:hover {
-                width: 150px;
-            }
-            .nav-logo {
-                font-size: 0.55rem;
-            }
-            .nav-chapter {
-                padding: 3px 6px;
-                font-size: 0.35rem;
-                width: 32px;
-                gap: 4px;
-            }
-            .book-nav:hover .nav-chapter {
-                width: auto;
-            }
-            .nav-chapter .num {
-                font-size: 0.5rem;
-                min-width: 18px;
-            }
-            .nav-chapter .title {
-                font-size: 0.35rem;
-            }
-            .nav-chapter .dot {
-                width: 3px;
-                height: 3px;
-            }
             .slide {
-                flex: 0 0 calc(100vw - var(--nav-width));
-                padding: 14px 16px 14px 10px;
+                padding: 20px 20px 20px 20px;
             }
+
             .text-wrapper {
                 max-height: 160px;
             }
+
             .chapter-text {
                 font-size: 0.7rem;
                 padding: 10px 12px;
                 line-height: 1.9;
             }
+
             .progress-bar {
-                left: var(--nav-width);
                 height: 1.5px;
             }
+
             .slide-counter {
                 bottom: 12px;
                 right: 12px;
                 font-size: 0.45rem;
                 padding: 4px 12px;
             }
+
             .prologue-title {
                 font-size: clamp(2rem, 8vw, 3rem);
             }
+
             .chapter-title {
                 font-size: clamp(1.4rem, 5vw, 2.2rem);
             }
+
             .listen-album-btn {
-                padding: 10px 18px;
-                font-size: 0.5rem;
+                padding: 12px 24px;
+                font-size: 0.55rem;
                 gap: 8px;
                 border-radius: 10px;
             }
+
             .listen-album-btn .icon {
                 font-size: 0.8rem;
             }
-            .track-links {
-                gap: 4px;
-                justify-content: center;
-            }
+
             .track-link {
-                font-size: 0.35rem;
-                padding: 3px 8px;
-                gap: 4px;
-            }
-            .track-link .icon {
                 font-size: 0.4rem;
+                padding: 6px 12px;
+                gap: 6px;
             }
-            .track-list li {
-                font-size: 0.35rem;
+
+            .track-link .icon {
+                font-size: 0.5rem;
+            }
+
+            .scroll-line-horizontal {
+                width: 60px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .track-list {
+                display: flex !important;
             }
         }
     </style>
@@ -860,10 +843,13 @@
     <div class="scroll-container" id="scrollContainer">
 
         <!-- ПРОЛОГ -->
-        <section class="slide" id="slide-0" data-chapter="prologue" data-index="0" style="--chapter-color:#ffd700;">
+        <section class="slide slide-prologue" id="slide-0" data-chapter="prologue" data-index="0" style="--chapter-color:#ffd700;">
             <div class="slide-content">
                 <h1 class="prologue-title">ХРОНИКИ БЕЗУМИЯ</h1>
                 <p class="prologue-subtitle"><span class="gold">Альбом</span> — Том I</p>
+                <p class="prologue-quote">
+                    "Не говори с тем кого не сможешь убить <span class="highlight">!</span>.
+                </p>
 
                 <div class="listen-album-wrap">
                     <a href="https://music.yandex.ru/album/43408163?utm_source=web&utm_medium=copy_link" target="_blank" class="listen-album-btn">
@@ -888,47 +874,42 @@
 
                 <div class="scroll-indicator">
                     <span>Листай →</span>
-                    <div class="scroll-line"><div class="scroll-progress"></div></div>
+                    <div class="scroll-line-horizontal">
+                        <div class="scroll-progress-horizontal"></div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- ГЛАВА 1: БЕЗУМИЕ -->
-        <section class="slide" id="slide-1" data-chapter="1" data-index="1" style="--chapter-color:#ff003c;">
+        <section class="slide slide-chapter" id="slide-1" data-chapter="1" data-index="1" style="--chapter-color:#ff003c;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 01</div>
                 <h2 class="chapter-title">БЕЗУМИЕ</h2>
                 <div class="chapter-quote">"Две половины одного кошмара"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        В моих ногах — память о падениях.
-                        В левой руке — душа.
-                        В правой — трость, которой я опираюсь на самого себя.
-
-                        Он стоит напротив.
-                        У него моё лицо. Только резче и тише.
-                        Мы не разговариваем, у нас нет слов, чтобы друг друга понять.
-                        В его глазах — всё, что я пытался похоронить.
-                        В моих — всё, что он не даёт мне забыть.
-
-                        Иногда мне кажется, что мы одно целое.
-                        Иногда — что он ждёт, когда я отвернусь.
-
-                        Никто не знает, что происходит в этой комнате, когда гаснет свет.
-                        Никто не слышит, как мы дышим в унисон.
-                        Никто не видит, как я перевязываю его раны.
-
-                        Мы существуем.
-                        Две половины одного кошмара.
-                        Два конца одной петли.
-
-                        Если я его убью — умру ли я сам?
-                        Если он убьёт меня — кто тогда будет петь?
-
-                        Я ищу тишину, в которой можно будет разглядеть,
-                        чьё лицо останется в зеркале, когда всё это закончится.
-
-                        Когда погаснет свет — вы услышите, как мы дышим.
+                        В моих ногах — память о падениях.<br>
+                        В левой руке — душа.<br>
+                        В правой — трость, которой я опираюсь на самого себя.<br><br>
+                        Он стоит напротив.<br>
+                        У него моё лицо. Только резче и тише.<br>
+                        Мы не разговариваем, у нас нет слов, чтобы друг друга понять.<br>
+                        В его глазах — всё, что я пытался похоронить.<br>
+                        В моих — всё, что он не даёт мне забыть.<br><br>
+                        Иногда мне кажется, что мы одно целое.<br>
+                        Иногда — что он ждёт, когда я отвернусь.<br><br>
+                        Никто не знает, что происходит в этой комнате, когда гаснет свет.<br>
+                        Никто не слышит, как мы дышим в унисон.<br>
+                        Никто не видит, как я перевязываю его раны.<br><br>
+                        Мы существуем.<br>
+                        Две половины одного кошмара.<br>
+                        Два конца одной петли.<br><br>
+                        Если я его убью — умру ли я сам?<br>
+                        Если он убьёт меня — кто тогда будет петь?<br><br>
+                        Я ищу тишину, в которой можно будет разглядеть,<br>
+                        чьё лицо останется в зеркале, когда всё это закончится.<br><br>
+                        Когда погаснет свет — вы услышите, как мы дышим.<br>
                         Когда зажжётся — не знаю, кто из нас окажется перед вами.
                     </div>
                 </div>
@@ -942,35 +923,32 @@
         </section>
 
         <!-- ГЛАВА 2: ПОКОНЧИТЬ -->
-        <section class="slide" id="slide-2" data-chapter="2" data-index="2" style="--chapter-color:#0066ff;">
+        <section class="slide slide-chapter" id="slide-2" data-chapter="2" data-index="2" style="--chapter-color:#0066ff;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 02</div>
                 <h2 class="chapter-title">ПОКОНЧИТЬ</h2>
                 <div class="chapter-quote">"Ты сделал всего один шаг назад и режешь себя без ножа"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        Зачем мне микрофон, ведь Бруно спел бы за меня.
-                        Его хит — умереть с улыбкой, а мой хит — океан.
-                        Зачем нырять на дно, ведь я не батискаф.
-                        Возможно, не дано, возможно, не сейчас.
-                        А я шагаю в гору и вниз, как колесо.
-                        Это неправда всё, ведь я не знаю, кто я.
-                        И снова делаю больно всем, кто рядом со мной.
-                        Возможно, было б спокойнее и покончить.
-
-                        И даже в моей голове мне становится нечем дышать.
-                        Ты сделал всего один шаг назад и режешь себя без ножа.
-                        Устроил пожар, и твои нейроны сгорают дотла.
-                        Мне успокоить бы нервы, но, не зная слова «пощада»,
-
-                        Я слышу шепот: «Ты всего лишь тень.
-                        Ты никогда не станешь больше даже чем теперь».
-                        Но в глубине огонь, и он рвется в бой.
-                        Я больше не марионетка, ведь я живой.
-
-                        Каждый новый день я борюсь собой.
-                        Я как будто тень за своей спиной.
-                        Не смотреть назад, зеркала все про-очь.
+                        Зачем мне микрофон, ведь Бруно спел бы за меня.<br>
+                        Его хит — умереть с улыбкой, а мой хит — океан.<br>
+                        Зачем нырять на дно, ведь я не батискаф.<br>
+                        Возможно, не дано, возможно, не сейчас.<br>
+                        А я шагаю в гору и вниз, как колесо.<br>
+                        Это неправда всё, ведь я не знаю, кто я.<br>
+                        И снова делаю больно всем, кто рядом со мной.<br>
+                        Возможно, было б спокойнее и покончить.<br><br>
+                        И даже в моей голове мне становится нечем дышать.<br>
+                        Ты сделал всего один шаг назад и режешь себя без ножа.<br>
+                        Устроил пожар, и твои нейроны сгорают дотла.<br>
+                        Мне успокоить бы нервы, но, не зная слова «пощада»,<br><br>
+                        Я слышу шепот: «Ты всего лишь тень.<br>
+                        Ты никогда не станешь больше даже чем теперь».<br>
+                        Но в глубине огонь, и он рвется в бой.<br>
+                        Я больше не марионетка, ведь я живой.<br><br>
+                        Каждый новый день я борюсь собой.<br>
+                        Я как будто тень за своей спиной.<br>
+                        Не смотреть назад, зеркала все прочь.
                     </div>
                 </div>
                 <div class="track-links">
@@ -983,31 +961,28 @@
         </section>
 
         <!-- ГЛАВА 3: 28 ТАБЛОВ -->
-        <section class="slide" id="slide-3" data-chapter="3" data-index="3" style="--chapter-color:#ff6600;">
+        <section class="slide slide-chapter" id="slide-3" data-chapter="3" data-index="3" style="--chapter-color:#ff6600;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 03</div>
                 <h2 class="chapter-title">28 ТАБЛОВ</h2>
                 <div class="chapter-quote">"Опустился батискаф, есть скелет но где же шкаф"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        Мне так спокойно под этим одеялом,
-                        Но оно душит, лежу как под обвалом.
-                        Мою душу изнутри будто вулканом так и рвёт.
-                        Мне нужны силы, чтобы встать, а не лежать дни напролёт.
-
-                        (Ха-ха-ха-а) Помоги понять, как мне спастись.
-                        (Ха-ха-ха-а) Миллионы дней тревожности.
-                        (Ха-ха-ха-а) Собираю будто ассорти.
-                        (Ха-ха-ха-а) Миллионы дней ничтожности.
-
-                        Двадцать восемь таблов, и снова в игре.
-                        Не могу понять, что я искал там на дне.
-                        Опустился батискаф, есть скелет, но где же шкаф?
-                        Не могу найти, что я искал там, искал там в тебе.
-
-                        И снова делаю больно, пытаясь вынырнуть.
-                        Ловлю руками секунды, но они будто ртуть.
-                        Глотаю фонарики, чтоб был какой-то свет во мне.
+                        Мне так спокойно под этим одеялом,<br>
+                        Но оно душит, лежу как под обвалом.<br>
+                        Мою душу изнутри будто вулканом так и рвёт.<br>
+                        Мне нужны силы, чтобы встать, а не лежать дни напролёт.<br><br>
+                        (Ха-ха-ха-а) Помоги понять, как мне спастись.<br>
+                        (Ха-ха-ха-а) Миллионы дней тревожности.<br>
+                        (Ха-ха-ха-а) Собираю будто ассорти.<br>
+                        (Ха-ха-ха-а) Миллионы дней ничтожности.<br><br>
+                        Двадцать восемь таблов, и снова в игре.<br>
+                        Не могу понять, что я искал там на дне.<br>
+                        Опустился батискаф, есть скелет, но где же шкаф?<br>
+                        Не могу найти, что я искал там, искал там в тебе.<br><br>
+                        И снова делаю больно, пытаясь вынырнуть.<br>
+                        Ловлю руками секунды, но они будто ртуть.<br>
+                        Глотаю фонарики, чтоб был какой-то свет во мне.<br>
                         Взрываю динамики, своё чтобы забрать вдвойне.
                     </div>
                 </div>
@@ -1021,39 +996,36 @@
         </section>
 
         <!-- ГЛАВА 4: ФАЗА -->
-        <section class="slide" id="slide-4" data-chapter="4" data-index="4" style="--chapter-color:#00ff88;">
+        <section class="slide slide-chapter" id="slide-4" data-chapter="4" data-index="4" style="--chapter-color:#00ff88;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 04</div>
                 <h2 class="chapter-title">ФАЗА</h2>
                 <div class="chapter-quote">"Когда заходит солнце — я снова в фазе"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        Бьёт в виски — этот ритм невесом.
-                        Сердце тикает — мой личный гром.
-                        Пульс на максимум, падаю вниз.
-                        Я не утонул, и ты поборись.
-
-                        В голове — автотюн из грёз,
-                        Каждый вдох будто вызов слёз.
-                        Ноль эмоций — значит норм,
-                        Свет моргает — я новый шторм.
-                        Я из пластика, стали и нервов,
-                        Где-то между «жить» и «первым».
-                        Мир дрожит, а я стабилен,
-                        Не стоим, идём за стилем.
-
-                        Когда заходит солнце — я снова в фазе,
-                        Танцуй на обломках, будто в экстазе.
-                        Падай со мной — под синт и бласт,
-                        Каждая фраза — твой контраст.
-                        Когда заходит солнце — и небо в коде,
-                        Сердце кружит в танце, боль на доли.
-                        Если всё рушится — я жив,
-                        Это мой цикл, это мой срыв.
-
-                        Тело скручено, как будто провод,
-                        Время вспять идёт, как в фильме «Довод».
-                        Стану стражем я для вас,
+                        Бьёт в виски — этот ритм невесом,<br>
+                        Сердце тикает — мой личный гром.<br>
+                        Пульс на максимум, падаю вниз.<br>
+                        Я не утонул, и ты поборись.<br><br>
+                        В голове — автотюн из грёз,<br>
+                        Каждый вдох будто вызов слёз.<br>
+                        Ноль эмоций — значит норм,<br>
+                        Свет моргает — я новый шторм.<br>
+                        Я из пластика, стали и нервов,<br>
+                        Где-то между «жить» и «первым».<br>
+                        Мир дрожит, а я — стабилен,<br>
+                        Не стоим, идём за стилем.<br><br>
+                        Когда заходит солнце — я снова в фазе,<br>
+                        Танцуй на обломках, будто в экстазе.<br>
+                        Падай со мной — под синт и бласт,<br>
+                        Каждая фраза — твой контраст.<br>
+                        Когда заходит солнце — и небо в коде,<br>
+                        Сердце кружит в танце, боль на доли.<br>
+                        Если всё рушится — я жив,<br>
+                        Это мой цикл, это мой срыв.<br><br>
+                        Тело скручено, как будто провод,<br>
+                        Время вспять идёт, как в фильме «Довод».<br>
+                        Стану стражем я для вас,<br>
                         Я возьму этот балласт.
                     </div>
                 </div>
@@ -1067,31 +1039,28 @@
         </section>
 
         <!-- ГЛАВА 5: ИДЕАЛЬНАЯ ЗНАМЕНИТОСТЬ -->
-        <section class="slide" id="slide-5" data-chapter="5" data-index="5" style="--chapter-color:#ff00ff;">
+        <section class="slide slide-chapter" id="slide-5" data-chapter="5" data-index="5" style="--chapter-color:#ff00ff;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 05</div>
                 <h2 class="chapter-title">ИДЕАЛЬНАЯ ЗНАМЕНИТОСТЬ</h2>
                 <div class="chapter-quote">"Я стал иконой порока, будто бы цифровым богом"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        Я собран из проводов и склеен изолентой.
-                        Умру от своих грехов, но я рожден легендой.
-                        Через толпу голосов, что нужно, заберите.
-                        Ты говоришь про любовь, но любишь ненавидеть.
-
-                        Я стал иконой порока, будто бы цифровым богом.
-                        Ты говоришь про любовь, но любишь ненавидеть.
-                        Живу в твоем телефоне, питаюсь светом и болью.
-                        Ты говоришь про любовь, но любишь ненавидеть.
-
-                        Сорви мой голос с этого трека, он уже не мой.
-                        Идеальная знаменитость.
-                        Продай мне чувства, с этой минуты ты забудешь боль.
-                        Идеальная знаменитость.
-
-                        Процессор греется от вечного внимания.
-                        Ведь ты так хочешь потреблять снова мои страдания.
-                        Твой личный апокалипсис в глянцевой упаковке.
+                        Я собран из проводов и склеен изолентой.<br>
+                        Умру от своих грехов, но я рожден легендой.<br>
+                        Через толпу голосов, что нужно, заберите.<br>
+                        Ты говоришь про любовь, но любишь ненавидеть.<br><br>
+                        Я стал иконой порока, будто бы цифровым богом.<br>
+                        Ты говоришь про любовь, но любишь ненавидеть.<br>
+                        Живу в твоем телефоне, питаюсь светом и болью.<br>
+                        Ты говоришь про любовь, но любишь ненавидеть.<br><br>
+                        Сорви мой голос с этого трека, он уже не мой.<br>
+                        Идеальная знаменитость.<br>
+                        Продай мне чувства, с этой минуты ты забудешь боль.<br>
+                        Идеальная знаменитость.<br><br>
+                        Процессор греется от вечного внимания.<br>
+                        Ведь ты так хочешь потреблять снова мои страдания.<br>
+                        Твой личный апокалипсис в глянцевой упаковке.<br>
                         Ты принимаешь правила и тыкаешь по кнопкам.
                     </div>
                 </div>
@@ -1105,27 +1074,24 @@
         </section>
 
         <!-- ГЛАВА 6: РЭД ФЛАГ -->
-        <section class="slide" id="slide-6" data-chapter="6" data-index="6" style="--chapter-color:#ff0033;">
+        <section class="slide slide-chapter" id="slide-6" data-chapter="6" data-index="6" style="--chapter-color:#ff0033;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 06</div>
                 <h2 class="chapter-title">РЭД ФЛАГ</h2>
                 <div class="chapter-quote">"А я ходячий рэд флаг, расслабиться я не дам"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        Снова долго сплю, пролетают недели.
-                        Сомневаюсь в своем теле, транслируя на тебе.
-
-                        А я ходячий рэд флаг, расслабиться я не дам.
-                        И снова истерика, взрываемся с полуслова.
-                        Выдержанный, как коньяк, я выслежу по следам.
-                        И всё за тебя отдам, всё, чтобы быть рядом.
-
-                        Бей, играй, беги, ломай, построй и выбрось, угрожай.
-                        Нервируй, трогай, игнорируй, выгоняй, манипулируй.
-
-                        Я снова молчу, а ты плачешь, мы оба забыли, как было, а было иначе.
-                        И слишком уж много мы значим, но сделаешь больно ментально, и тут моментально получишь ты сдачи, я маленький мальчик.
-                        Не знаю, как ярость сдержать. Стараюсь как лучше, как будто подручный. Но знаешь, забыл те сказать —
+                        Снова долго сплю, пролетают недели.<br>
+                        Сомневаюсь в своем теле, транслируя на тебе.<br><br>
+                        А я ходячий рэд флаг, расслабиться я не дам.<br>
+                        И снова истерика, взрываемся с полуслова.<br>
+                        Выдержанный, как коньяк, я выслежу по следам.<br>
+                        И всё за тебя отдам, всё, чтобы быть рядом.<br><br>
+                        Бей, играй, беги, ломай, построй и выбрось, угрожай.<br>
+                        Нервируй, трогай, игнорируй, выгоняй, манипулируй.<br><br>
+                        Я снова молчу, а ты плачешь, мы оба забыли, как было, а было иначе.<br>
+                        И слишком уж много мы значим, но сделаешь больно ментально, и тут моментально получишь ты сдачи, я маленький мальчик.<br>
+                        Не знаю, как ярость сдержать. Стараюсь как лучше, как будто подручный. Но, знаешь, забыл те сказать —
                     </div>
                 </div>
                 <div class="track-links">
@@ -1138,40 +1104,35 @@
         </section>
 
         <!-- ГЛАВА 7: БЕЗ КОЖИ -->
-        <section class="slide" id="slide-7" data-chapter="7" data-index="7" style="--chapter-color:#6600ff;">
+        <section class="slide slide-chapter" id="slide-7" data-chapter="7" data-index="7" style="--chapter-color:#6600ff;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 07</div>
                 <h2 class="chapter-title">БЕЗ КОЖИ</h2>
                 <div class="chapter-quote">"Я — комната без стен, я тот кто остался без кожи"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        Я играю самого себя.
-                        Знаю, на что бы всё променял.
-                        От меня, знаю, хотела уйти даже белая чистая простыня.
-                        Я как луна — мучаюсь с фазами.
-                        Грим вместо лица, улыбочка смазана, и всё этим сказано.
-
-                        Спасибо за прошлое.
-                        Спасибо за каждого, кто ушёл вовремя.
-                        Спасибо за боль, что учила терпеть и чувства все уничтожила.
-
-                        Каждый новый — под микроскопом, я, не скрывая, держу под прицелом.
-                        Построю границы, запреты и, конечно, бетонные стены.
-                        Смесь оправданий и грязных тайн.
-                        Прощай, я могу говорить офлайн.
-                        Тут нет больше пламени, лишь мое, мое оскверненное тело.
-
-                        Я — комната без стен, я тот, кто остался без кожи.
-                        Всё, что было внутри меня, ты уничтожил, боль, что рвется наружу.
-                        Мой мир летит под откос, спасибо за трость, босс.
-                        Я кричал «помогите», но лишь сорвал голос, из тела всё насквозь, я скрою лишь полосы.
-
-                        Оно вгрызается в горло — что даже дыхание сперло.
-                        То, что я тащу с детства. То, что внутри меня долго лежало и мерзло.
-
-                        Е, на двоих у нас одно безумие.
-                        Моя комната как киностудия.
-                        Я без кожи, выгляжу как мумия.
+                        Я играю самого себя.<br>
+                        Знаю, на что бы всё променял.<br>
+                        От меня, знаю, хотела уйти даже белая чистая простыня.<br>
+                        Я как луна — мучаюсь с фазами.<br>
+                        Грим вместо лица, улыбочка смазана, и всё этим сказано.<br><br>
+                        Спасибо за прошлое.<br>
+                        Спасибо за каждого, кто ушёл вовремя.<br>
+                        Спасибо за боль, что учила терпеть и чувства все уничтожила.<br><br>
+                        Каждый новый — под микроскопом, я, не скрывая, держу под прицелом.<br>
+                        Построю границы, запреты и, конечно, бетонные стены.<br>
+                        Смесь оправданий и грязных тайн.<br>
+                        Прощай, я могу говорить офлайн.<br>
+                        Тут нет больше пламени, лишь мое, мое оскверненное тело.<br><br>
+                        Я — комната без стен, я тот, кто остался без кожи.<br>
+                        Всё, что было внутри меня, ты уничтожил, боль, что рвется наружу.<br>
+                        Мой мир летит под откос, спасибо за трость, босс.<br>
+                        Я кричал «помогите», но лишь сорвал голос, из тела всё насквозь, я скрою лишь полосы.<br><br>
+                        Оно вгрызается в горло — что даже дыхание сперло.<br>
+                        То, что я тащу с детства. То, что внутри меня долго лежало и мерзло.<br><br>
+                        Е, на двоих у нас одно безумие.<br>
+                        Моя комната как киностудия.<br>
+                        Я без кожи, выгляжу как мумия.<br>
                         Безумие, безумие, безумие, безумие.
                     </div>
                 </div>
@@ -1185,29 +1146,29 @@
         </section>
 
         <!-- ГЛАВА 8: СКАЗКА НА НОЧЬ -->
-        <section class="slide" id="slide-8" data-chapter="8" data-index="8" style="--chapter-color:#c0c0c0;">
+        <section class="slide slide-chapter" id="slide-8" data-chapter="8" data-index="8" style="--chapter-color:#c0c0c0;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 08 ⭐</div>
                 <h2 class="chapter-title">СКАЗКА НА НОЧЬ</h2>
                 <div class="chapter-quote">"Я просто монстр"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        <span class="speaker">—</span> Ты знаешь кто ты?
-                        <span class="speaker">—</span> Да, я знаю кто я.
-                        <span class="speaker">—</span> Или веришь в эту легенду
-                        <span class="speaker">—</span> Ну, Я сильный.
-                        <span class="speaker">—</span> Сильные не доказывают, не просят, они просто все берут
-                        <span class="speaker">—</span> Я — все что у меня есть.
-                        <span class="speaker">—</span> Жалкое «всё». Прячешься за спины людей.
-                        <span class="speaker">—</span> Я меняю судьбы! Они любят меня!
-                        <span class="speaker">—</span> Любят? Они не понимают тебя! Ты для них — чучело, ничтожество, инструмент, это не любовь
-                        <span class="speaker">—</span> Ты заставляешь меня...
-                        <span class="speaker">—</span> Прийти в себя? Страшно, да? Я покажу тебе кто ты!
-                        <span class="speaker">—</span> Я, э, я просто...
-                        <span class="speaker">—</span> Кто? Герой?
-                        <span class="speaker">—</span> <span class="highlight">Нет... я просто монстр</span>
-                        <span class="speaker">—</span> Не "просто", а монстр.
-                        <span class="speaker">—</span> А монстры не сдаются?
+                        <span class="speaker">—</span> Ты знаешь кто ты?<br>
+                        <span class="speaker">—</span> Да, я знаю кто я.<br>
+                        <span class="speaker">—</span> Или веришь в эту легенду<br>
+                        <span class="speaker">—</span> Ну, Я сильный.<br>
+                        <span class="speaker">—</span> Сильные не доказывают, не просят, они просто все берут<br>
+                        <span class="speaker">—</span> Я — все что у меня есть.<br>
+                        <span class="speaker">—</span> Жалкое «всё». Прячешься за спины людей.<br>
+                        <span class="speaker">—</span> Я меняю судьбы! Они любят меня!<br>
+                        <span class="speaker">—</span> Любят? Они не понимают тебя! Ты для них — чучело, ничтожество, инструмент, это не любовь<br>
+                        <span class="speaker">—</span> Ты заставляешь меня...<br>
+                        <span class="speaker">—</span> Прийти в себя? Страшно, да? Я покажу тебе кто ты!<br>
+                        <span class="speaker">—</span> Я, э, я просто...<br>
+                        <span class="speaker">—</span> Кто? Герой?<br>
+                        <span class="speaker">—</span> <span class="highlight">Нет... я просто монстр</span><br>
+                        <span class="speaker">—</span> Не "просто", а монстр.<br>
+                        <span class="speaker">—</span> А монстры не сдаются?<br>
                         <span class="speaker">—</span> <span class="highlight">И не умирают, никогда.</span>
                     </div>
                 </div>
@@ -1221,35 +1182,32 @@
         </section>
 
         <!-- ГЛАВА 9: ЭТО ВСЕ БЫЛ СОН -->
-        <section class="slide" id="slide-9" data-chapter="9" data-index="9" style="--chapter-color:#00ccff;">
+        <section class="slide slide-chapter" id="slide-9" data-chapter="9" data-index="9" style="--chapter-color:#00ccff;">
             <div class="slide-content">
                 <div class="chapter-number">Глава 09</div>
                 <h2 class="chapter-title">ЭТО ВСЕ БЫЛ СОН</h2>
                 <div class="chapter-quote">"Я пропал и пропал он"</div>
                 <div class="text-wrapper">
                     <div class="chapter-text">
-                        Это всё был сон
-                        Я пропал, и пропал он
-                        Это всё был сон
-                        Это всё был сон
-
-                        Во сне полгода мне мало
-                        Как посмотреть фильм «Начало»
-                        Я режиссер на диване
-                        Повяз в самообмане
-                        Я помню голос и лица
-                        Спасибо за ваши бэки мне
-                        Что еще может присниться
-                        Но открываю свои веки
-
-                        Когда она стреляла, я был безоружен
-                        Вся моя толпа взрывалась темной лужей
-                        Если она попала, то бежать не нужно
-                        Если она попала, то ты просто туша
-
-                        Это всё был сон
-                        Я пропал, и пропал он
-                        Это всё был сон
+                        Это всё был сон<br>
+                        Я пропал, и пропал он<br>
+                        Это всё был сон<br>
+                        Это всё был сон<br><br>
+                        Во сне полгода мне мало,<br>
+                        Как посмотреть фильм «Начало»<br>
+                        Я режиссёр на диване,<br>
+                        Повяз в самообмане<br>
+                        Я помню голос и лица,<br>
+                        Спасибо за ваши бэки мне<br>
+                        Что ещё может присниться,<br>
+                        Но открываю свои веки<br><br>
+                        Когда она стреляла, я был безоружен<br>
+                        Вся моя толпа взрывалась тёмной лужей<br>
+                        Если она попала, то бежать не нужно<br>
+                        Если она попала, то ты просто туша<br><br>
+                        Это всё был сон<br>
+                        Я пропал, и пропал он<br>
+                        Это всё был сон<br>
                         Это всё был сон.
                     </div>
                 </div>
@@ -1263,7 +1221,7 @@
         </section>
 
         <!-- ЭПИЛОГ -->
-        <section class="slide" id="slide-10" data-chapter="epilogue" data-index="10" style="--chapter-color:#ffd700;">
+        <section class="slide slide-epilogue" id="slide-10" data-chapter="epilogue" data-index="10" style="--chapter-color:#ffd700;">
             <div class="slide-content" style="text-align:center;">
                 <h2 class="epilogue-title">ЭТО ВСЕ БЫЛ СОН</h2>
                 <p class="epilogue-quote">
@@ -1301,8 +1259,7 @@
                 link.href = '#' + ch.id;
                 link.className = 'nav-chapter';
                 link.dataset.target = ch.id;
-                link.innerHTML =
-                    `
+                link.innerHTML = `
                     <span class="dot" style="--chapter-color:${ch.color};"></span>
                     <span class="num">${ch.num}</span>
                     <span class="title">${ch.title}</span>
@@ -1342,8 +1299,7 @@
                 if (slide) {
                     const color = slide.style.getPropertyValue('--chapter-color') || '#ffd700';
                     document.body.style.transition = 'background 0.8s ease';
-                    document.body.style.background =
-                        `radial-gradient(ellipse at 50% 50%, ${color}12, #0a0a0a 70%)`;
+                    document.body.style.background = `radial-gradient(ellipse at 50% 50%, ${color}12, #0a0a0a 70%)`;
                 }
             }
 
