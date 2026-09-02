@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TheFrodesDiD — Музыка</title>
+    <meta name="description" content="TheFrodesDiD — дискография. Альбомы, синглы, безумие.">
+    <meta property="og:title" content="TheFrodesDiD — Музыка">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <link rel="icon" type="image/png" href="assets/favicon.png" sizes="64x64">
+    <link rel="icon" type="image/png" href="assets/favicon32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="assets/favicon16.png" sizes="16x16">
+
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-gold: #ffd700;
+            --color-gold-glow: rgba(255, 215, 0, 0.35);
+            --color-red: #ff003c;
+            --color-blue: #0066ff;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --nav-height: 70px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-red);
+            border-radius: 2px;
+        }
+
+        #neuronCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .nav-logo {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: 1.2rem;
+            color: var(--color-gold);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            margin-right: 40px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo:hover {
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all var(--transition);
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.04);
+        }
+
+        .nav-links li:has(.dropdown-menu) {
+            padding-bottom: 20px;
+            margin-bottom: -20px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 220px;
+            background: rgba(10, 10, 10, 0.97);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            border-radius: 10px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-links li:hover .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: transparent;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 14px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all var(--transition);
+            border-left: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .dropdown-link:hover {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.06);
+            border-left-color: var(--color-gold);
+        }
+
+        .dropdown-link .icon {
+            margin-right: 10px;
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+
+        .nav-link-with-arrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-with-arrow .arrow {
+            font-size: 0.5rem;
+            opacity: 0.4;
+            transition: all var(--transition);
+        }
+
+        .nav-links li:hover .nav-link-with-arrow .arrow {
+            opacity: 1;
+            transform: rotate(180deg);
+        }
+
+        .music-page {
+            position: relative;
+            z-index: 1;
+            padding-top: var(--nav-height);
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
+
+        .music-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .music-header {
+            padding: 30px 0 20px 0;
+        }
+
+        .music-header h1 {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: var(--color-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .music-header p {
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            margin-top: 4px;
+        }
+
+        .filters-section {
+            padding: 20px 0 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .filter-btn:hover {
+            color: var(--text-secondary);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .filter-btn.active {
+            color: var(--color-gold);
+            border-color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.04);
+        }
+
+        .releases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+            padding: 10px 0;
+        }
+
+        .release-item {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all var(--transition);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .release-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .release-item:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 215, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .release-cover {
+            width: 100%;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        .release-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .release-item:hover .release-cover img {
+            transform: scale(1.04);
+        }
+
+        /* ===== ПЛАШКА ХИТА ===== */
+        .popular-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--color-gold);
+            color: #0a0a0a;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            z-index: 2;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .popular-badge::before {
+            content: '★ ';
+        }
+
+        .audio-preview {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            opacity: 0;
+            transform: scale(0.8);
+            z-index: 3;
+        }
+
+        .release-item:hover .audio-preview {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .audio-preview:hover {
+            background: var(--color-red);
+            border-color: var(--color-red);
+        }
+
+        .audio-preview .play-icon {
+            color: #fff;
+            font-size: 0.7rem;
+        }
+
+        .release-info {
+            padding: 14px 16px;
+        }
+
+        .release-info .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            color: var(--text-primary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .release-info .meta {
+            display: flex;
+            gap: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            flex-wrap: wrap;
+        }
+
+        .release-info .meta .tag {
+            padding: 3px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            font-size: 0.45rem;
+        }
+
+        .release-info .meta .tag-type {
+            color: var(--text-secondary);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .release-info .meta .tag-popular {
+            color: var(--color-gold);
+            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.04);
+            font-weight: 700;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            display: none;
+        }
+
+        .no-results .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .footer-copy {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-socials a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--color-gold);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0 16px;
+            }
+            .nav-logo {
+                font-size: 0.9rem;
+                margin-right: 16px;
+            }
+            .nav-link {
+                font-size: 0.5rem;
+                padding: 8px 12px;
+            }
+            .nav-links {
+                gap: 4px;
+            }
+            .dropdown-menu {
+                min-width: 180px;
+            }
+            .dropdown-link {
+                font-size: 0.55rem;
+                padding: 12px 18px;
+            }
+            .music-container {
+                padding: 0 16px;
+            }
+            .releases-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 16px;
+            }
+            .release-info .title {
+                font-size: 0.5rem;
+            }
+            .release-info .meta {
+                font-size: 0.4rem;
+            }
+            .release-info .meta .tag {
+                font-size: 0.35rem;
+                padding: 2px 8px;
+            }
+            .filters-section {
+                gap: 6px;
+                padding: 12px 0 20px 0;
+            }
+            .filter-btn {
+                font-size: 0.4rem;
+                padding: 6px 14px;
+            }
+            .music-header h1 {
+                font-size: 1.8rem;
+            }
+            footer {
+                padding: 12px 16px;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .footer-copy {
+                font-size: 0.4rem;
+            }
+            .footer-socials a {
+                font-size: 0.4rem;
+            }
+            .popular-badge {
+                font-size: 0.5rem;
+                padding: 4px 12px;
+                top: 8px;
+                right: 8px;
+                border-radius: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0 10px;
+            }
+            .nav-logo {
+                font-size: 0.7rem;
+                margin-right: 10px;
+            }
+            .nav-link {
+                font-size: 0.4rem;
+                padding: 6px 8px;
+                letter-spacing: 0.05em;
+            }
+            .nav-links {
+                gap: 0px;
+            }
+            .dropdown-menu {
+                min-width: 150px;
+            }
+            .dropdown-link {
+                font-size: 0.45rem;
+                padding: 10px 14px;
+            }
+            .releases-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+            .release-info {
+                padding: 10px 12px;
+            }
+            .release-info .title {
+                font-size: 0.45rem;
+            }
+            .release-info .meta {
+                font-size: 0.35rem;
+                gap: 4px;
+            }
+            .release-info .meta .tag {
+                font-size: 0.3rem;
+                padding: 2px 6px;
+            }
+            .audio-preview {
+                width: 28px;
+                height: 28px;
+                bottom: 8px;
+                right: 8px;
+            }
+            .audio-preview .play-icon {
+                font-size: 0.5rem;
+            }
+            .filter-btn {
+                font-size: 0.35rem;
+                padding: 4px 10px;
+            }
+            .music-header h1 {
+                font-size: 1.4rem;
+            }
+            .music-header p {
+                font-size: 0.5rem;
+            }
+            .popular-badge {
+                font-size: 0.4rem;
+                padding: 3px 8px;
+                top: 6px;
+                right: 6px;
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="neuronCanvas"></canvas>
+
+    <header>
+        <a href="../" class="nav-logo">⌇ FRODES</a>
+        <ul class="nav-links">
+            <li><a href="../" class="nav-link">Latest</a></li>
+            <li><a href="music.html" class="nav-link active">Music</a></li>
+            <li><a href="#" class="nav-link" data-page="shop">Shop</a></li>
+            <li>
+                <button class="nav-link nav-link-with-arrow">
+                    Projects
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="bezumiye/" target="_blank" class="dropdown-link">
+                        <span class="icon">⌇</span> ХРОНИКИ БЕЗУМИЯ
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <div class="music-page">
+        <div class="music-container">
+
+            <div class="music-header">
+                <h1>ДИСКОГРАФИЯ</h1>
+                <p>Все релизы TheFrodesDiD в хронологическом порядке</p>
+            </div>
+
+            <div class="filters-section" id="filtersSection">
+                <button class="filter-btn active" data-filter="all">Все треки</button>
+                <button class="filter-btn" data-filter="album">Альбомы</button>
+                <button class="filter-btn" data-filter="single">Синглы</button>
+            </div>
+
+            <div class="releases-grid" id="releasesGrid"></div>
+            <div class="no-results" id="noResults">
+                <div class="icon">⌇</div>
+                <p>Нет релизов в этой категории</p>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <span class="footer-copy">© TheFrodesDiD · 2026</span>
+        <div class="footer-socials">
+            <a href="https://t.me/frodes" target="_blank">Telegram</a>
+            <a href="https://music.yandex.ru/artist/5437814" target="_blank">Яндекс</a>
+            <a href="https://bnd.lc/bezym1e" target="_blank">BandLink</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // 1. ДАННЫЕ РЕЛИЗОВ
+            const releases = [
+                // АЛЬБОМЫ
+                { id: 'bezumiye', title: 'БЕЗУМИЕ', cover: 'https://avatars.yandex.net/get-music-content/17770778/5adcd113.a.43408163-1/m1000x1000',
+                    year: '2026', type: 'album', link: 'https://music.yandex.ru/album/43408163', popular: true },
+                { id: 'doigralis', title: 'ДОИГРАЛИСЬ!', cover: 'https://avatars.yandex.net/get-music-content/5503671/2fd542a9.a.24258648-1/m1000x1000',
+                    year: '2022', type: 'album', link: 'https://music.yandex.ru/album/24258648', popular: false },
+                { id: 'vtoroe_ya', title: 'ВТОРОЕ Я', cover: 'https://avatars.yandex.net/get-music-content/5502420/94c34da9.a.23982800-1/m1000x1000',
+                    year: '2022', type: 'album', link: 'https://music.yandex.ru/album/23982800', popular: false },
+                { id: 'sborka', title: 'СБОРКА ЗЕВЕРШЕНА', cover: 'https://avatars.yandex.net/get-music-content/5496390/144c089e.a.21594700-1/m1000x1000',
+                    year: '2022', type: 'album', link: 'https://music.yandex.ru/album/21594700', popular: false },
+                { id: 'spicy', title: 'SPICY PICTURE', cover: 'https://avatars.yandex.net/get-music-content/3318009/07371be1.a.12098889-1/m1000x1000',
+                    year: '2020', type: 'album', link: 'https://music.yandex.ru/album/12098889', popular: false },
+                { id: 'grokhot', title: 'ГРОХОТ ОКОВ', cover: 'https://avatars.yandex.net/get-music-content/2433821/b39c6105.a.10587787-1/m1000x1000',
+                    year: '2020', type: 'album', link: 'https://music.yandex.ru/album/10587787', popular: false },
+                { id: 'bolno', title: 'БОЛЬНО ПАДАТЬ', cover: 'https://avatars.yandex.net/get-music-content/103235/9b137237.a.8468085-1/m1000x1000',
+                    year: '2019', type: 'album', link: 'https://music.yandex.ru/album/8468085', popular: false },
+
+                //СИНГЛЫ
+                { id: 'naiznanku', title: 'НАИЗНАНКУ', cover: 'https://avatars.yandex.net/get-music-content/17674835/963fb9f7.a.41897383-1/m1000x1000',
+                    year: '2026', type: 'single', link: 'https://music.yandex.ru/album/41897383', popular: false },
+                { id: 'stop_stop', title: 'СТОП! СТОП!', cover: 'https://avatars.yandex.net/get-music-content/14854709/7427836e.a.37791285-1/m1000x1000',
+                    year: '2025', type: 'single', link: 'https://music.yandex.ru/album/37791285', popular: false },
+                { id: 'npc', title: 'NPC', cover: 'https://avatars.yandex.net/get-music-content/14304155/0f605e10.a.36649746-1/m1000x1000',
+                    year: '2025', type: 'single', link: 'https://music.yandex.ru/album/36649746', popular: false },
+                { id: 'inorakety', title: 'ИНОРАКЕТЫ', cover: 'https://avatars.yandex.net/get-music-content/14662984/f9fb76eb.a.36290234-1/m1000x1000',
+                    year: '2025', type: 'single', link: 'https://music.yandex.ru/album/36290234', popular: false },
+                { id: 'totoro', title: 'TOTORO', cover: 'https://avatars.yandex.net/get-music-content/14369544/f02eb779.a.35370290-1/m1000x1000',
+                    year: '2025', type: 'single', link: 'https://music.yandex.ru/album/35370290', popular: false },
+                { id: 'tolko_dlya_tebya', title: 'ТОЛЬКО ДЛЯ ТЕБЯ', cover: 'https://avatars.yandex.net/get-music-content/14082060/71747da1.a.34030815-1/m1000x1000',
+                    year: '2024', type: 'single', link: 'https://music.yandex.ru/album/34030815', popular: false },
+                { id: 'davay_igru', title: 'ДАВАЙ МЫ НАЧНЕМ ИГРУ', cover: 'https://avatars.yandex.net/get-music-content/14082060/c6225be2.a.33376296-1/m1000x1000',
+                    year: '2024', type: 'single', link: 'https://music.yandex.ru/album/33376296', popular: false },
+                { id: 'vremennaya_petlya', title: 'Я ВО ВРЕМЕННОЙ ПЕТЛЕ', cover: 'https://avatars.yandex.net/get-music-content/14183125/c0f58ba1.a.32852844-1/m1000x1000',
+                    year: '2024', type: 'single', link: 'https://music.yandex.ru/album/32852844', popular: false },
+                { id: 'maski', title: 'МАСКИ', cover: 'https://avatars.yandex.net/get-music-content/10126140/cafe05a5.a.31678375-1/m1000x1000',
+                    year: '2024', type: 'single', link: 'https://music.yandex.ru/album/31678375', popular: false },
+                { id: 'net_dela', title: 'НЕТ ДЕЛА', cover: 'https://avatars.yandex.net/get-music-content/10918712/a3eb1313.a.31121826-1/m1000x1000',
+                    year: '2024', type: 'single', link: 'https://music.yandex.ru/album/31121826', popular: false },
+                { id: 'kollektsioner', title: 'КОЛЛЕКЦИОНЕР', cover: 'https://avatars.yandex.net/get-music-content/9838169/b68dcb17.a.29078985-1/m1000x1000',
+                    year: '2024', type: 'single', link: 'https://music.yandex.ru/album/29078985', popular: true },
+                { id: 'rok_star', title: 'РОК-СТАР', cover: 'https://avatars.yandex.net/get-music-content/10092855/badb4a97.a.28115383-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/28115383', popular: false },
+                { id: 'mnogo_dela', title: 'МНОГО ДЕЛА', cover: 'https://avatars.yandex.net/get-music-content/10139807/ca87e1e4.a.27743232-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/27743232', popular: false },
+                { id: 'pahnet_zelenyu', title: 'ПАХНЕТ ЗЕЛЕНЬЮ', cover: 'https://avatars.yandex.net/get-music-content/10703962/8fbb84aa.a.27308433-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/27308433', popular: false },
+                { id: 'mne_nuzhen_stul', title: 'МНЕ НУЖЕН СТУЛ', cover: 'https://avatars.yandex.net/get-music-content/6386858/30e88e8a.a.26873853-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/26873853', popular: false },
+                { id: 'okean', title: 'ОКЕАН', cover: 'https://avatars.yandex.net/get-music-content/5503671/5eb87184.a.26543149-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/26543149', popular: false },
+                { id: 'origami', title: 'ОРИГАМИ', cover: 'https://avatars.yandex.net/get-music-content/9737237/533f471e.a.26152977-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/26152977', popular: false },
+                { id: 'v_petle', title: 'В ПЕТЛЕ', cover: 'https://avatars.yandex.net/get-music-content/9737237/0e57398a.a.25834046-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/25834046', popular: false },
+                { id: 'den_rozhdeniya', title: 'ДЕНЬ РОЖДЕНИЯ', cover: 'https://avatars.yandex.net/get-music-content/8871869/aa112f70.a.25403162-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/25403162', popular: false },
+                { id: 'kenni', title: 'КЕННИ', cover: 'https://avatars.yandex.net/get-music-content/8123381/1fe5afd0.a.25136660-1/m1000x1000',
+                    year: '2023', type: 'single', link: 'https://music.yandex.ru/album/25136660', popular: false },
+                { id: 'sumasshedshiy_dom', title: 'СУМАСШЕДШИЙ ДОМ', cover: 'https://avatars.yandex.net/get-music-content/5576540/440acb89.a.23752049-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/23752049', popular: true },
+                { id: 'bez_tebya', title: 'БЕЗ ТЕБЯ', cover: 'https://avatars.yandex.net/get-music-content/6202531/208fb415.a.23624739-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/23624739', popular: false },
+                { id: 'supernova', title: 'СУПЕРНОВА', cover: 'https://avatars.yandex.net/get-music-content/6201394/340b1746.a.23472647-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/23472647', popular: false },
+                { id: 'deflot', title: 'ДЕФОЛТ', cover: 'https://avatars.yandex.net/get-music-content/6300975/02e406c9.a.23173338-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/23173338', popular: false },
+                { id: 'kurer', title: 'КУРЬЕР', cover: 'https://avatars.yandex.net/get-music-content/6058982/9e2bba19.a.23005502-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/23005502', popular: false },
+                { id: 'vremya_sinego_kita', title: 'ВРЕМЯ СИНЕГО КИТА', cover: 'https://avatars.yandex.net/get-music-content/6021799/c7df20be.a.22681005-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/22681005', popular: false },
+                { id: 'tihonya', title: 'ТИХОНЯ', cover: 'https://avatars.yandex.net/get-music-content/6214856/6a2dacf6.a.22217930-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/22217930', popular: false },
+                { id: 'lyod', title: 'ЛЁД', cover: 'https://avatars.yandex.net/get-music-content/5631481/0a889c41.a.21065020-1/m1000x1000',
+                    year: '2022', type: 'single', link: 'https://music.yandex.ru/album/21065020', popular: false },
+                { id: 'dengi_lyubyat_schet', title: 'ДЕНЬГИ ЛЮБЯТ СЧЕТ', cover: 'https://avatars.yandex.net/get-music-content/5413909/c34a725a.a.20033742-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/20033742', popular: false },
+                { id: 'ya_lyublyu_sebya', title: 'Я ЛЮБЛЮ ТОЛЬКО СЕБЯ', cover: 'https://avatars.yandex.net/get-music-content/5412783/9d86da86.a.19238916-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/19238916', popular: false },
+                { id: 'schelchok', title: 'ЩЕЛЧОК', cover: 'https://avatars.yandex.net/get-music-content/5559490/d6bd99f3.a.18582355-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/18582355', popular: false },
+                { id: 'kostyanaya_ruka', title: 'КОСТЯНАЯ РУКА', cover: 'https://avatars.yandex.net/get-music-content/4401814/287010d6.a.17485298-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/17485298', popular: true },
+                { id: 'para', title: 'ПАРА', cover: 'https://avatars.yandex.net/get-music-content/5235336/7933cc41.a.16657088-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/16657088', popular: false },
+                { id: 'nenavist_sobak', title: 'НЕНАВИСТЬ СОБАК', cover: 'https://avatars.yandex.net/get-music-content/4581417/676affa9.a.16012375-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/16012375', popular: false },
+                { id: 'ya_znayu_tvoe_imya', title: 'Я ЗНАЮ ТВОЁ ИМЯ', cover: 'https://avatars.yandex.net/get-music-content/4010467/fc439702.a.15325519-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/15325519', popular: false },
+                { id: 'vyhozhu_iz_bara', title: 'ВЫХОЖУ ИЗ БАРА', cover: 'https://avatars.yandex.net/get-music-content/4747389/d065701b.a.14575352-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/14575352', popular: true },
+                { id: 'ne_noy', title: 'НЕ НОЙ', cover: 'https://avatars.yandex.net/get-music-content/4382806/3ceed466.a.14017943-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/14017943', popular: false },
+                { id: 'vsyo_chto_tebe_nado', title: 'ВСЁ, ЧТО ТЕБЕ НАДО', cover: 'https://avatars.yandex.net/get-music-content/3316841/7a360290.a.13617403-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/13617403', popular: false },
+                { id: 'razogrev', title: 'РАЗОГРЕВ', cover: 'https://avatars.yandex.net/get-music-content/3927581/b1941e66.a.13420209-1/m1000x1000',
+                    year: '2021', type: 'single', link: 'https://music.yandex.ru/album/13420209', popular: false },
+                { id: 'korol_ender_mira', title: 'КОРОЛЬ ЭНДЕР МИРА', cover: 'https://avatars.yandex.net/get-music-content/2358262/209aa2a1.a.10699145-1/m1000x1000',
+                    year: '2020', type: 'single', link: 'https://music.yandex.ru/album/10699145', popular: true },
+                { id: 'ne_boley', title: 'НЕ БОЛЕЙ', cover: 'https://avatars.yandex.net/get-music-content/149669/ceab059e.a.9541541-1/m1000x1000',
+                    year: '2019', type: 'single', link: 'https://music.yandex.ru/album/9541541', popular: false }
+            ];
+
+            // 2. РЕНДЕР
+            const grid = document.getElementById('releasesGrid');
+            const noResults = document.getElementById('noResults');
+            let currentFilter = 'all';
+
+            function getSortedReleases(filter) {
+                let filtered = releases;
+
+                if (filter === 'album') {
+                    filtered = filtered.filter(r => r.type === 'album');
+                } else if (filter === 'single') {
+                    filtered = filtered.filter(r => r.type === 'single');
+                }
+
+                // Глобальная сортировка по году 
+                return filtered.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+            }
+
+            function renderReleases() {
+                const sorted = getSortedReleases(currentFilter);
+
+                grid.innerHTML = '';
+
+                if (sorted.length === 0) {
+                    noResults.style.display = 'block';
+                    return;
+                }
+                noResults.style.display = 'none';
+
+                sorted.forEach((release, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'release-item';
+                    item.style.transitionDelay = (index * 0.03) + 's';
+
+                    const typeLabels = {
+                        album: 'Альбом',
+                        single: 'Сингл'
+                    };
+
+                    item.innerHTML = `
+                        <div class="release-cover">
+                            <img src="${release.cover}" alt="${release.title}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23111111%22 width=%22200%22 height=%22200%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-size=%2216%22 font-family=%22monospace%22>${release.title.substring(0,2)}</text></svg>'">
+                            ${release.popular ? '<span class="popular-badge">ХИТ</span>' : ''}
+                            <div class="audio-preview" onclick="event.stopPropagation(); window.open('${release.link}', '_blank')">
+                                <span class="play-icon">▶</span>
+                            </div>
+                        </div>
+                        <div class="release-info">
+                            <div class="title">${release.title}</div>
+                            <div class="meta">
+                                <span class="tag">${release.year}</span>
+                                <span class="tag tag-type">${typeLabels[release.type] || release.type}</span>
+                                ${release.popular ? '<span class="tag tag-popular">★ Хит</span>' : ''}
+                            </div>
+                        </div>
+                    `;
+
+                    grid.appendChild(item);
+
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, 50 + index * 25);
+                });
+            }
+
+            // 3. ФИЛЬТРЫ
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderReleases();
+                });
+            });
+
+            // 4. НЕЙРОННЫЙ ФОН
+            (function initPlexus() {
+                const canvas = document.getElementById('neuronCanvas');
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                const nodes = [];
+                let animationId = null;
+
+                function resize() {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                resize();
+                window.addEventListener('resize', resize);
+
+                const colors = [
+                    { h: 340, s: 90, l: 50 },
+                    { h: 350, s: 100, l: 45 },
+                    { h: 330, s: 80, l: 55 },
+                    { h: 0, s: 90, l: 40 },
+                    { h: 340, s: 70, l: 60 },
+                    { h: 355, s: 95, l: 35 }
+                ];
+
+                class PlexusNode {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.radius = 1.5 + Math.random() * 3;
+                        this.baseRadius = this.radius;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.pulse = Math.random() * Math.PI * 2;
+                        this.speed = 0.005 + Math.random() * 0.015;
+                        const c = colors[Math.floor(Math.random() * colors.length)];
+                        this.hue = c.h;
+                        this.sat = c.s;
+                        this.light = c.l;
+                        this.targetLight = this.light;
+                        this.phase = Math.random() * 10;
+                    }
+
+                    update() {
+                        this.pulse += this.speed;
+                        this.phase += 0.02;
+                        this.x += this.vx + Math.sin(this.phase) * 0.1;
+                        this.y += this.vy + Math.cos(this.phase * 0.7) * 0.1;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                        const pulseFactor = Math.sin(this.pulse) * 0.5 + 0.5;
+                        this.radius = this.baseRadius * (0.6 + pulseFactor * 0.8);
+                        this.light = this.targetLight + Math.sin(this.pulse * 1.5) * 15;
+                    }
+
+                    draw() {
+                        const glowRadius = this.radius * 4;
+                        const gradient = ctx.createRadialGradient(
+                            this.x, this.y, 0,
+                            this.x, this.y, glowRadius
+                        );
+                        gradient.addColorStop(0, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.12)');
+                        gradient.addColorStop(1, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0)');
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.shadowColor = 'hsla(' + this.hue + ', 100%, 60%, 0.4)';
+                        ctx.shadowBlur = 12;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.85)';
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.3, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', 100%, 90%, 0.25)';
+                        ctx.fill();
+                    }
+                }
+
+                const nodeCount = Math.min(80, Math.floor((width * height) / 15000));
+                for (let i = 0; i < nodeCount; i++) {
+                    nodes.push(new PlexusNode());
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        nodes[i].update();
+                        nodes[i].draw();
+                    }
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const a = nodes[i];
+                            const b = nodes[j];
+                            const dx = a.x - b.x;
+                            const dy = a.y - b.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+
+                            if (dist < 250) {
+                                const opacity = 0.12 * (1 - dist / 250);
+                                const hue = 340;
+
+                                ctx.beginPath();
+                                ctx.moveTo(a.x, a.y);
+                                ctx.lineTo(b.x, b.y);
+                                ctx.strokeStyle = 'hsla(' + hue + ', 80%, 60%, ' + opacity + ')';
+                                ctx.lineWidth = 0.5 + opacity * 1.5;
+                                ctx.stroke();
+
+                                if (dist < 120 && opacity > 0.04) {
+                                    ctx.beginPath();
+                                    ctx.moveTo(a.x, a.y);
+                                    ctx.lineTo(b.x, b.y);
+                                    ctx.strokeStyle = 'hsla(' + hue + ', 100%, 80%, ' + opacity * 0.25 + ')';
+                                    ctx.lineWidth = 2 + opacity * 2.5;
+                                    ctx.shadowColor = 'hsla(' + hue + ', 100%, 60%, ' + opacity * 0.15 + ')';
+                                    ctx.shadowBlur = 8;
+                                    ctx.stroke();
+                                    ctx.shadowBlur = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    animationId = requestAnimationFrame(animate);
+                }
+
+                animate();
+
+                window.addEventListener('beforeunload', function() {
+                    if (animationId) cancelAnimationFrame(animationId);
+                });
+            })();
+
+            // 5. ИНИЦИАЛИЗАЦИЯ (надо бы удалить) 
+            renderReleases();
+
+            console.log('🔥 TheFrodesDiD — Дискография');
+            console.log('📀 Релизов загружено:', releases.length);
+            console.log('⭐ Популярных треков:', releases.filter(r => r.popular).length);
+
+        });
+    </script>
+
+</body>
+</html>
