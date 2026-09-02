@@ -17,9 +17,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* ========================================
-           ROOT & RESET
-           ======================================== */
+
+        /*   ROOT & RESET   */
+
         * {
             margin: 0;
             padding: 0;
@@ -68,9 +68,7 @@
             pointer-events: none;
         }
 
-        /* ========================================
-           ШАПКА / НАВИГАЦИЯ
-           ======================================== */
+        /* ШАПКА / НАВИГАЦИЯ */
         header {
             position: fixed;
             top: 0;
@@ -219,9 +217,7 @@
             transform: rotate(180deg);
         }
 
-        /* ========================================
-           ГЛАВНЫЙ КОНТЕЙНЕР
-           ======================================== */
+        /* ГЛАВНЫЙ КОНТЕЙНЕР */
         .main-content {
             position: relative;
             z-index: 1;
@@ -236,9 +232,7 @@
             text-align: center;
         }
 
-        /* ========================================
-           СТРАНИЦЫ
-           ======================================== */
+        /* СТРАНИЦЫ */
         .page-content {
             display: none;
             width: 100%;
@@ -253,9 +247,7 @@
             display: flex;
         }
 
-        /* ========================================
-           ЗАГОЛОВОК 
-           ======================================== */
+        /* ЗАГОЛОВОК */
         .title-container {
             display: inline-block;
             position: relative;
@@ -375,9 +367,7 @@
             }
         }
 
-        /* ========================================
-           ТЕГЛАЙН
-           ======================================== */
+        /* ТЕГЛАЙН */
         .tagline {
             font-family: 'Orbitron', sans-serif;
             font-size: clamp(0.8rem, 2.5vw, 1.3rem);
@@ -394,9 +384,7 @@
             text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
         }
 
-        /* ========================================
-           КНОПКА
-           ======================================== */
+        /* КНОПКА */
         .hero-btn {
             display: inline-flex;
             align-items: center;
@@ -463,9 +451,7 @@
             transform: scale(1.2) rotate(-10deg);
         }
 
-        /* ========================================
-           ДРУГИЕ СТРАНИЦЫ
-           ======================================== */
+        /* ДРУГИЕ СТРАНИЦЫ */
         .page-content h2 {
             font-family: 'Black Ops One', sans-serif;
             font-size: clamp(2rem, 4vw, 3rem);
@@ -493,9 +479,7 @@
             }
         }
 
-        /* ========================================
-           FOOTER
-           ======================================== */
+        /* FOOTER */
         footer {
             position: fixed;
             bottom: 0;
@@ -537,9 +521,7 @@
             color: var(--color-gold);
         }
 
-        /* ========================================
-           АДАПТИВ
-           ======================================== */
+        /* АДАПТИВ */
         @media (max-width: 768px) {
             header {
                 padding: 0 16px;
@@ -667,8 +649,8 @@
     <header>
         <a href="#" class="nav-logo" id="logoLink">⌇ FRODES</a>
         <ul class="nav-links">
-            <li><a href="index.html" class="nav-link active">Latest</a></li>
-            <li><a href="music.html" class="nav-link">Music</a></li>
+            <li><a href="/" class="nav-link active">Latest</a></li>
+            <li><a href="music/" class="nav-link">Music</a></li>
             <li><a href="#" class="nav-link" data-page="shop">Shop</a></li>
             <li>
                 <button class="nav-link nav-link-with-arrow" id="projectsBtn">
