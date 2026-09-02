@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TheFrodesDiD — Калькулятор реверберации</title>
+    <meta name="description" content="Точный калькулятор реверберации от TheFrodesDiD. Рассчитай pre-delay, decay и total reverb для своей музыки.">
+    <meta property="og:title" content="TheFrodesDiD — Калькулятор реверберации">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <link rel="icon" type="image/png" href="../assets/favicon.png" sizes="64x64">
+    <link rel="icon" type="image/png" href="../assets/favicon32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../assets/favicon16.png" sizes="16x16">
+
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           ROOT & RESET
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-gold: #ffd700;
+            --color-gold-glow: rgba(255, 215, 0, 0.2);
+            --color-red: #ff003c;
+            --color-blue: #0066ff;
+            --color-green: #00ff88;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --nav-height: 70px;
+        }
+
+        html,
+        body {
+            min-height: 100vh;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-red);
+            border-radius: 2px;
+        }
+
+        #neuronCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ========================================
+           ШАПКА / НАВИГАЦИЯ
+           ======================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .nav-logo {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: 1.2rem;
+            color: var(--color-gold);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            margin-right: 40px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo:hover {
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all var(--transition);
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.04);
+        }
+
+        .nav-links li:has(.dropdown-menu) {
+            padding-bottom: 20px;
+            margin-bottom: -20px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 220px;
+            background: rgba(10, 10, 10, 0.97);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            border-radius: 10px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-links li:hover .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: transparent;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 14px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all var(--transition);
+            border-left: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .dropdown-link:hover {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.06);
+            border-left-color: var(--color-gold);
+        }
+
+        .dropdown-link .icon {
+            margin-right: 10px;
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+
+        .nav-link-with-arrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-with-arrow .arrow {
+            font-size: 0.5rem;
+            opacity: 0.4;
+            transition: all var(--transition);
+        }
+
+        .nav-links li:hover .nav-link-with-arrow .arrow {
+            opacity: 1;
+            transform: rotate(180deg);
+        }
+
+        /* ========================================
+           ОСНОВНОЙ КОНТЕНТ
+           ======================================== */
+        .reverb-page {
+            position: relative;
+            z-index: 1;
+            padding-top: var(--nav-height);
+            padding-bottom: 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reverb-container {
+            width: 100%;
+            max-width: 520px;
+            padding: 36px;
+            margin: 0 20px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            border-radius: 14px;
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(10px);
+            transition: all var(--transition);
+        }
+
+        .reverb-container:hover {
+            border-color: rgba(255, 215, 0, 0.08);
+        }
+
+        .reverb-header-text {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .reverb-title {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+            color: var(--color-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .reverb-sub {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            margin-top: 2px;
+        }
+
+        .reverb-sub .highlight {
+            color: var(--color-green);
+        }
+
+        /* === BPM === */
+        .input-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .label {
+            display: block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--color-green);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+
+        .bpm-input {
+            width: 160px;
+            height: 56px;
+            background: var(--bg-primary);
+            border: 2px solid rgba(255, 215, 0, 0.08);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            text-align: center;
+            padding: 10px;
+            transition: all var(--transition);
+        }
+
+        .bpm-input:focus {
+            outline: none;
+            border-color: var(--color-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.04);
+        }
+
+        .bpm-input::-webkit-inner-spin-button,
+        .bpm-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .bpm-input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* === ROOM === */
+        .room-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .room-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .room-btn {
+            flex: 1;
+            background: var(--bg-primary);
+            border: 2px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 14px 10px;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .room-btn:hover {
+            border-color: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .room-btn.active {
+            border-color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.03);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.02);
+        }
+
+        .room-name {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: 1rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .room-desc {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.45rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .room-btn.active .room-desc {
+            color: var(--color-gold);
+        }
+
+        /* === КНОПКА === */
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--color-gold), #e6b800);
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0a;
+            font-family: 'Black Ops One', sans-serif;
+            font-size: 1rem;
+            padding: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all var(--transition);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculate-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .calculate-btn:hover::before {
+            opacity: 1;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(255, 215, 0, 0.15);
+            background: linear-gradient(135deg, #ffe44d, var(--color-gold));
+        }
+
+        /* === РЕЗУЛЬТАТЫ === */
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .result-item {
+            background: var(--bg-primary);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--transition);
+            cursor: default;
+        }
+
+        .result-item:hover {
+            border-color: rgba(255, 215, 0, 0.06);
+            background: rgba(255, 215, 0, 0.01);
+        }
+
+        .result-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .result-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .result-value .unit {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-left: 2px;
+        }
+
+        .result-item .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .result-item:hover .copy-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-item .copy-btn:hover {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.04);
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            color: var(--color-gold);
+            letter-spacing: 0.1em;
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ========================================
+           FOOTER
+           ======================================== */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .footer-copy {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-socials a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--color-gold);
+        }
+
+        /* ========================================
+           АДАПТИВ
+           ======================================== */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 16px;
+            }
+            .nav-logo {
+                font-size: 0.9rem;
+                margin-right: 16px;
+            }
+            .nav-link {
+                font-size: 0.5rem;
+                padding: 8px 12px;
+            }
+            .nav-links {
+                gap: 4px;
+            }
+            .dropdown-menu {
+                min-width: 180px;
+            }
+            .dropdown-link {
+                font-size: 0.55rem;
+                padding: 12px 18px;
+            }
+            .reverb-container {
+                padding: 24px;
+                margin: 0 16px;
+            }
+            .room-options {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .bpm-input {
+                width: 100%;
+                font-size: 1.5rem;
+                height: 50px;
+            }
+            .result-value {
+                font-size: 1rem;
+            }
+            .result-item {
+                padding: 12px 14px;
+            }
+            footer {
+                padding: 12px 16px;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .footer-copy {
+                font-size: 0.4rem;
+            }
+            .footer-socials a {
+                font-size: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0 10px;
+            }
+            .nav-logo {
+                font-size: 0.7rem;
+                margin-right: 10px;
+            }
+            .nav-link {
+                font-size: 0.4rem;
+                padding: 6px 8px;
+                letter-spacing: 0.05em;
+            }
+            .nav-links {
+                gap: 0px;
+            }
+            .dropdown-menu {
+                min-width: 150px;
+            }
+            .dropdown-link {
+                font-size: 0.45rem;
+                padding: 10px 14px;
+            }
+            .reverb-container {
+                padding: 16px;
+                margin: 0 10px;
+                border-radius: 10px;
+            }
+            .reverb-title {
+                font-size: 1.1rem;
+            }
+            .reverb-sub {
+                font-size: 0.4rem;
+            }
+            .result-value {
+                font-size: 0.85rem;
+            }
+            .result-label {
+                font-size: 0.5rem;
+            }
+            .result-item .copy-btn {
+                font-size: 0.6rem;
+                opacity: 1;
+                transform: scale(1);
+            }
+            .calculate-btn {
+                font-size: 0.8rem;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- НЕЙРОННЫЙ ФОН -->
+    <canvas id="neuronCanvas"></canvas>
+
+    <!-- ========================================
+    ШАПКА / НАВИГАЦИЯ
+    ======================================== -->
+    <header>
+        <a href="../" class="nav-logo">⌇ FRODES</a>
+        <ul class="nav-links">
+            <li><a href="../" class="nav-link">Latest</a></li>
+            <li><a href="../music/" class="nav-link">Music</a></li>
+            <li><a href="../shop/" class="nav-link">Shop</a></li>
+            <li>
+                <button class="nav-link nav-link-with-arrow">
+                    Projects
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="../bezumiye/" target="_blank" class="dropdown-link">
+                        <span class="icon">⌇</span> ХРОНИКИ БЕЗУМИЯ
+                    </a>
+                    <a href="../reverb/" target="_blank" class="dropdown-link">
+                        <span class="icon">⌇</span> КАЛЬКУЛЯТОР РЕВЕРБЕРАЦИИ
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <!-- ========================================
+    КАЛЬКУЛЯТОР
+    ======================================== -->
+    <div class="reverb-page">
+        <div class="reverb-container">
+
+            <div class="reverb-header-text">
+                <div class="reverb-title">Калькулятор реверберации</div>
+                <div class="reverb-sub">
+                    Рассчитай свою идеальную <span class="highlight">реверберацию</span>
+                </div>
+            </div>
+
+            <!-- BPM -->
+            <div class="input-section">
+                <label for="bpm" class="label">BPM</label>
+                <input type="number" id="bpm" class="bpm-input" value="128" min="60" max="240">
+            </div>
+
+            <!-- ROOM -->
+            <div class="room-section">
+                <div class="room-options">
+                    <button class="room-btn active" data-size="small">
+                        <span class="room-name">Studio</span>
+                        <span class="room-desc">Small</span>
+                    </button>
+                    <button class="room-btn" data-size="medium">
+                        <span class="room-name">Club</span>
+                        <span class="room-desc">Medium</span>
+                    </button>
+                    <button class="room-btn" data-size="large">
+                        <span class="room-name">Hall</span>
+                        <span class="room-desc">Large</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- КНОПКА -->
+            <button id="calculateBtn" class="calculate-btn">Calculate</button>
+
+            <!-- РЕЗУЛЬТАТЫ -->
+            <div class="results" id="results">
+                <div class="result-item">
+                    <span class="result-label">Pre-delay</span>
+                    <span class="result-value" id="preDelay">0 <span class="unit">ms</span></span>
+                    <button class="copy-btn" data-target="preDelay" title="Скопировать">📋</button>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Decay time</span>
+                    <span class="result-value" id="decayTime">0 <span class="unit">s</span></span>
+                    <button class="copy-btn" data-target="decayTime" title="Скопировать">📋</button>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total reverb</span>
+                    <span class="result-value" id="totalReverb">0 <span class="unit">ms</span></span>
+                    <button class="copy-btn" data-target="totalReverb" title="Скопировать">📋</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="copy-toast" id="copyToast">✓ Скопировано</div>
+
+    <!-- ========================================
+    FOOTER
+    ======================================== -->
+    <footer>
+        <span class="footer-copy">© TheFrodesDiD · 2026</span>
+        <div class="footer-socials">
+            <a href="https://t.me/frodes" target="_blank">Telegram</a>
+            <a href="https://music.yandex.ru/artist/5437814" target="_blank">Яндекс</a>
+            <a href="https://bnd.lc/bezym1e" target="_blank">BandLink</a>
+        </div>
+    </footer>
+
+    <!-- ========================================
+    JAVASCRIPT
+    ======================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ==========================================
+            // 1. КАЛЬКУЛЯТОР
+            // ==========================================
+            const bpmInput = document.getElementById('bpm');
+            const roomBtns = document.querySelectorAll('.room-btn');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const preDelayElem = document.getElementById('preDelay');
+            const decayTimeElem = document.getElementById('decayTime');
+            const totalReverbElem = document.getElementById('totalReverb');
+            const toast = document.getElementById('copyToast');
+
+            let currentBPM = 128;
+            let currentRoomSize = 'small';
+
+            const roomCoefficients = {
+                small: { pre: 0.25, decay: 5.0 },
+                medium: { pre: 0.5, decay: 10.0 },
+                large: { pre: 0.75, decay: 15.0 }
+            };
+
+            // Обновление BPM
+            bpmInput.addEventListener('input', function() {
+                currentBPM = parseInt(this.value) || 128;
+            });
+
+            bpmInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (value < 60) value = 60;
+                if (value > 240) value = 240;
+                this.value = value;
+                currentBPM = value;
+                calculateReverb();
+            });
+
+            // Выбор комнаты
+            roomBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    roomBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentRoomSize = this.dataset.size;
+                    calculateReverb();
+                });
+            });
+
+            // === ФОРМУЛА РАСЧЁТА ===
+            function calculateReverb() {
+                const coeff = roomCoefficients[currentRoomSize];
+                const beatLength = 60000 / currentBPM;
+
+                const preDelayMs = (beatLength / 16) * coeff.pre;
+                const decayTimeMs = (beatLength / 4) * coeff.decay;
+                const totalReverbMs = preDelayMs + decayTimeMs;
+
+                preDelayElem.innerHTML = `${preDelayMs.toFixed(1)} <span class="unit">ms</span>`;
+                decayTimeElem.innerHTML = `${(decayTimeMs / 1000).toFixed(2)} <span class="unit">s</span>`;
+                totalReverbElem.innerHTML = `${totalReverbMs.toFixed(2)} <span class="unit">ms</span>`;
+            }
+
+            calculateBtn.addEventListener('click', calculateReverb);
+
+            // Рассчитать при загрузке
+            calculateReverb();
+
+            // ==========================================
+            // 2. КОПИРОВАНИЕ РЕЗУЛЬТАТОВ
+            // ==========================================
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const targetId = this.dataset.target;
+                    const targetEl = document.getElementById(targetId);
+                    if (!targetEl) return;
+
+                    // Получаем чистый текст без HTML-тегов
+                    const text = targetEl.textContent.replace(/\s+/g, ' ').trim();
+                    const value = text.split(' ')[0];
+                    const unit = text.split(' ')[1] || '';
+
+                    navigator.clipboard.writeText(`${value} ${unit}`).then(() => {
+                        showToast(`✓ ${value} ${unit} скопировано`);
+                    }).catch(() => {
+                        // fallback
+                        const range = document.createRange();
+                        range.selectNode(targetEl);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(range);
+                        document.execCommand('copy');
+                        showToast(`✓ ${value} ${unit} скопировано`);
+                    });
+                });
+            });
+
+            function showToast(text) {
+                toast.textContent = text;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+
+            // ==========================================
+            // 3. НЕЙРОННЫЙ ФОН (ПЛЕКСУС)
+            // ==========================================
+            (function initPlexus() {
+                const canvas = document.getElementById('neuronCanvas');
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                const nodes = [];
+                let animationId = null;
+
+                function resize() {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                resize();
+                window.addEventListener('resize', resize);
+
+                const colors = [
+                    { h: 340, s: 90, l: 50 },
+                    { h: 350, s: 100, l: 45 },
+                    { h: 330, s: 80, l: 55 },
+                    { h: 0, s: 90, l: 40 },
+                    { h: 340, s: 70, l: 60 },
+                    { h: 355, s: 95, l: 35 }
+                ];
+
+                class PlexusNode {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.radius = 1.5 + Math.random() * 3;
+                        this.baseRadius = this.radius;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.pulse = Math.random() * Math.PI * 2;
+                        this.speed = 0.005 + Math.random() * 0.015;
+                        const c = colors[Math.floor(Math.random() * colors.length)];
+                        this.hue = c.h;
+                        this.sat = c.s;
+                        this.light = c.l;
+                        this.targetLight = this.light;
+                        this.phase = Math.random() * 10;
+                    }
+
+                    update() {
+                        this.pulse += this.speed;
+                        this.phase += 0.02;
+                        this.x += this.vx + Math.sin(this.phase) * 0.1;
+                        this.y += this.vy + Math.cos(this.phase * 0.7) * 0.1;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                        const pulseFactor = Math.sin(this.pulse) * 0.5 + 0.5;
+                        this.radius = this.baseRadius * (0.6 + pulseFactor * 0.8);
+                        this.light = this.targetLight + Math.sin(this.pulse * 1.5) * 15;
+                    }
+
+                    draw() {
+                        const glowRadius = this.radius * 4;
+                        const gradient = ctx.createRadialGradient(
+                            this.x, this.y, 0,
+                            this.x, this.y, glowRadius
+                        );
+                        gradient.addColorStop(0, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.12)');
+                        gradient.addColorStop(1, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0)');
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.shadowColor = 'hsla(' + this.hue + ', 100%, 60%, 0.4)';
+                        ctx.shadowBlur = 12;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.85)';
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.3, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', 100%, 90%, 0.25)';
+                        ctx.fill();
+                    }
+                }
+
+                const nodeCount = Math.min(80, Math.floor((width * height) / 15000));
+                for (let i = 0; i < nodeCount; i++) {
+                    nodes.push(new PlexusNode());
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        nodes[i].update();
+                        nodes[i].draw();
+                    }
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const a = nodes[i];
+                            const b = nodes[j];
+                            const dx = a.x - b.x;
+                            const dy = a.y - b.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+
+                            if (dist < 250) {
+                                const opacity = 0.12 * (1 - dist / 250);
+                                const hue = 340;
+
+                                ctx.beginPath();
+                                ctx.moveTo(a.x, a.y);
+                                ctx.lineTo(b.x, b.y);
+                                ctx.strokeStyle = 'hsla(' + hue + ', 80%, 60%, ' + opacity + ')';
+                                ctx.lineWidth = 0.5 + opacity * 1.5;
+                                ctx.stroke();
+
+                                if (dist < 120 && opacity > 0.04) {
+                                    ctx.beginPath();
+                                    ctx.moveTo(a.x, a.y);
+                                    ctx.lineTo(b.x, b.y);
+                                    ctx.strokeStyle = 'hsla(' + hue + ', 100%, 80%, ' + opacity * 0.25 + ')';
+                                    ctx.lineWidth = 2 + opacity * 2.5;
+                                    ctx.shadowColor = 'hsla(' + hue + ', 100%, 60%, ' + opacity * 0.15 + ')';
+                                    ctx.shadowBlur = 8;
+                                    ctx.stroke();
+                                    ctx.shadowBlur = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    animationId = requestAnimationFrame(animate);
+                }
+
+                animate();
+
+                window.addEventListener('beforeunload', function() {
+                    if (animationId) cancelAnimationFrame(animationId);
+                });
+            })();
+
+            console.log('🔊 TheFrodesDiD — Калькулятор реверберации');
+            console.log('📐 Формула: preDelay = (60000 / BPM / 16) × коэффициент');
+            console.log('📐 Формула: decay = (60000 / BPM / 4) × коэффициент');
+
+        });
+    </script>
+
+</body>
+</html>
