@@ -1,1 +1,608 @@
-)
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TheFrodesDiD — Магазин</title>
+    <meta name="description" content="TheFrodesDiD — официальный магазин">
+    <meta property="og:title" content="TheFrodesDiD — Магазин">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/favicon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-gold: #ffd700;
+            --color-red: #ff003c;
+            --color-blue: #0066ff;
+            --bg-primary: #0a0a0a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --nav-height: 70px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-red);
+            border-radius: 2px;
+        }
+
+        #neuronCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .nav-logo {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: 1.2rem;
+            color: var(--color-gold);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            margin-right: 40px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo:hover {
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all var(--transition);
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.04);
+        }
+
+        .nav-links li:has(.dropdown-menu) {
+            padding-bottom: 20px;
+            margin-bottom: -20px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 220px;
+            background: rgba(10, 10, 10, 0.97);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            border-radius: 10px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-links li:hover .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: transparent;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 14px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all var(--transition);
+            border-left: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .dropdown-link:hover {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.06);
+            border-left-color: var(--color-gold);
+        }
+
+        .dropdown-link .icon {
+            margin-right: 10px;
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+
+        .nav-link-with-arrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-with-arrow .arrow {
+            font-size: 0.5rem;
+            opacity: 0.4;
+            transition: all var(--transition);
+        }
+
+        .nav-links li:hover .nav-link-with-arrow .arrow {
+            opacity: 1;
+            transform: rotate(180deg);
+        }
+
+        .shop-page {
+            position: relative;
+            z-index: 1;
+            padding-top: var(--nav-height);
+            padding-bottom: 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shop-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .shop-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .shop-title {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--color-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .shop-subtitle {
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .shop-notify {
+            display: inline-block;
+            padding: 14px 40px;
+            background: transparent;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 30px;
+            color: var(--text-secondary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: default;
+            transition: all var(--transition);
+        }
+
+        .shop-notify:hover {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+        }
+
+        .shop-notify .emoji {
+            margin-right: 8px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .footer-copy {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-socials a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--color-gold);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0 16px;
+            }
+            .nav-logo {
+                font-size: 0.9rem;
+                margin-right: 16px;
+            }
+            .nav-link {
+                font-size: 0.5rem;
+                padding: 8px 12px;
+            }
+            .nav-links {
+                gap: 4px;
+            }
+            .dropdown-menu {
+                min-width: 180px;
+            }
+            .dropdown-link {
+                font-size: 0.55rem;
+                padding: 12px 18px;
+            }
+            .shop-container {
+                padding: 0 20px;
+            }
+            .shop-title {
+                font-size: 2rem;
+            }
+            .shop-subtitle {
+                font-size: 0.65rem;
+            }
+            footer {
+                padding: 12px 16px;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .footer-copy {
+                font-size: 0.4rem;
+            }
+            .footer-socials a {
+                font-size: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0 10px;
+            }
+            .nav-logo {
+                font-size: 0.7rem;
+                margin-right: 10px;
+            }
+            .nav-link {
+                font-size: 0.4rem;
+                padding: 6px 8px;
+                letter-spacing: 0.05em;
+            }
+            .nav-links {
+                gap: 0px;
+            }
+            .dropdown-menu {
+                min-width: 150px;
+            }
+            .dropdown-link {
+                font-size: 0.45rem;
+                padding: 10px 14px;
+            }
+            .shop-title {
+                font-size: 1.6rem;
+            }
+            .shop-subtitle {
+                font-size: 0.55rem;
+            }
+            .shop-icon {
+                font-size: 3rem;
+            }
+            .shop-notify {
+                font-size: 0.5rem;
+                padding: 12px 24px;
+            }
+            footer {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="neuronCanvas"></canvas>
+
+    <!-- ШАПКА-->
+    <header>
+        <a href="../" class="nav-logo">⌇ FRODES</a>
+        <ul class="nav-links">
+            <li><a href="../" class="nav-link">Latest</a></li>
+            <li><a href="../music/" class="nav-link">Music</a></li>
+            <li><a href="../shop/" class="nav-link active">Shop</a></li>
+            <li>
+                <button class="nav-link nav-link-with-arrow">
+                    Projects
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="../bezumiye/" target="_blank" class="dropdown-link">
+                        <span class="icon">⌇</span> ХРОНИКИ БЕЗУМИЯ
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <!--МАГАЗИН (ЗАГЛУШКА)-->
+    <div class="shop-page">
+        <div class="shop-container">
+            <div class="shop-icon">🛒</div>
+            <h1 class="shop-title">МАГАЗИН</h1>
+            <p class="shop-subtitle">
+                Здесь скоро появится мерч TheFrodesDiD.<br>
+                Следи за обновлениями.
+            </p>
+            <div class="shop-notify">
+                <span class="emoji">⌇</span> Скоро открытие
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER-->
+    <footer>
+        <span class="footer-copy">© TheFrodesDiD · 2026</span>
+        <div class="footer-socials">
+            <a href="https://t.me/frodes" target="_blank">Telegram</a>
+            <a href="https://music.yandex.ru/artist/5437814" target="_blank">Яндекс</a>
+            <a href="https://bnd.lc/bezym1e" target="_blank">BandLink</a>
+        </div>
+    </footer>
+
+    <!-- НЕЙРОННЫЙ ФОН -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            (function initPlexus() {
+                const canvas = document.getElementById('neuronCanvas');
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                const nodes = [];
+                let animationId = null;
+
+                function resize() {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                resize();
+                window.addEventListener('resize', resize);
+
+                const colors = [
+                    { h: 340, s: 90, l: 50 },
+                    { h: 350, s: 100, l: 45 },
+                    { h: 330, s: 80, l: 55 },
+                    { h: 0, s: 90, l: 40 },
+                    { h: 340, s: 70, l: 60 },
+                    { h: 355, s: 95, l: 35 }
+                ];
+
+                class PlexusNode {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.radius = 1.5 + Math.random() * 3;
+                        this.baseRadius = this.radius;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.pulse = Math.random() * Math.PI * 2;
+                        this.speed = 0.005 + Math.random() * 0.015;
+                        const c = colors[Math.floor(Math.random() * colors.length)];
+                        this.hue = c.h;
+                        this.sat = c.s;
+                        this.light = c.l;
+                        this.targetLight = this.light;
+                        this.phase = Math.random() * 10;
+                    }
+
+                    update() {
+                        this.pulse += this.speed;
+                        this.phase += 0.02;
+                        this.x += this.vx + Math.sin(this.phase) * 0.1;
+                        this.y += this.vy + Math.cos(this.phase * 0.7) * 0.1;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                        const pulseFactor = Math.sin(this.pulse) * 0.5 + 0.5;
+                        this.radius = this.baseRadius * (0.6 + pulseFactor * 0.8);
+                        this.light = this.targetLight + Math.sin(this.pulse * 1.5) * 15;
+                    }
+
+                    draw() {
+                        const glowRadius = this.radius * 4;
+                        const gradient = ctx.createRadialGradient(
+                            this.x, this.y, 0,
+                            this.x, this.y, glowRadius
+                        );
+                        gradient.addColorStop(0, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.12)');
+                        gradient.addColorStop(1, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0)');
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.shadowColor = 'hsla(' + this.hue + ', 100%, 60%, 0.4)';
+                        ctx.shadowBlur = 12;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.85)';
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.3, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', 100%, 90%, 0.25)';
+                        ctx.fill();
+                    }
+                }
+
+                const nodeCount = Math.min(80, Math.floor((width * height) / 15000));
+                for (let i = 0; i < nodeCount; i++) {
+                    nodes.push(new PlexusNode());
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        nodes[i].update();
+                        nodes[i].draw();
+                    }
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const a = nodes[i];
+                            const b = nodes[j];
+                            const dx = a.x - b.x;
+                            const dy = a.y - b.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+
+                            if (dist < 250) {
+                                const opacity = 0.12 * (1 - dist / 250);
+                                const hue = 340;
+
+                                ctx.beginPath();
+                                ctx.moveTo(a.x, a.y);
+                                ctx.lineTo(b.x, b.y);
+                                ctx.strokeStyle = 'hsla(' + hue + ', 80%, 60%, ' + opacity + ')';
+                                ctx.lineWidth = 0.5 + opacity * 1.5;
+                                ctx.stroke();
+
+                                if (dist < 120 && opacity > 0.04) {
+                                    ctx.beginPath();
+                                    ctx.moveTo(a.x, a.y);
+                                    ctx.lineTo(b.x, b.y);
+                                    ctx.strokeStyle = 'hsla(' + hue + ', 100%, 80%, ' + opacity * 0.25 + ')';
+                                    ctx.lineWidth = 2 + opacity * 2.5;
+                                    ctx.shadowColor = 'hsla(' + hue + ', 100%, 60%, ' + opacity * 0.15 + ')';
+                                    ctx.shadowBlur = 8;
+                                    ctx.stroke();
+                                    ctx.shadowBlur = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    animationId = requestAnimationFrame(animate);
+                }
+
+                animate();
+
+                window.addEventListener('beforeunload', function() {
+                    if (animationId) cancelAnimationFrame(animationId);
+                });
+            })();
+
+            console.log('🛒 TheFrodesDiD — Магазин (скоро открытие)');
+
+        });
+    </script>
+
+</body>
+</html>
