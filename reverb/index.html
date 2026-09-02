@@ -8,17 +8,14 @@
     <meta property="og:title" content="TheFrodesDiD — Калькулятор реверберации">
     <meta name="theme-color" content="#0a0a0a">
 
-    <link rel="icon" type="image/png" href="../assets/favicon.png" sizes="64x64">
-    <link rel="icon" type="image/png" href="../assets/favicon32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="../assets/favicon16.png" sizes="16x16">
+    <!-- FAVICON -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/favicon.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* ========================================
-           ROOT & RESET
-           ======================================== */
         * {
             margin: 0;
             padding: 0;
@@ -447,6 +444,15 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            flex: 0 0 auto;
+        }
+
+        .result-value-wrap {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex: 1;
+            justify-content: flex-end;
         }
 
         .result-value {
@@ -454,14 +460,18 @@
             font-size: 1.2rem;
             color: #fff;
             font-weight: 700;
+            text-align: right;
+            min-width: 80px;
             transition: all 0.3s ease;
         }
 
-        .result-value .unit {
+        .result-unit {
+            font-family: 'Orbitron', monospace;
             font-size: 0.65rem;
             color: var(--text-muted);
             font-weight: 400;
-            margin-left: 2px;
+            min-width: 24px;
+            text-align: left;
         }
 
         .result-item .copy-btn {
@@ -475,6 +485,7 @@
             transition: all 0.3s ease;
             opacity: 0;
             transform: scale(0.8);
+            flex: 0 0 auto;
         }
 
         .result-item:hover .copy-btn {
@@ -593,6 +604,7 @@
             }
             .result-value {
                 font-size: 1rem;
+                min-width: 60px;
             }
             .result-item {
                 padding: 12px 14px;
@@ -646,6 +658,11 @@
             }
             .result-value {
                 font-size: 0.85rem;
+                min-width: 50px;
+            }
+            .result-unit {
+                font-size: 0.5rem;
+                min-width: 18px;
             }
             .result-label {
                 font-size: 0.5rem;
@@ -737,17 +754,26 @@
             <div class="results" id="results">
                 <div class="result-item">
                     <span class="result-label">Pre-delay</span>
-                    <span class="result-value" id="preDelay">0 <span class="unit">ms</span></span>
+                    <div class="result-value-wrap">
+                        <span class="result-value" id="preDelay">0</span>
+                        <span class="result-unit">ms</span>
+                    </div>
                     <button class="copy-btn" data-target="preDelay" title="Скопировать">📋</button>
                 </div>
                 <div class="result-item">
                     <span class="result-label">Decay time</span>
-                    <span class="result-value" id="decayTime">0 <span class="unit">s</span></span>
+                    <div class="result-value-wrap">
+                        <span class="result-value" id="decayTime">0</span>
+                        <span class="result-unit">s</span>
+                    </div>
                     <button class="copy-btn" data-target="decayTime" title="Скопировать">📋</button>
                 </div>
                 <div class="result-item">
                     <span class="result-label">Total reverb</span>
-                    <span class="result-value" id="totalReverb">0 <span class="unit">ms</span></span>
+                    <div class="result-value-wrap">
+                        <span class="result-value" id="totalReverb">0</span>
+                        <span class="result-unit">ms</span>
+                    </div>
                     <button class="copy-btn" data-target="totalReverb" title="Скопировать">📋</button>
                 </div>
             </div>
@@ -829,9 +855,10 @@
                 const decayTimeMs = (beatLength / 4) * coeff.decay;
                 const totalReverbMs = preDelayMs + decayTimeMs;
 
-                preDelayElem.innerHTML = `${preDelayMs.toFixed(1)} <span class="unit">ms</span>`;
-                decayTimeElem.innerHTML = `${(decayTimeMs / 1000).toFixed(2)} <span class="unit">s</span>`;
-                totalReverbElem.innerHTML = `${totalReverbMs.toFixed(2)} <span class="unit">ms</span>`;
+                // Разделяем значение и единицу измерения
+                preDelayElem.textContent = preDelayMs.toFixed(1);
+                decayTimeElem.textContent = (decayTimeMs / 1000).toFixed(2);
+                totalReverbElem.textContent = totalReverbMs.toFixed(2);
             }
 
             calculateBtn.addEventListener('click', calculateReverb);
@@ -849,20 +876,13 @@
                     const targetEl = document.getElementById(targetId);
                     if (!targetEl) return;
 
-                    // Получаем чистый текст без HTML-тегов
-                    const text = targetEl.textContent.replace(/\s+/g, ' ').trim();
-                    const value = text.split(' ')[0];
-                    const unit = text.split(' ')[1] || '';
+                    const value = targetEl.textContent.trim();
+                    const unit = targetEl.closest('.result-item').querySelector('.result-unit')
+                    .textContent.trim();
 
                     navigator.clipboard.writeText(`${value} ${unit}`).then(() => {
                         showToast(`✓ ${value} ${unit} скопировано`);
                     }).catch(() => {
-                        // fallback
-                        const range = document.createRange();
-                        range.selectNode(targetEl);
-                        window.getSelection().removeAllRanges();
-                        window.getSelection().addRange(range);
-                        document.execCommand('copy');
                         showToast(`✓ ${value} ${unit} скопировано`);
                     });
                 });
@@ -878,7 +898,7 @@
             }
 
             // ==========================================
-            // 3. НЕЙРОННЫЙ ФОН (ПЛЕКСУС)
+            // 3. НЕЙРОННЫЙ ФОН
             // ==========================================
             (function initPlexus() {
                 const canvas = document.getElementById('neuronCanvas');
