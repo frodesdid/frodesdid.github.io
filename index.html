@@ -3,195 +3,923 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TheFrodesDiD — БЕЗУМИЕ</title>
+    <title>TheFrodesDiD</title>
+    <meta name="description" content="TheFrodesDiD — официальный сайт. Музыка, проекты, безумие.">
+    <meta property="og:title" content="TheFrodesDiD">
+    <meta name="theme-color" content="#0a0a0a">
 
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="assets/favicon.png" sizes="64x64">
     <link rel="icon" type="image/png" href="assets/favicon32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="assets/favicon16.png" sizes="16x16">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           ROOT & RESET
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-gold: #ffd700;
+            --color-red: #ff003c;
+            --color-blue: #0066ff;
+            --bg-primary: #0a0a0a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --nav-height: 70px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-red);
+            border-radius: 2px;
+        }
+
+        #neuronCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ========================================
+           ШАПКА / НАВИГАЦИЯ
+           ======================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .nav-logo {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: 1.2rem;
+            color: var(--color-gold);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            margin-right: 40px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo:hover {
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all var(--transition);
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.04);
+        }
+
+        .nav-links li:has(.dropdown-menu) {
+            padding-bottom: 20px;
+            margin-bottom: -20px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 220px;
+            background: rgba(10, 10, 10, 0.97);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            border-radius: 10px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-links li:hover .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: transparent;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 14px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all var(--transition);
+            border-left: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .dropdown-link:hover {
+            color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.06);
+            border-left-color: var(--color-gold);
+        }
+
+        .dropdown-link .icon {
+            margin-right: 10px;
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+
+        .nav-link-with-arrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-with-arrow .arrow {
+            font-size: 0.5rem;
+            opacity: 0.4;
+            transition: all var(--transition);
+        }
+
+        .nav-links li:hover .nav-link-with-arrow .arrow {
+            opacity: 1;
+            transform: rotate(180deg);
+        }
+
+        /* ========================================
+           ГЛАВНЫЙ КОНТЕЙНЕР
+           ======================================== */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 40px;
+            padding-top: var(--nav-height);
+            text-align: center;
+        }
+
+        /* ========================================
+           СТРАНИЦЫ
+           ======================================== */
+        .page-content {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .page-content.active {
+            display: flex;
+        }
+
+        /* ========================================
+           ЗАГОЛОВОК 
+           ======================================== */
+        .title-container {
+            display: inline-block;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .main-title {
+            font-family: 'Black Ops One', 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 7.5vw, 6rem);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            text-shadow:
+                -3px -3px 0 var(--color-red),
+                3px 3px 0 var(--color-blue);
+            line-height: 0.9;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            text-align: center;
+
+            background: linear-gradient(45deg, #8B0000, #B22222, #DC143C, var(--color-red));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: metalShift 6s ease-in-out infinite;
+        }
+
+        .main-title::before {
+            content: 'THEFRODESDID';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Orbitron', 'Black Ops One', sans-serif;
+            font-size: clamp(1.6rem, 6vw, 4.8rem);
+            color: transparent;
+            text-shadow:
+                -4px -4px 0 var(--color-blue),
+                4px 4px 0 #00ff88,
+                0 0 30px rgba(0, 102, 255, 0.5);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+
+            background: linear-gradient(45deg, #00BFFF, #1E90FF, var(--color-blue), #0044cc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            background-size: 300% 300%;
+            animation: neonShift 4s ease-in-out infinite;
+        }
+
+        .title-container:hover .main-title::before {
+            opacity: 1;
+            transform: scale(1.05) rotate(1deg);
+            letter-spacing: 0.08em;
+        }
+
+        .title-container:hover .main-title {
+            text-shadow:
+                -2px -2px 0 transparent,
+                2px 2px 0 transparent;
+            transform: scale(0.95);
+        }
+
+        @keyframes metalShift {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes neonShift {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .title-container::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(circle, transparent 30%, rgba(255, 0, 60, 0.08) 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .title-container:hover::after {
+            opacity: 1;
+            animation: sparkPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.6;
+            }
+        }
+
+        /* ========================================
+           ТЕГЛАЙН
+           ======================================== */
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.8rem, 2.5vw, 1.3rem);
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin: 10px 0 30px 0;
+            transition: all 0.3s ease;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .title-container:hover~.tagline {
+            color: var(--color-red);
+            text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
+        }
+
+        /* ========================================
+           КНОПКА
+           ======================================== */
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--color-red), #cc002f);
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            border-radius: 12px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 40px rgba(255, 0, 60, 0.2);
+        }
+
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .hero-btn:hover::before {
+            opacity: 1;
+        }
+
+        .hero-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .hero-btn:hover::after {
+            opacity: 1;
+        }
+
+        .hero-btn:hover {
+            transform: scale(1.04) translateY(-3px);
+            box-shadow: 0 8px 60px rgba(255, 0, 60, 0.4);
+            background: linear-gradient(135deg, #ff3366, var(--color-red));
+        }
+
+        .hero-btn .icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-btn:hover .icon {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        /* ========================================
+           ДРУГИЕ СТРАНИЦЫ
+           ======================================== */
+        .page-content h2 {
+            font-family: 'Black Ops One', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--color-gold);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .page-content p {
+            color: var(--text-secondary);
+            line-height: 2;
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            text-align: center;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========================================
+           FOOTER
+           ======================================== */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .footer-copy {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-socials a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--color-gold);
+        }
+
+        /* ========================================
+           АДАПТИВ
+           ======================================== */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 16px;
+            }
+
+            .nav-logo {
+                font-size: 0.9rem;
+                margin-right: 16px;
+            }
+
+            .nav-link {
+                font-size: 0.5rem;
+                padding: 8px 12px;
+            }
+
+            .nav-links {
+                gap: 4px;
+            }
+
+            .dropdown-menu {
+                min-width: 180px;
+            }
+
+            .dropdown-link {
+                font-size: 0.55rem;
+                padding: 12px 18px;
+            }
+
+            .main-content {
+                padding: 20px 16px;
+                padding-top: var(--nav-height);
+            }
+
+            .main-title {
+                font-size: clamp(1.8rem, 6vw, 4rem);
+            }
+
+            .main-title::before {
+                font-size: clamp(1.4rem, 5vw, 3.2rem);
+            }
+
+            .hero-btn {
+                padding: 14px 28px;
+                font-size: 0.6rem;
+            }
+
+            footer {
+                padding: 12px 16px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .footer-copy {
+                font-size: 0.4rem;
+            }
+
+            .footer-socials a {
+                font-size: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0 10px;
+            }
+
+            .nav-logo {
+                font-size: 0.7rem;
+                margin-right: 10px;
+            }
+
+            .nav-link {
+                font-size: 0.4rem;
+                padding: 6px 8px;
+                letter-spacing: 0.05em;
+            }
+
+            .nav-links {
+                gap: 0px;
+            }
+
+            .dropdown-menu {
+                min-width: 150px;
+            }
+
+            .dropdown-link {
+                font-size: 0.45rem;
+                padding: 10px 14px;
+            }
+
+            .main-title {
+                font-size: clamp(1.4rem, 5vw, 2.8rem);
+            }
+
+            .main-title::before {
+                font-size: clamp(1.1rem, 4vw, 2.2rem);
+            }
+
+            .tagline {
+                font-size: 0.6rem;
+                margin: 5px 0 20px 0;
+            }
+
+            .hero-btn {
+                padding: 12px 20px;
+                font-size: 0.5rem;
+                gap: 8px;
+            }
+
+            .hero-btn .icon {
+                font-size: 0.9rem;
+            }
+
+            footer {
+                padding: 8px 10px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container" id="mainContainer" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; overflow: hidden; text-align: center; transition: all 0.5s ease;">
+    <!-- ФОН -->
+    <canvas id="neuronCanvas"></canvas>
 
+    <header>
+        <a href="#" class="nav-logo" id="logoLink">⌇ FRODES</a>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link active" data-page="latest">Latest</a></li>
+            <li><a href="#" class="nav-link" data-page="music">Music</a></li>
+            <li><a href="#" class="nav-link" data-page="shop">Shop</a></li>
+            <li>
+                <button class="nav-link nav-link-with-arrow" id="projectsBtn">
+                    Projects
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="https://frodesdid.github.io/bezumiye/" target="_blank" class="dropdown-link">
+                        <span class="icon">⌇</span> ХРОНИКИ БЕЗУМИЯ
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </header>
 
-        <div class="title-container" style="display: inline-block; margin-bottom: 5px;">
-            <h1 class="main-title" id="mainTitle">???</h1>
+    <div class="main-content">
+
+        <!-- LATEST -->
+        <div class="page-content active" id="page-latest">
+            <div class="title-container">
+                <h1 class="main-title" id="mainTitle">THEFRODESDID</h1>
+            </div>
+            <p class="tagline" id="dailyPhrase">Не говори с тем кого не можешь убить!</p>
+            <a href="https://frodes.ru/bezumiye/" class="hero-btn">
+                <span class="icon">▶</span>
+                Погрузиться в безумие
+            </a>
         </div>
 
-
-        <p class="tagline" id="dailyPhrase" style="margin: 5px 0 20px 0; font-size: clamp(0.8rem, 2.5vw, 1.3rem); letter-spacing: 0.15em; color: #888;">Свет ещё горит. Но он скоро погаснет.</p>
-
-
-        <div id="timerBlock" style="display: flex; gap: clamp(8px, 2vw, 20px); flex-wrap: wrap; justify-content: center; transition: opacity 0.8s ease;">
-            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 8px; border: 1px solid #222; min-width: 60px;">
-                <div class="stat-number" id="daysCounter" style="font-size: clamp(2rem, 7vw, 4.5rem); font-family: 'Orbitron', monospace; color: #ff003c; line-height: 1;">9</div>
-                <div class="stat-label" style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Дней</div>
-            </div>
-            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 8px; border: 1px solid #222; min-width: 60px;">
-                <div class="stat-number" id="hoursCounter" style="font-size: clamp(2rem, 7vw, 4.5rem); font-family: 'Orbitron', monospace; color: #ff003c; line-height: 1;">00</div>
-                <div class="stat-label" style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Часов</div>
-            </div>
-            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 8px; border: 1px solid #222; min-width: 60px;">
-                <div class="stat-number" id="minutesCounter" style="font-size: clamp(2rem, 7vw, 4.5rem); font-family: 'Orbitron', monospace; color: #ff003c; line-height: 1;">00</div>
-                <div class="stat-label" style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Минут</div>
-            </div>
-            <div class="stat-item" style="text-align: center; background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 8px; border: 1px solid #222; min-width: 60px;">
-                <div class="stat-number" id="secondsCounter" style="font-size: clamp(2rem, 7vw, 4.5rem); font-family: 'Orbitron', monospace; color: #ff003c; line-height: 1;">00</div>
-                <div class="stat-label" style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666;">Секунд</div>
-            </div>
-        </div>
-
-
-        <div id="releaseBlock" style="display: none; flex-direction: column; gap: 15px; margin-top: 20px; width: 100%; max-width: 400px; animation: fadeInUp 1s ease;">
-            
-            <p style="color: #ff003c; font-family: 'Orbitron', monospace; font-size: 1.4rem; letter-spacing: 0.2em; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,0,60,0.5);">
-                ➜ СЛУШАЙ
+        <!-- MUSIC -->
+        <div class="page-content" id="page-music">
+            <h2>🎵 Музыка</h2>
+            <p>
+                Скоро здесь появится вся дискография TheFrodesDiD.<br>
+                А пока — окунись в <span style="color:var(--color-gold);">Хроники Безумия</span>.
             </p>
-
-            <!-- === ЯНДЕКС МУЗЫКА === -->
-            <a href="https://music.yandex.ru/artist/5437814" target="_blank" class="release-link" style="display: block; padding: 14px; background: rgba(255,0,60,0.1); border: 1px solid #ff003c; border-radius: 8px; color: #fff; text-decoration: none; font-family: 'Orbitron', monospace; letter-spacing: 0.1em; transition: all 0.3s ease; backdrop-filter: blur(10px);">
-                🎧 ЯНДЕКС МУЗЫКА
+            <br>
+            <a href="https://frodesdid.github.io/bezumiye/" style="color:var(--color-gold); font-family:'Orbitron',sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-decoration:none; border-bottom:1px solid rgba(255,215,0,0.2); padding-bottom:4px;">
+                ➜ Перейти к альбому
             </a>
-
-            <!-- === BANDLINK (ВСЕ ПЛАТФОРМЫ) === -->
-            <a href="https://bnd.lc/bezym1e" target="_blank" class="release-link" style="display: block; padding: 14px; background: rgba(0,102,255,0.1); border: 1px solid #0066ff; border-radius: 8px; color: #fff; text-decoration: none; font-family: 'Orbitron', monospace; letter-spacing: 0.1em; transition: all 0.3s ease; backdrop-filter: blur(10px);">
-                🔗 ВСЕ ПЛАТФОРМЫ (BandLink)
-            </a>
-
-            <!-- === TELEGRAM === -->
-            <a href="https://t.me/frodes" target="_blank" class="release-link" style="display: block; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid #444; border-radius: 8px; color: #888; text-decoration: none; font-family: 'Orbitron', monospace; letter-spacing: 0.1em; transition: all 0.3s ease;">
-                💬 ПРИВАТНЫЙ КАНАЛ
-            </a>
-
-
-            <p style="color: #333; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 20px; border-top: 1px solid #222; padding-top: 20px;">
-                TheFrodesDiD — БЕЗУМИЕ · 9 треков
-            </p>
         </div>
 
-        <p id="footerDate" style="position: fixed; bottom: 20px; font-size: 0.6rem; color: #333; letter-spacing: 0.2em; text-transform: uppercase; text-align: center; left: 0; right: 0; margin: 0;">28 августа 2026</p>
+        <!-- SHOP -->
+        <div class="page-content" id="page-shop">
+            <h2>🛒 Магазин</h2>
+            <p>
+                Мерч и всё, что связано с безумием.<br>
+                Возможно здесь появятся товары.
+            </p>
+            <br>
+            <p style="font-size:0.7rem; color:var(--text-muted); font-family:'Orbitron',sans-serif; letter-spacing:0.1em; text-align:center;">
+                ⌇ Ожидайте
+            </p>
+        </div>
 
     </div>
 
-    <div class="visual-elements">
-        <div class="chain chain-1" data-depth="0.3">🪢🪢🪢🪢🪢</div>
-        <div class="chain chain-2" data-depth="0.5">🪢🪢🪢🪢🪢</div>
-        <div class="crack crack-1" data-depth="0.2">⌇⌇⌇⌇⌇</div>
-    </div>
+    <footer>
+        <span class="footer-copy">© TheFrodesDiD · 2026</span>
+        <div class="footer-socials">
+            <a href="https://t.me/frodes" target="_blank">Telegram</a>
+            <a href="https://music.yandex.ru/artist/5437814" target="_blank">Яндекс</a>
+            <a href="https://bnd.lc/bezym1e" target="_blank">BandLink</a>
+        </div>
+    </footer>
 
-    <script src="script.js"></script>
-    
     <script>
-    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
 
-        var target = new Date('2026-08-28T00:00:00+03:00');
-        if (isNaN(target.getTime())) {
-            target = new Date(2026, 7, 28, 0, 0, 0);
-        }
+            const navLinks = document.querySelectorAll('.nav-link[data-page]');
+            const pages = {
+                latest: document.getElementById('page-latest'),
+                music: document.getElementById('page-music'),
+                shop: document.getElementById('page-shop')
+            };
 
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.dataset.page;
 
-        var daysEl = document.getElementById('daysCounter');
-        var hoursEl = document.getElementById('hoursCounter');
-        var minutesEl = document.getElementById('minutesCounter');
-        var secondsEl = document.getElementById('secondsCounter');
-        var phraseEl = document.getElementById('dailyPhrase');
-        var timerBlock = document.getElementById('timerBlock');
-        var releaseBlock = document.getElementById('releaseBlock');
-        var footerDate = document.getElementById('footerDate');
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
 
+                    Object.keys(pages).forEach(key => {
+                        pages[key].classList.toggle('active', key === page);
+                    });
 
-        var phrases = [
-            { day: 9, text: 'Свет ещё горит. Но он скоро погаснет.' },
-            { day: 8, text: 'Он стоит напротив. У него моё лицо.' },
-            { day: 7, text: 'Ты слышишь дыхание? Это не я.' },
-            { day: 6, text: 'Два конца одной петли.' },
-            { day: 5, text: 'Скелет есть. А где шкаф?' },
-            { day: 4, text: 'Она тебя уже нашла. Ты просто не знаешь.' },
-            { day: 3, text: '28 августа — я перестану быть тенью.' },
-            { day: 2, text: 'Ты ещё можешь закрыть вкладку. Но ты не закроешь.' },
-            { day: 1, text: 'Завтра — безумие. Ты готов?' },
-            { day: 0, text: 'СВЕТ ПОГАС. ОН ЗДЕСЬ.' }
-        ];
-
-        function pad(n) { return String(n).padStart(2, '0'); }
-
-        function update() {
-            var now = new Date();
-            var diff = target.getTime() - now.getTime();
-
-
-            if (diff <= 0) {
-
-                if (timerBlock) timerBlock.style.display = 'none';
-                if (releaseBlock) releaseBlock.style.display = 'flex';
-                if (phraseEl) phraseEl.textContent = 'СВЕТ ПОГАС. ОН ЗДЕСЬ.';
-                if (footerDate) footerDate.textContent = 'TheFrodesDiD · БЕЗУМИЕ';
-                return;
-            }
-
-            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            if (daysEl) daysEl.textContent = days;
-            if (hoursEl) hoursEl.textContent = pad(hours);
-            if (minutesEl) minutesEl.textContent = pad(minutes);
-            if (secondsEl) secondsEl.textContent = pad(seconds);
-
-
-            var phrase = null;
-            for (var i = 0; i < phrases.length; i++) {
-                if (phrases[i].day === days) { phrase = phrases[i]; break; }
-            }
-            if (!phrase) phrase = days > 9 ? phrases[0] : phrases[phrases.length - 1];
-            if (phraseEl) phraseEl.textContent = phrase.text;
-
-
-            if (days === 1 && footerDate) {
-                footerDate.textContent = 'ЗАВТРА · БЕЗУМИЕ';
-            }
-        }
-
-
-        update();
-        setInterval(update, 1000);
-
-
-        document.querySelectorAll('.release-link').forEach(function(link) {
-            link.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.02)';
-                this.style.boxShadow = '0 0 30px rgba(255,0,60,0.3)';
+                    const titles = {
+                        latest: 'TheFrodesDiD',
+                        music: 'TheFrodesDiD — Музыка',
+                        shop: 'TheFrodesDiD — Магазин'
+                    };
+                    document.title = titles[page] || 'TheFrodesDiD';
+                });
             });
-            link.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-                this.style.boxShadow = 'none';
+
+            document.getElementById('logoLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                navLinks.forEach(l => l.classList.remove('active'));
+                document.querySelector('.nav-link[data-page="latest"]').classList.add('active');
+                Object.keys(pages).forEach(key => {
+                    pages[key].classList.toggle('active', key === 'latest');
+                });
+                document.title = 'TheFrodesDiD';
             });
+
+            // Нейронный фон
+            (function initPlexus() {
+                const canvas = document.getElementById('neuronCanvas');
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                const nodes = [];
+                let animationId = null;
+
+                function resize() {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                resize();
+                window.addEventListener('resize', resize);
+
+                const colors = [
+                    { h: 340, s: 90, l: 50 },
+                    { h: 350, s: 100, l: 45 },
+                    { h: 330, s: 80, l: 55 },
+                    { h: 0, s: 90, l: 40 },
+                    { h: 340, s: 70, l: 60 },
+                    { h: 355, s: 95, l: 35 }
+                ];
+
+                class PlexusNode {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.radius = 1.5 + Math.random() * 3;
+                        this.baseRadius = this.radius;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.pulse = Math.random() * Math.PI * 2;
+                        this.speed = 0.005 + Math.random() * 0.015;
+                        const c = colors[Math.floor(Math.random() * colors.length)];
+                        this.hue = c.h;
+                        this.sat = c.s;
+                        this.light = c.l;
+                        this.targetLight = this.light;
+                        this.phase = Math.random() * 10;
+                    }
+
+                    update() {
+                        this.pulse += this.speed;
+                        this.phase += 0.02;
+                        this.x += this.vx + Math.sin(this.phase) * 0.1;
+                        this.y += this.vy + Math.cos(this.phase * 0.7) * 0.1;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                        const pulseFactor = Math.sin(this.pulse) * 0.5 + 0.5;
+                        this.radius = this.baseRadius * (0.6 + pulseFactor * 0.8);
+                        this.light = this.targetLight + Math.sin(this.pulse * 1.5) * 15;
+                    }
+
+                    draw() {
+                        const glowRadius = this.radius * 4;
+                        const gradient = ctx.createRadialGradient(
+                            this.x, this.y, 0,
+                            this.x, this.y, glowRadius
+                        );
+                        gradient.addColorStop(0, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.12)');
+                        gradient.addColorStop(1, 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0)');
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.shadowColor = 'hsla(' + this.hue + ', 100%, 60%, 0.4)';
+                        ctx.shadowBlur = 12;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', ' + this.sat + '%, ' + this.light + '%, 0.85)';
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius * 0.3, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + this.hue + ', 100%, 90%, 0.25)';
+                        ctx.fill();
+                    }
+                }
+
+                const nodeCount = Math.min(80, Math.floor((width * height) / 15000));
+                for (let i = 0; i < nodeCount; i++) {
+                    nodes.push(new PlexusNode());
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        nodes[i].update();
+                        nodes[i].draw();
+                    }
+
+                    for (let i = 0; i < nodes.length; i++) {
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const a = nodes[i];
+                            const b = nodes[j];
+                            const dx = a.x - b.x;
+                            const dy = a.y - b.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+
+                            if (dist < 250) {
+                                const opacity = 0.12 * (1 - dist / 250);
+                                const hue = 340;
+
+                                ctx.beginPath();
+                                ctx.moveTo(a.x, a.y);
+                                ctx.lineTo(b.x, b.y);
+                                ctx.strokeStyle = 'hsla(' + hue + ', 80%, 60%, ' + opacity + ')';
+                                ctx.lineWidth = 0.5 + opacity * 1.5;
+                                ctx.stroke();
+
+                                if (dist < 120 && opacity > 0.04) {
+                                    ctx.beginPath();
+                                    ctx.moveTo(a.x, a.y);
+                                    ctx.lineTo(b.x, b.y);
+                                    ctx.strokeStyle = 'hsla(' + hue + ', 100%, 80%, ' + opacity * 0.25 + ')';
+                                    ctx.lineWidth = 2 + opacity * 2.5;
+                                    ctx.shadowColor = 'hsla(' + hue + ', 100%, 60%, ' + opacity * 0.15 + ')';
+                                    ctx.shadowBlur = 8;
+                                    ctx.stroke();
+                                    ctx.shadowBlur = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    animationId = requestAnimationFrame(animate);
+                }
+
+                animate();
+
+                window.addEventListener('beforeunload', function() {
+                    if (animationId) cancelAnimationFrame(animationId);
+                });
+            })();
+
+            console.log('🔥 TheFrodesDiD — Официальный сайт');
+
         });
-
-    })();
     </script>
-
-    <style>
-
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .release-link:hover {
-            background: rgba(255,0,60,0.2) !important;
-            border-color: #ff3366 !important;
-            color: #fff !important;
-            text-shadow: 0 0 20px rgba(255,0,60,0.5);
-        }
-    </style>
 
 </body>
 </html>
