@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Наш план на день</title>
+<style>
+:root{
+  --bg:#f2f5fa; --card:#fff; --text:#18202f; --muted:#7b869b;
+  --accent:#4f7cff; --accent-soft:#e9efff; --border:#e4e9f2;
+  --green:#26b573; --track:#eef1f7; --shadow:0 1px 3px rgba(20,30,60,.06);
+  --warning:#e07b00; --warning-bg:#fff4e0;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#10141c; --card:#171d27; --text:#e8edf6; --muted:#8b96ab;
+    --accent:#6d93ff; --accent-soft:#1e2942; --border:#242c3a;
+    --green:#38c98a; --track:#222a38; --shadow:0 1px 3px rgba(0,0,0,.4);
+    --warning:#ffb74d; --warning-bg:#3e2c1a;
+  }
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0; padding:16px 14px 70px;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px; margin:0 auto;}
+h1{font-size:19px; margin:0; font-weight:700; letter-spacing:-.2px;}
+
+/* Загрузка / логин */
+.center-screen{
+  min-height:80vh; display:flex; align-items:center; justify-content:center;
+}
+.center-card{
+  background:var(--card); border:1px solid var(--border); border-radius:18px;
+  padding:28px 26px; max-width:380px; width:100%; text-align:center; box-shadow:var(--shadow);
+}
+.center-card h2{margin:0 0 8px; font-size:20px;}
+.center-card p{color:var(--muted); font-size:14px; margin:0 0 18px; line-height:1.5;}
+
+/* Шапка */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  flex-wrap:wrap; margin-bottom:16px;
+}
+.tabs{
+  display:flex; background:var(--card); border:1px solid var(--border);
+  border-radius:12px; padding:3px; box-shadow:var(--shadow);
+}
+.tab{
+  border:0; background:transparent; color:var(--muted); font-size:14px; font-weight:600;
+  padding:7px 16px; border-radius:9px; cursor:pointer; transition:.15s; font-family:inherit;
+}
+.tab.active{background:var(--accent); color:#fff;}
+
+.user-bar{
+  display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);
+  padding:6px 12px; background:var(--card); border:1px solid var(--border); border-radius:12px;
+}
+.user-bar .dot{width:8px; height:8px; border-radius:50%; background:var(--green);}
+.user-bar .dot.off{background:var(--muted);}
+
+/* Карточки */
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:14px 16px; margin-bottom:14px; box-shadow:var(--shadow);
+}
+.card h3{
+  margin:0 0 12px; font-size:13px; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.5px;
+}
+
+/* Уведомление */
+.notice{
+  background:var(--warning-bg); color:var(--warning);
+  padding:12px 16px; border-radius:12px; margin-bottom:14px;
+  font-size:14px; font-weight:500; text-align:center;
+  border:1px solid transparent;
+}
+
+/* Навигация по дате */
+.datenav{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px;}
+.nav-btn{
+  width:38px; height:38px; flex:0 0 auto; border-radius:11px; border:1px solid var(--border);
+  background:var(--bg); color:var(--text); font-size:20px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-family:inherit;
+}
+.nav-btn:hover{background:var(--accent-soft); border-color:var(--accent); color:var(--accent);}
+.datenav-center{text-align:center; flex:1; min-width:0;}
+.date-title{font-size:17px; font-weight:700;}
+.date-sub{font-size:12.5px; color:var(--muted); margin-top:2px;}
+
+/* Прогресс */
+.progress-track{height:8px; background:var(--track); border-radius:99px; overflow:hidden;}
+.progress-fill{
+  height:100%; width:0; background:linear-gradient(90deg,var(--accent),#7a5cff);
+  border-radius:99px; transition:width .3s;
+}
+.progress-text{font-size:12.5px; color:var(--muted); margin-top:6px; text-align:right;}
+
+/* Кнопки */
+.row-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+.btn{
+  border:1px solid var(--border); background:var(--accent); color:#fff; border-radius:10px;
+  padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;
+}
+.btn:hover{filter:brightness(1.08);}
+.btn.ghost{background:transparent; color:var(--muted);}
+.btn.ghost:hover{color:var(--accent); border-color:var(--accent); background:var(--accent-soft);}
+.btn.small{padding:6px 12px; font-size:12.5px;}
+
+/* Список дел */
+.cat{padding:12px 16px 8px;}
+.cat-head{
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:13px; font-weight:700; color:var(--accent); text-transform:uppercase;
+  letter-spacing:.4px; margin-bottom:6px;
+}
+.cat-count{color:var(--muted); font-weight:600; font-size:12px;}
+.task{
+  display:flex; align-items:flex-start; gap:11px; padding:9px 6px;
+  border-radius:10px; cursor:pointer; font-size:14.5px; line-height:1.35;
+  border-bottom:1px solid var(--border);
+}
+.cat .task:last-child{border-bottom:0;}
+.task:hover{background:var(--accent-soft);}
+.task input{
+  width:19px; height:19px; flex:0 0 auto; margin:1px 0 0; cursor:pointer;
+  accent-color:var(--accent);
+}
+.task span{flex:1; transition:.15s;}
+.task.done span{text-decoration:line-through; color:var(--muted);}
+.task.done{opacity:.7;}
+
+/* Статистика */
+.month-nav{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+.month-label{flex:1; text-align:center; font-size:17px; font-weight:700;}
+.summary-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:14px;}
+.stat-card{
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:13px 15px; box-shadow:var(--shadow);
+}
+.stat-card .val{font-size:23px; font-weight:800; letter-spacing:-.5px;}
+.stat-card .lbl{font-size:12px; color:var(--muted); margin-top:3px;}
+
+.heat-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:5px;}
+.heat-dow{text-align:center; font-size:11px; color:var(--muted); padding-bottom:5px; font-weight:600;}
+.heat-cell{
+  aspect-ratio:1/1; border-radius:9px; background:var(--track);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:var(--muted); font-weight:600;
+}
+.heat-cell.empty{background:transparent;}
+.heat-cell.today{outline:2px solid var(--accent); outline-offset:1px;}
+
+.cat-block{margin-bottom:16px;}
+.cat-block:last-child{margin-bottom:0;}
+.cat-block-title{
+  font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase;
+  letter-spacing:.4px; margin:0 0 8px;
+}
+.stat-row{margin-bottom:9px;}
+.stat-row-top{display:flex; justify-content:space-between; gap:10px; font-size:13px; margin-bottom:4px;}
+.stat-row-top .num{color:var(--muted); font-size:12.5px; white-space:nowrap;}
+.stat-bar{height:6px; background:var(--track); border-radius:99px; overflow:hidden;}
+.stat-fill{height:100%; background:var(--accent); border-radius:99px; transition:width .4s;}
+
+.year-chart{display:flex; gap:5px; align-items:flex-end;}
+.year-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; min-width:0;}
+.year-num{font-size:10px; color:var(--muted); height:12px;}
+.year-bar-area{height:86px; width:100%; display:flex; align-items:flex-end; justify-content:center;}
+.year-fill{width:100%; background:var(--accent); border-radius:6px 6px 3px 3px; min-height:3px;}
+.year-lbl{font-size:10px; color:var(--muted);}
+
+.empty-note{color:var(--muted); font-size:13.5px; text-align:center; padding:18px 0;}
+
+.toast{
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  background:var(--card); border:1px solid var(--border); box-shadow:0 4px 20px rgba(0,0,0,.15);
+  padding:10px 16px; border-radius:12px; font-size:13px; color:var(--text);
+  opacity:0; transition:.2s; pointer-events:none; z-index:100;
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- Загрузка -->
+<div id="loading" class="center-screen">
+  <div class="center-card">
+    <h2>⏳ Загрузка…</h2>
+    <p>Подключаемся к облаку</p>
+  </div>
+</div>
+
+<!-- Экран входа -->
+<div id="loginScreen" class="center-screen" hidden>
+  <div class="center-card">
+    <h2>📋 Наш план</h2>
+    <p>Войдите, чтобы синхронизировать список с партнёром.<br>Введите email — мы пришлём код.</p>
+    <button id="loginBtn" class="btn">Войти</button>
+  </div>
+</div>
+
+<!-- Приложение -->
+<div id="app" class="wrap" hidden>
+  <header class="topbar">
+    <h1>📋 Наш план</h1>
+    <div class="tabs">
+      <button class="tab active" data-tab="day">День</button>
+      <button class="tab" data-tab="stats">Статистика</button>
+    </div>
+    <div class="user-bar">
+      <span class="dot" id="userDot"></span>
+      <span id="userEmail">—</span>
+      <button class="btn small ghost" id="logoutBtn" title="Выйти">Выйти</button>
+    </div>
+  </header>
+
+  <div id="noChangeNotice" class="notice" hidden>
+    🤔 Сегодня пока ничего не отмечено. Может, начнём?
+  </div>
+
+  <!-- День -->
+  <section id="tab-day">
+    <div class="card">
+      <div class="datenav">
+        <button class="nav-btn" id="prevDay">‹</button>
+        <div class="datenav-center">
+          <div class="date-title" id="dateTitle"></div>
+          <div class="date-sub" id="dateSub"></div>
+        </div>
+        <button class="nav-btn" id="nextDay">›</button>
+      </div>
+      <div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText"></div>
+      </div>
+      <div class="row-actions">
+        <button class="btn small" id="todayBtn">Сегодня</button>
+        <button class="btn small ghost" id="checkAllBtn">Отметить всё</button>
+        <button class="btn small ghost" id="clearDayBtn">Сбросить день</button>
+      </div>
+    </div>
+    <div id="taskList"></div>
+  </section>
+
+  <!-- Статистика -->
+  <section id="tab-stats" hidden>
+    <div class="month-nav">
+      <button class="nav-btn" id="prevMonth">‹</button>
+      <div class="month-label" id="statMonthLabel"></div>
+      <button class="nav-btn" id="nextMonth">›</button>
+    </div>
+    <div class="summary-grid" id="summaryGrid"></div>
+    <div class="card">
+      <h3>Календарь месяца</h3>
+      <div class="heat-grid" id="heatmap"></div>
+    </div>
+    <div class="card">
+      <h3>Что сделано за месяц</h3>
+      <div id="taskStats"></div>
+    </div>
+    <div class="card">
+      <h3>Год целиком</h3>
+      <div class="year-chart" id="yearChart"></div>
+    </div>
+  </section>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "dexie": "https://esm.sh/dexie@4.0.11",
+    "dexie-cloud-addon": "https://esm.sh/dexie-cloud-addon@4.0.11?external=dexie"
+  }
+}
+</script>
+
+<script type="module">
+import { Dexie, liveQuery } from 'dexie';
+import dexieCloud from 'dexie-cloud-addon';
+
+/* =========================================================
+   1. НАСТРОЙКИ
+   ========================================================= */
+const DB_URL = 'https://zyuprs28k.dexie.cloud'; // ⚠️ ваш URL из dexie-cloud.json
+
+/* =========================================================
+   2. СПИСОК ДЕЛ
+   ========================================================= */
+const TASKS = [
+  { id:'m1', cat:'Утро', text:'Заправить кровать' },
+  { id:'m2', cat:'Утро', text:'Умыться, почистить зубы, душ' },
+  { id:'m3', cat:'Утро', text:'Выпить стакан воды' },
+  { id:'m4', cat:'Утро', text:'Зарядка или растяжка' },
+  { id:'m5', cat:'Утро', text:'Завтрак' },
+  { id:'m6', cat:'Утро', text:'Помыть посуду после завтрака' },
+  { id:'m7', cat:'Утро', text:'Проветрить комнаты' },
+
+  { id:'c1',  cat:'Уборка и порядок', text:'Протереть пыль' },
+  { id:'c2',  cat:'Уборка и порядок', text:'Пропылесосить или подмести' },
+  { id:'c3',  cat:'Уборка и порядок', text:'Помыть полы' },
+  { id:'c4',  cat:'Уборка и порядок', text:'Убрать вещи на места' },
+  { id:'c5',  cat:'Уборка и порядок', text:'Разобрать завалы на столах и полках' },
+  { id:'c6',  cat:'Уборка и порядок', text:'Постирать и развесить бельё' },
+  { id:'c7',  cat:'Уборка и порядок', text:'Сложить или погладить вещи' },
+  { id:'c8',  cat:'Уборка и порядок', text:'Сменить постельное бельё' },
+  { id:'c9',  cat:'Уборка и порядок', text:'Почистить сантехнику, зеркала, плитку' },
+  { id:'c10', cat:'Уборка и порядок', text:'Вынести мусор' },
+  { id:'c11', cat:'Уборка и порядок', text:'Полить цветы, протереть листья' },
+  { id:'c12', cat:'Уборка и порядок', text:'Помыть окна или двери' },
+
+  { id:'k1', cat:'Кухня', text:'Помыть посуду' },
+  { id:'k2', cat:'Кухня', text:'Разобрать холодильник, выбросить просрочку' },
+  { id:'k3', cat:'Кухня', text:'Приготовить еду на день или на несколько дней' },
+  { id:'k4', cat:'Кухня', text:'Разложить или заморозить продукты' },
+  { id:'k5', cat:'Кухня', text:'Составить список покупок' },
+  { id:'k6', cat:'Кухня', text:'Сходить в магазин или заказать доставку' },
+  { id:'k7', cat:'Кухня', text:'Протереть кухонные поверхности, плиту, раковину' },
+
+  { id:'o1', cat:'Дела и организация', text:'Оплатить счета, коммуналку' },
+  { id:'o2', cat:'Дела и организация', text:'Разобрать почту и документы' },
+  { id:'o3', cat:'Дела и организация', text:'Проверить аптечку и бытовую химию' },
+  { id:'o4', cat:'Дела и организация', text:'Заказать нужные товары' },
+  { id:'o5', cat:'Дела и организация', text:'Разобрать шкаф или гардероб' },
+  { id:'o6', cat:'Дела и организация', text:'Сделать мелкий ремонт' },
+  { id:'o7', cat:'Дела и организация', text:'Позвонить родным, ответить на сообщения' },
+  { id:'o8', cat:'Дела и организация', text:'Поработать или поучиться' },
+
+  { id:'p1', cat:'Питомцы', text:'Покормить' },
+  { id:'p2', cat:'Питомцы', text:'Выгулять' },
+  { id:'p3', cat:'Питомцы', text:'Почистить лоток или клетку' },
+  { id:'p4', cat:'Питомцы', text:'Помыть миски' },
+  { id:'p5', cat:'Питомцы', text:'Поиграть с питомцем' },
+
+  { id:'s1', cat:'Для себя', text:'Уход за собой' },
+  { id:'s2', cat:'Для себя', text:'Почитать книгу' },
+  { id:'s3', cat:'Для себя', text:'Посмотреть фильм или сериал' },
+  { id:'s4', cat:'Для себя', text:'Хобби' },
+  { id:'s5', cat:'Для себя', text:'Тренировка или растяжка' },
+  { id:'s6', cat:'Для себя', text:'Медитация, дыхательные упражнения' },
+  { id:'s7', cat:'Для себя', text:'Дневник, планирование' },
+
+  { id:'e1', cat:'Вечер', text:'Приготовить ужин' },
+  { id:'e2', cat:'Вечер', text:'Помыть посуду' },
+  { id:'e3', cat:'Вечер', text:'Приготовить одежду на завтра' },
+  { id:'e4', cat:'Вечер', text:'Проветрить спальню' },
+  { id:'e5', cat:'Вечер', text:'Убрать телефон, приглушить свет' },
+  { id:'e6', cat:'Вечер', text:'Лечь спать вовремя' }
+];
+
+const CATS = [...new Set(TASKS.map(t => t.cat))];
+const TOTAL_TASKS = TASKS.length;
+
+const MONTHS     = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const MONTHS_GEN = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const MONTHS_SHORT = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+const WEEKDAYS   = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+const WEEKDAYS_SHORT = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
+/* =========================================================
+   3. БАЗА ДАННЫХ
+   ========================================================= */
+const db = new Dexie('OurPlanDB', { addons: [dexieCloud] });
+db.version(1).stores({
+  completions: 'id, date, taskId, createdAt'
+});
+db.cloud.configure({
+  databaseUrl: DB_URL,
+  requireAuth: true
+});
+
+/* =========================================================
+   4. УТИЛИТЫ
+   ========================================================= */
+function toKey(d){
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function todayKey(){
+  const d = new Date(); d.setHours(0,0,0,0); return toKey(d);
+}
+function formatDate(d){
+  return d.getDate() + ' ' + MONTHS_GEN[d.getMonth()] + ' ' + d.getFullYear();
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* =========================================================
+   5. СОСТОЯНИЕ
+   ========================================================= */
+let selectedDate = new Date(); selectedDate.setHours(0,0,0,0);
+let statDate = new Date(); statDate.setDate(1); statDate.setHours(0,0,0,0);
+let daySub = null;
+let statsSub = null;
+
+/* =========================================================
+   6. АУТЕНТИФИКАЦИЯ
+   ========================================================= */
+const loadingEl = document.getElementById('loading');
+const loginEl   = document.getElementById('loginScreen');
+const appEl     = document.getElementById('app');
+
+document.getElementById('loginBtn').addEventListener('click', () => {
+  db.cloud.login().catch(err => {
+    console.error(err);
+    showToast('Ошибка входа: ' + err.message);
+  });
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await db.cloud.logout();
+  location.reload();
+});
+
+let loggedInOnce = false;
+
+db.cloud.currentUser.subscribe({
+  next: (user) => {
+    const loggedIn = !!(user && (user.userId || user.email));
+    loadingEl.hidden = true;
+
+    if (loggedIn) {
+      loginEl.hidden = true;
+      appEl.hidden = false;
+      document.getElementById('userEmail').textContent = user.email || user.name || '—';
+      document.getElementById('userDot').classList.remove('off');
+
+      if (!loggedInOnce) {
+        loggedInOnce = true;
+        startApp();
+      }
+    } else {
+      loginEl.hidden = false;
+      appEl.hidden = true;
+      document.getElementById('userDot').classList.add('off');
+    }
+  },
+  error: (e) => console.error('currentUser error:', e)
+});
+
+/* =========================================================
+   7. СТАРТ ПРИЛОЖЕНИЯ
+   ========================================================= */
+function startApp(){
+  // Подписка на "сегодня пусто?" — глобально, независимо от выбранной даты
+  liveQuery(() => db.completions.where('date').equals(todayKey()).count())
+    .subscribe({
+      next: (count) => {
+        const el = document.getElementById('noChangeNotice');
+        el.hidden = count > 0;
+      },
+      error: (e) => console.warn('notice query', e)
+    });
+
+  // Первый рендер
+  selectedDate = new Date(); selectedDate.setHours(0,0,0,0);
+  watchDay();
+  setupTabs();
+  setupDayNav();
+  setupMonthNav();
+}
+
+/* =========================================================
+   8. ДЕНЬ — рендер и подписка
+   ========================================================= */
+function watchDay(){
+  if (daySub) daySub.unsubscribe();
+  const key = toKey(selectedDate);
+  daySub = liveQuery(() => db.completions.where('date').equals(key).toArray())
+    .subscribe({
+      next: (arr) => renderDay(arr),
+      error: (e) => console.error('day query', e)
+    });
+}
+
+function renderDay(completions){
+  const doneSet = new Set(completions.map(c => c.taskId));
+  const isToday = toKey(selectedDate) === todayKey();
+
+  document.getElementById('dateTitle').textContent = formatDate(selectedDate);
+  document.getElementById('dateSub').textContent =
+    (isToday ? 'Сегодня · ' : '') + WEEKDAYS[selectedDate.getDay()];
+
+  const list = document.getElementById('taskList');
+  list.innerHTML = '';
+
+  CATS.forEach(cat => {
+    const tasks = TASKS.filter(t => t.cat === cat);
+    const doneCount = tasks.filter(t => doneSet.has(t.id)).length;
+
+    const sec = document.createElement('div');
+    sec.className = 'card cat';
+    sec.dataset.cat = cat;
+
+    const head = document.createElement('div');
+    head.className = 'cat-head';
+    head.innerHTML = '<span>' + cat + '</span><span class="cat-count">' + doneCount + '/' + tasks.length + '</span>';
+    sec.appendChild(head);
+
+    tasks.forEach(t => {
+      const label = document.createElement('label');
+      label.className = 'task' + (doneSet.has(t.id) ? ' done' : '');
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = doneSet.has(t.id);
+      cb.addEventListener('change', () => {
+        toggleTask(toKey(selectedDate), t.id, cb.checked);
+      });
+
+      const span = document.createElement('span');
+      span.textContent = t.text;
+
+      label.appendChild(cb);
+      label.appendChild(span);
+      sec.appendChild(label);
+    });
+
+    list.appendChild(sec);
+  });
+
+  const done = TASKS.filter(t => doneSet.has(t.id)).length;
+  const pct = Math.round(done / TOTAL_TASKS * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent =
+    done + ' из ' + TOTAL_TASKS + ' дел · ' + pct + '%';
+}
+
+async function toggleTask(dateStr, taskId, checked){
+  const id = dateStr + '|' + taskId;
+  try {
+    if (checked) {
+      await db.completions.put({
+        id, date: dateStr, taskId, createdAt: Date.now()
+      });
+    } else {
+      await db.completions.delete(id);
+    }
+  } catch (e) {
+    console.error(e);
+    showToast('Не удалось сохранить');
+  }
+}
+
+/* =========================================================
+   9. НАВИГАЦИЯ ПО ДНЯМ
+   ========================================================= */
+function setupDayNav(){
+  document.getElementById('prevDay').addEventListener('click', () => {
+    selectedDate.setDate(selectedDate.getDate() - 1);
+    watchDay();
+  });
+  document.getElementById('nextDay').addEventListener('click', () => {
+    selectedDate.setDate(selectedDate.getDate() + 1);
+    watchDay();
+  });
+  document.getElementById('todayBtn').addEventListener('click', () => {
+    selectedDate = new Date(); selectedDate.setHours(0,0,0,0);
+    watchDay();
+  });
+  document.getElementById('checkAllBtn').addEventListener('click', async () => {
+    const key = toKey(selectedDate);
+    const now = Date.now();
+    await db.completions.bulkPut(TASKS.map(t => ({
+      id: key + '|' + t.id, date: key, taskId: t.id, createdAt: now
+    })));
+  });
+  document.getElementById('clearDayBtn').addEventListener('click', async () => {
+    const key = toKey(selectedDate);
+    await db.completions.where('date').equals(key).delete();
+  });
+}
+
+/* =========================================================
+   10. ТАБЫ
+   ========================================================= */
+function setupTabs(){
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+      const name = t.dataset.tab;
+      document.getElementById('tab-day').hidden = name !== 'day';
+      document.getElementById('tab-stats').hidden = name !== 'stats';
+      if (name === 'stats') watchStats();
+    });
+  });
+}
+
+/* =========================================================
+   11. СТАТИСТИКА
+   ========================================================= */
+function setupMonthNav(){
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    statDate.setMonth(statDate.getMonth() - 1);
+    watchStats();
+  });
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    statDate.setMonth(statDate.getMonth() + 1);
+    watchStats();
+  });
+}
+
+function watchStats(){
+  if (statsSub) statsSub.unsubscribe();
+  const y = statDate.getFullYear();
+  const m = statDate.getMonth();
+
+  statsSub = liveQuery(async () => {
+    const start = y + '-' + String(m+1).padStart(2,'0') + '-01';
+    const end   = y + '-' + String(m+1).padStart(2,'0') + '-31';
+    const arr = await db.completions.where('date').between(start, end, true, true).toArray();
+
+    // Считаем агрегаты
+    const counts = {};
+    TASKS.forEach(t => counts[t.id] = 0);
+    const perDay = new Array(32).fill(0);
+    let activeDays = 0, maxDay = 0, maxDayNum = 0;
+
+    arr.forEach(c => {
+      if (counts[c.taskId] === undefined) return;
+      counts[c.taskId]++;
+      const d = parseInt(c.date.slice(8), 10);
+      perDay[d]++;
+    });
+    for (let d = 1; d <= 31; d++){
+      if (perDay[d] > 0) activeDays++;
+      if (perDay[d] > maxDay){ maxDay = perDay[d]; maxDayNum = d; }
+    }
+
+    // Год целиком
+    const yearStart = y + '-01-01';
+    const yearEnd   = y + '-12-31';
+    const yearArr = await db.completions.where('date').between(yearStart, yearEnd, true, true).toArray();
+    const yearTotals = new Array(12).fill(0);
+    yearArr.forEach(c => {
+      const mm = parseInt(c.date.slice(5,7), 10) - 1;
+      if (mm >= 0 && mm < 12) yearTotals[mm]++;
+    });
+
+    return {
+      y, m,
+      total: arr.length,
+      activeDays,
+      maxDay, maxDayNum,
+      counts,
+      perDay,
+      yearTotals,
+      daysInMonth: new Date(y, m + 1, 0).getDate()
+    };
+  }).subscribe({
+    next: (st) => renderStats(st),
+    error: (e) => console.error('stats query', e)
+  });
+}
+
+function renderStats(st){
+  const { y, m, total, activeDays, maxDay, maxDayNum, counts, perDay, yearTotals, daysInMonth } = st;
+
+  document.getElementById('statMonthLabel').textContent = MONTHS[m] + ' ' + y;
+
+  // Сколько дней месяца уже прошло
+  const now = new Date(); now.setHours(0,0,0,0);
+  const first = new Date(y, m, 1);
+  const last  = new Date(y, m + 1, 0);
+  let elapsed;
+  if (now > last) elapsed = daysInMonth;
+  else if (now < first) elapsed = 0;
+  else elapsed = now.getDate();
+
+  // Сводка
+  const avg = elapsed > 0 ? (total / elapsed).toFixed(1) : '—';
+  const summary = document.getElementById('summaryGrid');
+  summary.innerHTML = '';
+  [
+    { val: total, lbl: 'Всего отметок' },
+    { val: activeDays, lbl: 'Активных дней' },
+    { val: avg, lbl: 'В среднем в день' },
+    { val: maxDay > 0 ? maxDay : '—',
+      lbl: maxDay > 0 ? 'Лучший день (' + maxDayNum + ' ' + MONTHS_GEN[m] + ')' : 'Лучший день' }
+  ].forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'stat-card';
+    el.innerHTML = '<div class="val">' + s.val + '</div><div class="lbl">' + s.lbl + '</div>';
+    summary.appendChild(el);
+  });
+
+  // Теплокарта
+  const heat = document.getElementById('heatmap');
+  heat.innerHTML = '';
+  WEEKDAYS_SHORT.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'heat-dow';
+    el.textContent = d;
+    heat.appendChild(el);
+  });
+  const firstDow = (new Date(y, m, 1).getDay() + 6) % 7;
+  for (let i = 0; i < firstDow; i++){
+    const el = document.createElement('div');
+    el.className = 'heat-cell empty';
+    heat.appendChild(el);
+  }
+  const tk = todayKey();
+  for (let d = 1; d <= daysInMonth; d++){
+    const el = document.createElement('div');
+    el.className = 'heat-cell';
+    const c = perDay[d] || 0;
+    const ratio = c / TOTAL_TASKS;
+    if (c > 0){
+      el.style.background = 'rgba(79,124,255,' + (0.15 + 0.85 * Math.min(ratio, 1)).toFixed(2) + ')';
+      el.style.color = ratio > 0.35 ? '#fff' : 'var(--text)';
+    }
+    const key = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    if (key === tk) el.classList.add('today');
+    el.textContent = d;
+    el.title = d + ' ' + MONTHS_GEN[m] + ': ' + c + ' дел';
+    heat.appendChild(el);
+  }
+
+  // Разбивка по делам
+  const box = document.getElementById('taskStats');
+  box.innerHTML = '';
+  if (total === 0){
+    box.innerHTML = '<div class="empty-note">За этот месяц пока нет отметок</div>';
+  } else {
+    CATS.forEach(cat => {
+      const tasks = TASKS.filter(t => t.cat === cat);
+      const hasAny = tasks.some(t => counts[t.id] > 0);
+      if (!hasAny) return;
+      const block = document.createElement('div');
+      block.className = 'cat-block';
+      const title = document.createElement('div');
+      title.className = 'cat-block-title';
+      title.textContent = cat;
+      block.appendChild(title);
+      tasks.forEach(t => {
+        const c = counts[t.id];
+        const pct = elapsed > 0 ? Math.round(c / elapsed * 100) : 0;
+        const row = document.createElement('div');
+        row.className = 'stat-row';
+        row.innerHTML =
+          '<div class="stat-row-top">' +
+            '<span class="name">' + t.text + '</span>' +
+            '<span class="num">' + c + (elapsed > 0 ? ' / ' + elapsed + ' · ' + pct + '%' : '') + '</span>' +
+          '</div>' +
+          '<div class="stat-bar"><div class="stat-fill" style="width:' + Math.min(pct,100) + '%"></div></div>';
+        block.appendChild(row);
+      });
+      box.appendChild(block);
+    });
+  }
+
+  // График года
+  const chart = document.getElementById('yearChart');
+  chart.innerHTML = '';
+  const maxY = Math.max(...yearTotals, 1);
+  yearTotals.forEach((v, i) => {
+    const col = document.createElement('div');
+    col.className = 'year-col';
+    const h = v === 0 ? 0 : Math.max(4, Math.round(v / maxY * 100));
+    col.innerHTML =
+      '<div class="year-num">' + (v > 0 ? v : '') + '</div>' +
+      '<div class="year-bar-area"><div class="year-fill" style="height:' + h + '%"></div></div>' +
+      '<div class="year-lbl">' + MONTHS_SHORT[i] + '</div>';
+    col.title = MONTHS[i] + ': ' + v + ' отметок';
+    chart.appendChild(col);
+  });
+}
+</script>
+</body>
+</html>
